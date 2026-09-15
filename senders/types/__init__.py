@@ -6,53 +6,25 @@ import typing
 from importlib import import_module
 
 if typing.TYPE_CHECKING:
-    from .create_v1senders_request import (
-        CreateV1SendersRequest,
-        CreateV1SendersRequest_Business,
-        CreateV1SendersRequest_Individual,
-    )
-    from .create_v1senders_response import CreateV1SendersResponse
-    from .create_v1senders_response_data import CreateV1SendersResponseData
-    from .create_v1senders_response_data_addresses_item import CreateV1SendersResponseDataAddressesItem
-    from .create_v1senders_response_data_business_type import CreateV1SendersResponseDataBusinessType
-    from .create_v1senders_response_data_documents_item import CreateV1SendersResponseDataDocumentsItem
-    from .create_v1senders_response_data_documents_item_type import CreateV1SendersResponseDataDocumentsItemType
-    from .create_v1senders_response_data_gender import CreateV1SendersResponseDataGender
-    from .create_v1senders_response_data_identity import CreateV1SendersResponseDataIdentity
-    from .create_v1senders_response_data_identity_document_type import CreateV1SendersResponseDataIdentityDocumentType
-    from .create_v1senders_response_data_kyb import CreateV1SendersResponseDataKyb
-    from .create_v1senders_response_data_kyb_status import CreateV1SendersResponseDataKybStatus
-    from .create_v1senders_response_data_risk_score import CreateV1SendersResponseDataRiskScore
-    from .create_v1senders_response_data_status import CreateV1SendersResponseDataStatus
-    from .create_v1senders_response_data_tos import CreateV1SendersResponseDataTos
-    from .create_v1senders_response_data_tos_link import CreateV1SendersResponseDataTosLink
-    from .create_v1senders_response_data_tos_status import CreateV1SendersResponseDataTosStatus
-    from .create_v1senders_response_data_type import CreateV1SendersResponseDataType
-    from .create_v2senders_request import CreateV2SendersRequest
-    from .create_v2senders_response import CreateV2SendersResponse
-    from .create_v2senders_response_data import CreateV2SendersResponseData
-    from .create_v2senders_response_data_addresses_item import CreateV2SendersResponseDataAddressesItem
-    from .create_v2senders_response_data_business_type import CreateV2SendersResponseDataBusinessType
-    from .create_v2senders_response_data_documents_item import CreateV2SendersResponseDataDocumentsItem
-    from .create_v2senders_response_data_documents_item_type import CreateV2SendersResponseDataDocumentsItemType
-    from .create_v2senders_response_data_gender import CreateV2SendersResponseDataGender
-    from .create_v2senders_response_data_identity import CreateV2SendersResponseDataIdentity
-    from .create_v2senders_response_data_identity_document_type import CreateV2SendersResponseDataIdentityDocumentType
-    from .create_v2senders_response_data_kyb import CreateV2SendersResponseDataKyb
-    from .create_v2senders_response_data_kyb_status import CreateV2SendersResponseDataKybStatus
-    from .create_v2senders_response_data_risk_score import CreateV2SendersResponseDataRiskScore
-    from .create_v2senders_response_data_status import CreateV2SendersResponseDataStatus
-    from .create_v2senders_response_data_tos import CreateV2SendersResponseDataTos
-    from .create_v2senders_response_data_tos_link import CreateV2SendersResponseDataTosLink
-    from .create_v2senders_response_data_tos_status import CreateV2SendersResponseDataTosStatus
-    from .create_v2senders_response_data_type import CreateV2SendersResponseDataType
+    from .create_senders_request import CreateSendersRequest
+    from .create_senders_response import CreateSendersResponse
+    from .create_senders_response_data import CreateSendersResponseData
+    from .create_senders_response_data_addresses_item import CreateSendersResponseDataAddressesItem
+    from .create_senders_response_data_business_type import CreateSendersResponseDataBusinessType
+    from .create_senders_response_data_documents_item import CreateSendersResponseDataDocumentsItem
+    from .create_senders_response_data_documents_item_type import CreateSendersResponseDataDocumentsItemType
+    from .create_senders_response_data_gender import CreateSendersResponseDataGender
+    from .create_senders_response_data_identity import CreateSendersResponseDataIdentity
+    from .create_senders_response_data_identity_document_type import CreateSendersResponseDataIdentityDocumentType
+    from .create_senders_response_data_kyb import CreateSendersResponseDataKyb
+    from .create_senders_response_data_kyb_status import CreateSendersResponseDataKybStatus
+    from .create_senders_response_data_risk_score import CreateSendersResponseDataRiskScore
+    from .create_senders_response_data_status import CreateSendersResponseDataStatus
+    from .create_senders_response_data_tos import CreateSendersResponseDataTos
+    from .create_senders_response_data_tos_link import CreateSendersResponseDataTosLink
+    from .create_senders_response_data_tos_status import CreateSendersResponseDataTosStatus
+    from .create_senders_response_data_type import CreateSendersResponseDataType
     from .delete_senders_response import DeleteSendersResponse
-    from .generate_ledger_accounts_senders_response import GenerateLedgerAccountsSendersResponse
-    from .generate_ledger_accounts_senders_response_data import GenerateLedgerAccountsSendersResponseData
-    from .generate_ledger_accounts_senders_response_data_account import GenerateLedgerAccountsSendersResponseDataAccount
-    from .generate_ledger_accounts_senders_response_data_virtual_accounts_item import (
-        GenerateLedgerAccountsSendersResponseDataVirtualAccountsItem,
-    )
     from .get_balances_senders_response import GetBalancesSendersResponse
     from .get_balances_senders_response_data_item import GetBalancesSendersResponseDataItem
     from .get_senders_response import GetSendersResponse
@@ -158,49 +130,25 @@ if typing.TYPE_CHECKING:
     from .update_senders_response_data_type import UpdateSendersResponseDataType
     from .verify_senders_response import VerifySendersResponse
 _dynamic_imports: typing.Dict[str, str] = {
-    "CreateV1SendersRequest": ".create_v1senders_request",
-    "CreateV1SendersRequest_Business": ".create_v1senders_request",
-    "CreateV1SendersRequest_Individual": ".create_v1senders_request",
-    "CreateV1SendersResponse": ".create_v1senders_response",
-    "CreateV1SendersResponseData": ".create_v1senders_response_data",
-    "CreateV1SendersResponseDataAddressesItem": ".create_v1senders_response_data_addresses_item",
-    "CreateV1SendersResponseDataBusinessType": ".create_v1senders_response_data_business_type",
-    "CreateV1SendersResponseDataDocumentsItem": ".create_v1senders_response_data_documents_item",
-    "CreateV1SendersResponseDataDocumentsItemType": ".create_v1senders_response_data_documents_item_type",
-    "CreateV1SendersResponseDataGender": ".create_v1senders_response_data_gender",
-    "CreateV1SendersResponseDataIdentity": ".create_v1senders_response_data_identity",
-    "CreateV1SendersResponseDataIdentityDocumentType": ".create_v1senders_response_data_identity_document_type",
-    "CreateV1SendersResponseDataKyb": ".create_v1senders_response_data_kyb",
-    "CreateV1SendersResponseDataKybStatus": ".create_v1senders_response_data_kyb_status",
-    "CreateV1SendersResponseDataRiskScore": ".create_v1senders_response_data_risk_score",
-    "CreateV1SendersResponseDataStatus": ".create_v1senders_response_data_status",
-    "CreateV1SendersResponseDataTos": ".create_v1senders_response_data_tos",
-    "CreateV1SendersResponseDataTosLink": ".create_v1senders_response_data_tos_link",
-    "CreateV1SendersResponseDataTosStatus": ".create_v1senders_response_data_tos_status",
-    "CreateV1SendersResponseDataType": ".create_v1senders_response_data_type",
-    "CreateV2SendersRequest": ".create_v2senders_request",
-    "CreateV2SendersResponse": ".create_v2senders_response",
-    "CreateV2SendersResponseData": ".create_v2senders_response_data",
-    "CreateV2SendersResponseDataAddressesItem": ".create_v2senders_response_data_addresses_item",
-    "CreateV2SendersResponseDataBusinessType": ".create_v2senders_response_data_business_type",
-    "CreateV2SendersResponseDataDocumentsItem": ".create_v2senders_response_data_documents_item",
-    "CreateV2SendersResponseDataDocumentsItemType": ".create_v2senders_response_data_documents_item_type",
-    "CreateV2SendersResponseDataGender": ".create_v2senders_response_data_gender",
-    "CreateV2SendersResponseDataIdentity": ".create_v2senders_response_data_identity",
-    "CreateV2SendersResponseDataIdentityDocumentType": ".create_v2senders_response_data_identity_document_type",
-    "CreateV2SendersResponseDataKyb": ".create_v2senders_response_data_kyb",
-    "CreateV2SendersResponseDataKybStatus": ".create_v2senders_response_data_kyb_status",
-    "CreateV2SendersResponseDataRiskScore": ".create_v2senders_response_data_risk_score",
-    "CreateV2SendersResponseDataStatus": ".create_v2senders_response_data_status",
-    "CreateV2SendersResponseDataTos": ".create_v2senders_response_data_tos",
-    "CreateV2SendersResponseDataTosLink": ".create_v2senders_response_data_tos_link",
-    "CreateV2SendersResponseDataTosStatus": ".create_v2senders_response_data_tos_status",
-    "CreateV2SendersResponseDataType": ".create_v2senders_response_data_type",
+    "CreateSendersRequest": ".create_senders_request",
+    "CreateSendersResponse": ".create_senders_response",
+    "CreateSendersResponseData": ".create_senders_response_data",
+    "CreateSendersResponseDataAddressesItem": ".create_senders_response_data_addresses_item",
+    "CreateSendersResponseDataBusinessType": ".create_senders_response_data_business_type",
+    "CreateSendersResponseDataDocumentsItem": ".create_senders_response_data_documents_item",
+    "CreateSendersResponseDataDocumentsItemType": ".create_senders_response_data_documents_item_type",
+    "CreateSendersResponseDataGender": ".create_senders_response_data_gender",
+    "CreateSendersResponseDataIdentity": ".create_senders_response_data_identity",
+    "CreateSendersResponseDataIdentityDocumentType": ".create_senders_response_data_identity_document_type",
+    "CreateSendersResponseDataKyb": ".create_senders_response_data_kyb",
+    "CreateSendersResponseDataKybStatus": ".create_senders_response_data_kyb_status",
+    "CreateSendersResponseDataRiskScore": ".create_senders_response_data_risk_score",
+    "CreateSendersResponseDataStatus": ".create_senders_response_data_status",
+    "CreateSendersResponseDataTos": ".create_senders_response_data_tos",
+    "CreateSendersResponseDataTosLink": ".create_senders_response_data_tos_link",
+    "CreateSendersResponseDataTosStatus": ".create_senders_response_data_tos_status",
+    "CreateSendersResponseDataType": ".create_senders_response_data_type",
     "DeleteSendersResponse": ".delete_senders_response",
-    "GenerateLedgerAccountsSendersResponse": ".generate_ledger_accounts_senders_response",
-    "GenerateLedgerAccountsSendersResponseData": ".generate_ledger_accounts_senders_response_data",
-    "GenerateLedgerAccountsSendersResponseDataAccount": ".generate_ledger_accounts_senders_response_data_account",
-    "GenerateLedgerAccountsSendersResponseDataVirtualAccountsItem": ".generate_ledger_accounts_senders_response_data_virtual_accounts_item",
     "GetBalancesSendersResponse": ".get_balances_senders_response",
     "GetBalancesSendersResponseDataItem": ".get_balances_senders_response_data_item",
     "GetSendersResponse": ".get_senders_response",
@@ -310,49 +258,25 @@ def __dir__():
 
 
 __all__ = [
-    "CreateV1SendersRequest",
-    "CreateV1SendersRequest_Business",
-    "CreateV1SendersRequest_Individual",
-    "CreateV1SendersResponse",
-    "CreateV1SendersResponseData",
-    "CreateV1SendersResponseDataAddressesItem",
-    "CreateV1SendersResponseDataBusinessType",
-    "CreateV1SendersResponseDataDocumentsItem",
-    "CreateV1SendersResponseDataDocumentsItemType",
-    "CreateV1SendersResponseDataGender",
-    "CreateV1SendersResponseDataIdentity",
-    "CreateV1SendersResponseDataIdentityDocumentType",
-    "CreateV1SendersResponseDataKyb",
-    "CreateV1SendersResponseDataKybStatus",
-    "CreateV1SendersResponseDataRiskScore",
-    "CreateV1SendersResponseDataStatus",
-    "CreateV1SendersResponseDataTos",
-    "CreateV1SendersResponseDataTosLink",
-    "CreateV1SendersResponseDataTosStatus",
-    "CreateV1SendersResponseDataType",
-    "CreateV2SendersRequest",
-    "CreateV2SendersResponse",
-    "CreateV2SendersResponseData",
-    "CreateV2SendersResponseDataAddressesItem",
-    "CreateV2SendersResponseDataBusinessType",
-    "CreateV2SendersResponseDataDocumentsItem",
-    "CreateV2SendersResponseDataDocumentsItemType",
-    "CreateV2SendersResponseDataGender",
-    "CreateV2SendersResponseDataIdentity",
-    "CreateV2SendersResponseDataIdentityDocumentType",
-    "CreateV2SendersResponseDataKyb",
-    "CreateV2SendersResponseDataKybStatus",
-    "CreateV2SendersResponseDataRiskScore",
-    "CreateV2SendersResponseDataStatus",
-    "CreateV2SendersResponseDataTos",
-    "CreateV2SendersResponseDataTosLink",
-    "CreateV2SendersResponseDataTosStatus",
-    "CreateV2SendersResponseDataType",
+    "CreateSendersRequest",
+    "CreateSendersResponse",
+    "CreateSendersResponseData",
+    "CreateSendersResponseDataAddressesItem",
+    "CreateSendersResponseDataBusinessType",
+    "CreateSendersResponseDataDocumentsItem",
+    "CreateSendersResponseDataDocumentsItemType",
+    "CreateSendersResponseDataGender",
+    "CreateSendersResponseDataIdentity",
+    "CreateSendersResponseDataIdentityDocumentType",
+    "CreateSendersResponseDataKyb",
+    "CreateSendersResponseDataKybStatus",
+    "CreateSendersResponseDataRiskScore",
+    "CreateSendersResponseDataStatus",
+    "CreateSendersResponseDataTos",
+    "CreateSendersResponseDataTosLink",
+    "CreateSendersResponseDataTosStatus",
+    "CreateSendersResponseDataType",
     "DeleteSendersResponse",
-    "GenerateLedgerAccountsSendersResponse",
-    "GenerateLedgerAccountsSendersResponseData",
-    "GenerateLedgerAccountsSendersResponseDataAccount",
-    "GenerateLedgerAccountsSendersResponseDataVirtualAccountsItem",
     "GetBalancesSendersResponse",
     "GetBalancesSendersResponseDataItem",
     "GetSendersResponse",

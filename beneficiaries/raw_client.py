@@ -21,42 +21,25 @@ from ..types.beneficiary_relationship import BeneficiaryRelationship
 from ..types.error_response import ErrorResponse
 from ..types.purpose_of_payment import PurposeOfPayment
 from ..types.purpose_of_payment_document_request import PurposeOfPaymentDocumentRequest
-from .types.create_v1beneficiaries_request import CreateV1BeneficiariesRequest
-from .types.create_v1beneficiaries_response import CreateV1BeneficiariesResponse
-from .types.create_v2beneficiaries_request_address import CreateV2BeneficiariesRequestAddress
-from .types.create_v2beneficiaries_request_business_type import CreateV2BeneficiariesRequestBusinessType
-from .types.create_v2beneficiaries_request_identity import CreateV2BeneficiariesRequestIdentity
-from .types.create_v2beneficiaries_request_payment_methods_item import CreateV2BeneficiariesRequestPaymentMethodsItem
-from .types.create_v2beneficiaries_request_type import CreateV2BeneficiariesRequestType
-from .types.create_v2beneficiaries_response import CreateV2BeneficiariesResponse
-from .types.create_v3beneficiaries_request_address import CreateV3BeneficiariesRequestAddress
-from .types.create_v3beneficiaries_request_business_type import CreateV3BeneficiariesRequestBusinessType
-from .types.create_v3beneficiaries_request_identity import CreateV3BeneficiariesRequestIdentity
-from .types.create_v3beneficiaries_request_payment_methods_item import CreateV3BeneficiariesRequestPaymentMethodsItem
-from .types.create_v3beneficiaries_request_type import CreateV3BeneficiariesRequestType
-from .types.create_v3beneficiaries_response import CreateV3BeneficiariesResponse
+from .types.create_beneficiaries_request_address import CreateBeneficiariesRequestAddress
+from .types.create_beneficiaries_request_business_type import CreateBeneficiariesRequestBusinessType
+from .types.create_beneficiaries_request_identity import CreateBeneficiariesRequestIdentity
+from .types.create_beneficiaries_request_payment_methods_item import CreateBeneficiariesRequestPaymentMethodsItem
+from .types.create_beneficiaries_request_type import CreateBeneficiariesRequestType
+from .types.create_beneficiaries_response import CreateBeneficiariesResponse
 from .types.delete_beneficiaries_response import DeleteBeneficiariesResponse
-from .types.get_v1beneficiaries_response import GetV1BeneficiariesResponse
-from .types.get_v2beneficiaries_response import GetV2BeneficiariesResponse
-from .types.list_v1beneficiaries_request_sort_order import ListV1BeneficiariesRequestSortOrder
-from .types.list_v1beneficiaries_request_status import ListV1BeneficiariesRequestStatus
-from .types.list_v1beneficiaries_response import ListV1BeneficiariesResponse
-from .types.list_v2beneficiaries_request_sort_by import ListV2BeneficiariesRequestSortBy
-from .types.list_v2beneficiaries_request_sort_order import ListV2BeneficiariesRequestSortOrder
-from .types.list_v2beneficiaries_response import ListV2BeneficiariesResponse
+from .types.get_beneficiaries_response import GetBeneficiariesResponse
+from .types.list_beneficiaries_request_sort_by import ListBeneficiariesRequestSortBy
+from .types.list_beneficiaries_request_sort_order import ListBeneficiariesRequestSortOrder
+from .types.list_beneficiaries_response import ListBeneficiariesResponse
 from .types.lookup_bank_beneficiaries_response import LookupBankBeneficiariesResponse
 from .types.simulate_verification_result_beneficiaries_request_result import (
     SimulateVerificationResultBeneficiariesRequestResult,
 )
 from .types.simulate_verification_result_beneficiaries_response import SimulateVerificationResultBeneficiariesResponse
-from .types.update_v1beneficiaries_request_body import UpdateV1BeneficiariesRequestBody
-from .types.update_v1beneficiaries_response import UpdateV1BeneficiariesResponse
-from .types.update_v2beneficiaries_request_address import UpdateV2BeneficiariesRequestAddress
-from .types.update_v2beneficiaries_request_type import UpdateV2BeneficiariesRequestType
-from .types.update_v2beneficiaries_response import UpdateV2BeneficiariesResponse
-from .types.update_verification_beneficiaries_request_status import UpdateVerificationBeneficiariesRequestStatus
-from .types.update_verification_beneficiaries_response import UpdateVerificationBeneficiariesResponse
-from .types.validate_beneficiaries_response import ValidateBeneficiariesResponse
+from .types.update_beneficiaries_request_address import UpdateBeneficiariesRequestAddress
+from .types.update_beneficiaries_request_type import UpdateBeneficiariesRequestType
+from .types.update_beneficiaries_response import UpdateBeneficiariesResponse
 from .types.verify_beneficiaries_response import VerifyBeneficiariesResponse
 from pydantic import ValidationError
 
@@ -67,356 +50,6 @@ OMIT = typing.cast(typing.Any, ...)
 class RawBeneficiariesClient:
     def __init__(self, *, client_wrapper: SyncClientWrapper):
         self._client_wrapper = client_wrapper
-
-    def list_v1(
-        self,
-        *,
-        id: typing.Optional[str] = None,
-        merchant_id: typing.Optional[str] = None,
-        status: typing.Optional[ListV1BeneficiariesRequestStatus] = None,
-        page: typing.Optional[int] = None,
-        page_size: typing.Optional[int] = None,
-        sort_by: typing.Optional[str] = None,
-        sort_order: typing.Optional[ListV1BeneficiariesRequestSortOrder] = None,
-        request_options: typing.Optional[RequestOptions] = None,
-    ) -> HttpResponse[ListV1BeneficiariesResponse]:
-        """
-        Retrieves a list of all beneficiaries associated with a merchant.
-
-        Parameters
-        ----------
-        id : typing.Optional[str]
-            Filter beneficiaries by ID
-
-        merchant_id : typing.Optional[str]
-            Identifier of the associated merchant
-
-        status : typing.Optional[ListV1BeneficiariesRequestStatus]
-            Filter beneficiaries by verification status
-
-        page : typing.Optional[int]
-            Page number for pagination
-
-        page_size : typing.Optional[int]
-            Number of items per page
-
-        sort_by : typing.Optional[str]
-            Field to sort the beneficiaries by
-
-        sort_order : typing.Optional[ListV1BeneficiariesRequestSortOrder]
-            Sort order (ascending or descending)
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        HttpResponse[ListV1BeneficiariesResponse]
-            Beneficiary list retrieved successfully
-        """
-        _response = self._client_wrapper.httpx_client.request(
-            "v1/beneficiaries",
-            method="GET",
-            params={
-                "id": id,
-                "merchantId": merchant_id,
-                "status": status,
-                "page": page,
-                "pageSize": page_size,
-                "sortBy": sort_by,
-                "sortOrder": sort_order,
-            },
-            request_options=request_options,
-        )
-        try:
-            if 200 <= _response.status_code < 300:
-                _data = typing.cast(
-                    ListV1BeneficiariesResponse,
-                    parse_obj_as(
-                        type_=ListV1BeneficiariesResponse,  # type: ignore
-                        object_=_response.json(),
-                    ),
-                )
-                return HttpResponse(response=_response, data=_data)
-            if _response.status_code == 401:
-                raise UnauthorizedError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Any,
-                        parse_obj_as(
-                            type_=typing.Any,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 403:
-                raise ForbiddenError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Any,
-                        parse_obj_as(
-                            type_=typing.Any,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 404:
-                raise NotFoundError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Any,
-                        parse_obj_as(
-                            type_=typing.Any,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 500:
-                raise InternalServerError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        ErrorResponse,
-                        parse_obj_as(
-                            type_=ErrorResponse,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            _response_json = _response.json()
-        except JSONDecodeError:
-            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
-        except ValidationError as e:
-            raise ParsingError(
-                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
-            )
-        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
-
-    def create_v1(
-        self, *, request: CreateV1BeneficiariesRequest, request_options: typing.Optional[RequestOptions] = None
-    ) -> HttpResponse[CreateV1BeneficiariesResponse]:
-        """
-        ## Overview
-        * Creates a new beneficiary.
-        * Supports both individual and business beneficiaries
-        * Requirements vary by country and ownerType
-
-        ## Validation Rules
-        * **Important**: Always check validation rules before creating a beneficiary
-        * Validation rules endpoint: `GET /v1/validation-rules/beneficiaries`
-        * Required query parameters:
-          * `ownerType=[individual|business]`
-          * `country=[ISO 3166-1 alpha-2 code]`
-        * Example request:
-        ```
-        GET /v1/validation-rules/beneficiaries?ownerType=individual&country=PH
-        ```
-
-        ## Bank Information
-        * For US beneficiaries with paymentType=bank_account:
-          * Routing number is required
-          * Bank ID is not needed
-        * For non-US beneficiaries with paymentType=bank_account:
-          * Bank ID is required
-          * Fetch bank list using: `GET /v1/beneficiaries/banks`
-          * Required query parameter: `countryCode=[ISO 3166-1 alpha-2 code]`
-        * Example request:
-        ```
-        GET /v1/beneficiaries/banks?countryCode=PH
-        ```
-        * Response includes bank ID and name:
-        ```json
-        {
-          "data": [
-            {
-              "id": "123",
-              "name": "Sample Bank"
-            }
-          ]
-        }
-        ```
-        * Use the `bankId` in the paymentInfo object when creating non-US beneficiaries with bank_account payment type
-
-        Parameters
-        ----------
-        request : CreateV1BeneficiariesRequest
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        HttpResponse[CreateV1BeneficiariesResponse]
-            Beneficiary created successfully
-        """
-        _response = self._client_wrapper.httpx_client.request(
-            "v1/beneficiaries",
-            method="POST",
-            json=convert_and_respect_annotation_metadata(
-                object_=request, annotation=CreateV1BeneficiariesRequest, direction="write"
-            ),
-            request_options=request_options,
-            omit=OMIT,
-        )
-        try:
-            if 200 <= _response.status_code < 300:
-                _data = typing.cast(
-                    CreateV1BeneficiariesResponse,
-                    parse_obj_as(
-                        type_=CreateV1BeneficiariesResponse,  # type: ignore
-                        object_=_response.json(),
-                    ),
-                )
-                return HttpResponse(response=_response, data=_data)
-            if _response.status_code == 400:
-                raise BadRequestError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Any,
-                        parse_obj_as(
-                            type_=typing.Any,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 401:
-                raise UnauthorizedError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Any,
-                        parse_obj_as(
-                            type_=typing.Any,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 403:
-                raise ForbiddenError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Any,
-                        parse_obj_as(
-                            type_=typing.Any,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 404:
-                raise NotFoundError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Any,
-                        parse_obj_as(
-                            type_=typing.Any,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 500:
-                raise InternalServerError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        ErrorResponse,
-                        parse_obj_as(
-                            type_=ErrorResponse,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            _response_json = _response.json()
-        except JSONDecodeError:
-            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
-        except ValidationError as e:
-            raise ParsingError(
-                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
-            )
-        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
-
-    def get_v1(
-        self, beneficiary_id: str, *, request_options: typing.Optional[RequestOptions] = None
-    ) -> HttpResponse[GetV1BeneficiariesResponse]:
-        """
-        Retrieves detailed information about a specific beneficiary account.
-
-        Parameters
-        ----------
-        beneficiary_id : str
-            Unique identifier for the beneficiary.
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        HttpResponse[GetV1BeneficiariesResponse]
-            Beneficiary retrieved successfully
-        """
-        _response = self._client_wrapper.httpx_client.request(
-            f"v1/beneficiaries/{encode_path_param(beneficiary_id)}",
-            method="GET",
-            request_options=request_options,
-        )
-        try:
-            if 200 <= _response.status_code < 300:
-                _data = typing.cast(
-                    GetV1BeneficiariesResponse,
-                    parse_obj_as(
-                        type_=GetV1BeneficiariesResponse,  # type: ignore
-                        object_=_response.json(),
-                    ),
-                )
-                return HttpResponse(response=_response, data=_data)
-            if _response.status_code == 401:
-                raise UnauthorizedError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Any,
-                        parse_obj_as(
-                            type_=typing.Any,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 403:
-                raise ForbiddenError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Any,
-                        parse_obj_as(
-                            type_=typing.Any,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 404:
-                raise NotFoundError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Any,
-                        parse_obj_as(
-                            type_=typing.Any,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 500:
-                raise InternalServerError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        ErrorResponse,
-                        parse_obj_as(
-                            type_=ErrorResponse,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            _response_json = _response.json()
-        except JSONDecodeError:
-            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
-        except ValidationError as e:
-            raise ParsingError(
-                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
-            )
-        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
     def delete(
         self, beneficiary_id: str, *, request_options: typing.Optional[RequestOptions] = None
@@ -452,128 +85,6 @@ class RawBeneficiariesClient:
                     ),
                 )
                 return HttpResponse(response=_response, data=_data)
-            if _response.status_code == 401:
-                raise UnauthorizedError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Any,
-                        parse_obj_as(
-                            type_=typing.Any,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 403:
-                raise ForbiddenError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Any,
-                        parse_obj_as(
-                            type_=typing.Any,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 404:
-                raise NotFoundError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Any,
-                        parse_obj_as(
-                            type_=typing.Any,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 500:
-                raise InternalServerError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        ErrorResponse,
-                        parse_obj_as(
-                            type_=ErrorResponse,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            _response_json = _response.json()
-        except JSONDecodeError:
-            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
-        except ValidationError as e:
-            raise ParsingError(
-                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
-            )
-        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
-
-    def update_v1(
-        self,
-        beneficiary_id: str,
-        *,
-        request: UpdateV1BeneficiariesRequestBody,
-        request_options: typing.Optional[RequestOptions] = None,
-    ) -> HttpResponse[UpdateV1BeneficiariesResponse]:
-        """
-        Updates an existing beneficiary's information. Note that certain fields cannot be modified after initial creation.
-
-        Non-updatable fields:
-        - type (individual/business)
-        - identificationNumber (for business beneficiaries)
-        - taxIdentificationNumber (for business beneficiaries)
-        - bankAccountType
-        - bankAccountNumber
-        - bankCode
-
-        Before updating a beneficiary, always check the validation rules using:
-        GET /v1/validation-rules/beneficiaries?ownerType=[individual|business]&country=[ISO 3166-1 alpha-2 code]
-
-        Parameters
-        ----------
-        beneficiary_id : str
-            Unique identifier for the beneficiary
-
-        request : UpdateV1BeneficiariesRequestBody
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        HttpResponse[UpdateV1BeneficiariesResponse]
-            Beneficiary created successfully
-        """
-        _response = self._client_wrapper.httpx_client.request(
-            f"v1/beneficiaries/{encode_path_param(beneficiary_id)}",
-            method="PATCH",
-            json=convert_and_respect_annotation_metadata(
-                object_=request, annotation=UpdateV1BeneficiariesRequestBody, direction="write"
-            ),
-            headers={
-                "content-type": "application/json",
-            },
-            request_options=request_options,
-            omit=OMIT,
-        )
-        try:
-            if 200 <= _response.status_code < 300:
-                _data = typing.cast(
-                    UpdateV1BeneficiariesResponse,
-                    parse_obj_as(
-                        type_=UpdateV1BeneficiariesResponse,  # type: ignore
-                        object_=_response.json(),
-                    ),
-                )
-                return HttpResponse(response=_response, data=_data)
-            if _response.status_code == 400:
-                raise BadRequestError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Any,
-                        parse_obj_as(
-                            type_=typing.Any,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
             if _response.status_code == 401:
                 raise UnauthorizedError(
                     headers=dict(_response.headers),
@@ -918,15 +429,15 @@ class RawBeneficiariesClient:
             )
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
-    def list_v2(
+    def list(
         self,
         *,
         page: typing.Optional[int] = None,
         page_size: typing.Optional[int] = None,
-        sort_by: typing.Optional[ListV2BeneficiariesRequestSortBy] = None,
-        sort_order: typing.Optional[ListV2BeneficiariesRequestSortOrder] = None,
+        sort_by: typing.Optional[ListBeneficiariesRequestSortBy] = None,
+        sort_order: typing.Optional[ListBeneficiariesRequestSortOrder] = None,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> HttpResponse[ListV2BeneficiariesResponse]:
+    ) -> HttpResponse[ListBeneficiariesResponse]:
         """
         Retrieves a paginated list of beneficiaries using the V2 API. Unlike v1, the v2 API separates payment methods from beneficiary data. Payment methods are available on the detail endpoint.
 
@@ -938,10 +449,10 @@ class RawBeneficiariesClient:
         page_size : typing.Optional[int]
             Number of items per page
 
-        sort_by : typing.Optional[ListV2BeneficiariesRequestSortBy]
+        sort_by : typing.Optional[ListBeneficiariesRequestSortBy]
             Field to sort by
 
-        sort_order : typing.Optional[ListV2BeneficiariesRequestSortOrder]
+        sort_order : typing.Optional[ListBeneficiariesRequestSortOrder]
             Sort order
 
         request_options : typing.Optional[RequestOptions]
@@ -949,7 +460,7 @@ class RawBeneficiariesClient:
 
         Returns
         -------
-        HttpResponse[ListV2BeneficiariesResponse]
+        HttpResponse[ListBeneficiariesResponse]
             List of beneficiaries with payment methods
         """
         _response = self._client_wrapper.httpx_client.request(
@@ -966,9 +477,9 @@ class RawBeneficiariesClient:
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    ListV2BeneficiariesResponse,
+                    ListBeneficiariesResponse,
                     parse_obj_as(
-                        type_=ListV2BeneficiariesResponse,  # type: ignore
+                        type_=ListBeneficiariesResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -1015,198 +526,9 @@ class RawBeneficiariesClient:
             )
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
-    def create_v2(
-        self,
-        *,
-        type: CreateV2BeneficiariesRequestType,
-        address: CreateV2BeneficiariesRequestAddress,
-        payment_methods: typing.Sequence[CreateV2BeneficiariesRequestPaymentMethodsItem],
-        first_name: typing.Optional[str] = OMIT,
-        last_name: typing.Optional[str] = OMIT,
-        middle_name: typing.Optional[str] = OMIT,
-        full_name: typing.Optional[str] = OMIT,
-        business_registration_number: typing.Optional[str] = OMIT,
-        business_type: typing.Optional[CreateV2BeneficiariesRequestBusinessType] = OMIT,
-        email: typing.Optional[str] = OMIT,
-        phone: typing.Optional[str] = OMIT,
-        birth_date: typing.Optional[dt.date] = OMIT,
-        merchant_id: typing.Optional[str] = OMIT,
-        identity: typing.Optional[CreateV2BeneficiariesRequestIdentity] = OMIT,
-        metadata: typing.Optional[typing.Dict[str, typing.Any]] = OMIT,
-        beneficiary_relationship: typing.Optional[BeneficiaryRelationship] = OMIT,
-        purpose_of_payment: typing.Optional[PurposeOfPayment] = OMIT,
-        purpose_of_payment_document: typing.Optional[PurposeOfPaymentDocumentRequest] = OMIT,
-        request_options: typing.Optional[RequestOptions] = None,
-    ) -> HttpResponse[CreateV2BeneficiariesResponse]:
-        """
-        Create a new beneficiary with payment methods in a single request. This v2 endpoint allows you to create a beneficiary and attach payment methods simultaneously.
-
-        Parameters
-        ----------
-        type : CreateV2BeneficiariesRequestType
-            Type of beneficiary
-
-        address : CreateV2BeneficiariesRequestAddress
-            Beneficiary address
-
-        payment_methods : typing.Sequence[CreateV2BeneficiariesRequestPaymentMethodsItem]
-            At least one payment method must be provided
-
-        first_name : typing.Optional[str]
-            First name (required for individual type)
-
-        last_name : typing.Optional[str]
-            Last name (required for individual type)
-
-        middle_name : typing.Optional[str]
-            Middle name (optional, individual type only)
-
-        full_name : typing.Optional[str]
-            Full business name (required for business type)
-
-        business_registration_number : typing.Optional[str]
-            Business registration number (required for business type)
-
-        business_type : typing.Optional[CreateV2BeneficiariesRequestBusinessType]
-            Type of business (optional)
-
-        email : typing.Optional[str]
-            Beneficiary email
-
-        phone : typing.Optional[str]
-            Beneficiary phone number
-
-        birth_date : typing.Optional[dt.date]
-            Date of birth (YYYY-MM-DD, individual type)
-
-        merchant_id : typing.Optional[str]
-            Merchant ID (optional, auto-assigned from API key)
-
-        identity : typing.Optional[CreateV2BeneficiariesRequestIdentity]
-            Identity document details
-
-        metadata : typing.Optional[typing.Dict[str, typing.Any]]
-            Custom metadata
-
-        beneficiary_relationship : typing.Optional[BeneficiaryRelationship]
-
-        purpose_of_payment : typing.Optional[PurposeOfPayment]
-
-        purpose_of_payment_document : typing.Optional[PurposeOfPaymentDocumentRequest]
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        HttpResponse[CreateV2BeneficiariesResponse]
-            Beneficiary created successfully
-        """
-        _response = self._client_wrapper.httpx_client.request(
-            "v2/beneficiaries",
-            method="POST",
-            json={
-                "type": type,
-                "firstName": first_name,
-                "lastName": last_name,
-                "middleName": middle_name,
-                "fullName": full_name,
-                "businessRegistrationNumber": business_registration_number,
-                "businessType": business_type,
-                "email": email,
-                "phone": phone,
-                "birthDate": birth_date,
-                "merchantId": merchant_id,
-                "address": convert_and_respect_annotation_metadata(
-                    object_=address, annotation=CreateV2BeneficiariesRequestAddress, direction="write"
-                ),
-                "identity": convert_and_respect_annotation_metadata(
-                    object_=identity, annotation=CreateV2BeneficiariesRequestIdentity, direction="write"
-                ),
-                "paymentMethods": convert_and_respect_annotation_metadata(
-                    object_=payment_methods,
-                    annotation=typing.Sequence[CreateV2BeneficiariesRequestPaymentMethodsItem],
-                    direction="write",
-                ),
-                "metadata": metadata,
-                "beneficiaryRelationship": beneficiary_relationship,
-                "purposeOfPayment": purpose_of_payment,
-                "purposeOfPaymentDocument": convert_and_respect_annotation_metadata(
-                    object_=purpose_of_payment_document, annotation=PurposeOfPaymentDocumentRequest, direction="write"
-                ),
-            },
-            headers={
-                "content-type": "application/json",
-            },
-            request_options=request_options,
-            omit=OMIT,
-        )
-        try:
-            if 200 <= _response.status_code < 300:
-                _data = typing.cast(
-                    CreateV2BeneficiariesResponse,
-                    parse_obj_as(
-                        type_=CreateV2BeneficiariesResponse,  # type: ignore
-                        object_=_response.json(),
-                    ),
-                )
-                return HttpResponse(response=_response, data=_data)
-            if _response.status_code == 400:
-                raise BadRequestError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Any,
-                        parse_obj_as(
-                            type_=typing.Any,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 401:
-                raise UnauthorizedError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Any,
-                        parse_obj_as(
-                            type_=typing.Any,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 403:
-                raise ForbiddenError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Any,
-                        parse_obj_as(
-                            type_=typing.Any,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 500:
-                raise InternalServerError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        ErrorResponse,
-                        parse_obj_as(
-                            type_=ErrorResponse,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            _response_json = _response.json()
-        except JSONDecodeError:
-            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
-        except ValidationError as e:
-            raise ParsingError(
-                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
-            )
-        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
-
-    def get_v2(
+    def get(
         self, id: str, *, request_options: typing.Optional[RequestOptions] = None
-    ) -> HttpResponse[GetV2BeneficiariesResponse]:
+    ) -> HttpResponse[GetBeneficiariesResponse]:
         """
         Retrieve a single beneficiary by ID with their associated payment methods.
 
@@ -1220,7 +542,7 @@ class RawBeneficiariesClient:
 
         Returns
         -------
-        HttpResponse[GetV2BeneficiariesResponse]
+        HttpResponse[GetBeneficiariesResponse]
             Beneficiary details with payment methods
         """
         _response = self._client_wrapper.httpx_client.request(
@@ -1231,9 +553,9 @@ class RawBeneficiariesClient:
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    GetV2BeneficiariesResponse,
+                    GetBeneficiariesResponse,
                     parse_obj_as(
-                        type_=GetV2BeneficiariesResponse,  # type: ignore
+                        type_=GetBeneficiariesResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -1291,11 +613,11 @@ class RawBeneficiariesClient:
             )
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
-    def update_v2(
+    def update(
         self,
         id: str,
         *,
-        type: typing.Optional[UpdateV2BeneficiariesRequestType] = OMIT,
+        type: typing.Optional[UpdateBeneficiariesRequestType] = OMIT,
         first_name: typing.Optional[str] = OMIT,
         last_name: typing.Optional[str] = OMIT,
         middle_name: typing.Optional[str] = OMIT,
@@ -1303,13 +625,13 @@ class RawBeneficiariesClient:
         email: typing.Optional[str] = OMIT,
         phone: typing.Optional[str] = OMIT,
         birth_date: typing.Optional[dt.date] = OMIT,
-        address: typing.Optional[UpdateV2BeneficiariesRequestAddress] = OMIT,
+        address: typing.Optional[UpdateBeneficiariesRequestAddress] = OMIT,
         metadata: typing.Optional[typing.Dict[str, typing.Any]] = OMIT,
         beneficiary_relationship: typing.Optional[BeneficiaryRelationship] = OMIT,
         purpose_of_payment: typing.Optional[PurposeOfPayment] = OMIT,
         purpose_of_payment_document: typing.Optional[PurposeOfPaymentDocumentRequest] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> HttpResponse[UpdateV2BeneficiariesResponse]:
+    ) -> HttpResponse[UpdateBeneficiariesResponse]:
         """
         Partially update a beneficiary. Only the provided fields will be updated.
 
@@ -1318,7 +640,7 @@ class RawBeneficiariesClient:
         id : str
             Beneficiary ID
 
-        type : typing.Optional[UpdateV2BeneficiariesRequestType]
+        type : typing.Optional[UpdateBeneficiariesRequestType]
 
         first_name : typing.Optional[str]
 
@@ -1334,7 +656,7 @@ class RawBeneficiariesClient:
 
         birth_date : typing.Optional[dt.date]
 
-        address : typing.Optional[UpdateV2BeneficiariesRequestAddress]
+        address : typing.Optional[UpdateBeneficiariesRequestAddress]
 
         metadata : typing.Optional[typing.Dict[str, typing.Any]]
 
@@ -1349,7 +671,7 @@ class RawBeneficiariesClient:
 
         Returns
         -------
-        HttpResponse[UpdateV2BeneficiariesResponse]
+        HttpResponse[UpdateBeneficiariesResponse]
             Beneficiary updated successfully
         """
         _response = self._client_wrapper.httpx_client.request(
@@ -1365,7 +687,7 @@ class RawBeneficiariesClient:
                 "phone": phone,
                 "birthDate": birth_date,
                 "address": convert_and_respect_annotation_metadata(
-                    object_=address, annotation=UpdateV2BeneficiariesRequestAddress, direction="write"
+                    object_=address, annotation=UpdateBeneficiariesRequestAddress, direction="write"
                 ),
                 "metadata": metadata,
                 "beneficiaryRelationship": beneficiary_relationship,
@@ -1383,9 +705,9 @@ class RawBeneficiariesClient:
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    UpdateV2BeneficiariesResponse,
+                    UpdateBeneficiariesResponse,
                     parse_obj_as(
-                        type_=UpdateV2BeneficiariesResponse,  # type: ignore
+                        type_=UpdateBeneficiariesResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -1454,232 +776,12 @@ class RawBeneficiariesClient:
             )
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
-    def validate(
-        self, beneficiary_id: str, *, request_options: typing.Optional[RequestOptions] = None
-    ) -> HttpResponse[ValidateBeneficiariesResponse]:
-        """
-        Validates a beneficiary's information, checking that all required fields are present and correct for the beneficiary's country and payment method configuration.
-
-        Parameters
-        ----------
-        beneficiary_id : str
-            Unique identifier of the beneficiary
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        HttpResponse[ValidateBeneficiariesResponse]
-            Beneficiary validated successfully
-        """
-        _response = self._client_wrapper.httpx_client.request(
-            f"v1/beneficiaries/{encode_path_param(beneficiary_id)}/validate",
-            method="POST",
-            request_options=request_options,
-        )
-        try:
-            if 200 <= _response.status_code < 300:
-                _data = typing.cast(
-                    ValidateBeneficiariesResponse,
-                    parse_obj_as(
-                        type_=ValidateBeneficiariesResponse,  # type: ignore
-                        object_=_response.json(),
-                    ),
-                )
-                return HttpResponse(response=_response, data=_data)
-            if _response.status_code == 400:
-                raise BadRequestError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Any,
-                        parse_obj_as(
-                            type_=typing.Any,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 401:
-                raise UnauthorizedError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Any,
-                        parse_obj_as(
-                            type_=typing.Any,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 403:
-                raise ForbiddenError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Any,
-                        parse_obj_as(
-                            type_=typing.Any,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 404:
-                raise NotFoundError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Any,
-                        parse_obj_as(
-                            type_=typing.Any,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 500:
-                raise InternalServerError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        ErrorResponse,
-                        parse_obj_as(
-                            type_=ErrorResponse,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            _response_json = _response.json()
-        except JSONDecodeError:
-            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
-        except ValidationError as e:
-            raise ParsingError(
-                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
-            )
-        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
-
-    def update_verification(
-        self,
-        beneficiary_id: str,
-        *,
-        status: UpdateVerificationBeneficiariesRequestStatus,
-        external_ref_id: typing.Optional[str] = OMIT,
-        verification_result: typing.Optional[typing.Dict[str, typing.Any]] = OMIT,
-        request_options: typing.Optional[RequestOptions] = None,
-    ) -> HttpResponse[UpdateVerificationBeneficiariesResponse]:
-        """
-        Updates the verification status of a beneficiary. Used to mark a beneficiary as verified, pending, or declined after completing identity checks.
-
-        Parameters
-        ----------
-        beneficiary_id : str
-            Unique identifier of the beneficiary
-
-        status : UpdateVerificationBeneficiariesRequestStatus
-            New verification status for the beneficiary
-
-        external_ref_id : typing.Optional[str]
-            External reference ID for the verification
-
-        verification_result : typing.Optional[typing.Dict[str, typing.Any]]
-            Arbitrary JSON object containing verification result details
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        HttpResponse[UpdateVerificationBeneficiariesResponse]
-            Beneficiary verification updated successfully
-        """
-        _response = self._client_wrapper.httpx_client.request(
-            f"v1/beneficiaries/{encode_path_param(beneficiary_id)}/verification",
-            method="PATCH",
-            json={
-                "status": status,
-                "externalRefId": external_ref_id,
-                "verificationResult": verification_result,
-            },
-            headers={
-                "content-type": "application/json",
-            },
-            request_options=request_options,
-            omit=OMIT,
-        )
-        try:
-            if 200 <= _response.status_code < 300:
-                _data = typing.cast(
-                    UpdateVerificationBeneficiariesResponse,
-                    parse_obj_as(
-                        type_=UpdateVerificationBeneficiariesResponse,  # type: ignore
-                        object_=_response.json(),
-                    ),
-                )
-                return HttpResponse(response=_response, data=_data)
-            if _response.status_code == 400:
-                raise BadRequestError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Any,
-                        parse_obj_as(
-                            type_=typing.Any,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 401:
-                raise UnauthorizedError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Any,
-                        parse_obj_as(
-                            type_=typing.Any,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 403:
-                raise ForbiddenError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Any,
-                        parse_obj_as(
-                            type_=typing.Any,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 404:
-                raise NotFoundError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Any,
-                        parse_obj_as(
-                            type_=typing.Any,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 500:
-                raise InternalServerError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        ErrorResponse,
-                        parse_obj_as(
-                            type_=ErrorResponse,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            _response_json = _response.json()
-        except JSONDecodeError:
-            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
-        except ValidationError as e:
-            raise ParsingError(
-                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
-            )
-        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
-
-    def create_v3(
+    def create(
         self,
         *,
-        type: CreateV3BeneficiariesRequestType,
-        address: CreateV3BeneficiariesRequestAddress,
-        payment_methods: typing.Sequence[CreateV3BeneficiariesRequestPaymentMethodsItem],
+        type: CreateBeneficiariesRequestType,
+        address: CreateBeneficiariesRequestAddress,
+        payment_methods: typing.Sequence[CreateBeneficiariesRequestPaymentMethodsItem],
         beneficiary_relationship: BeneficiaryRelationship,
         purpose_of_payment: PurposeOfPayment,
         first_name: typing.Optional[str] = OMIT,
@@ -1687,28 +789,28 @@ class RawBeneficiariesClient:
         middle_name: typing.Optional[str] = OMIT,
         full_name: typing.Optional[str] = OMIT,
         business_registration_number: typing.Optional[str] = OMIT,
-        business_type: typing.Optional[CreateV3BeneficiariesRequestBusinessType] = OMIT,
+        business_type: typing.Optional[CreateBeneficiariesRequestBusinessType] = OMIT,
         email: typing.Optional[str] = OMIT,
         phone: typing.Optional[str] = OMIT,
         birth_date: typing.Optional[dt.date] = OMIT,
         merchant_id: typing.Optional[str] = OMIT,
-        identity: typing.Optional[CreateV3BeneficiariesRequestIdentity] = OMIT,
+        identity: typing.Optional[CreateBeneficiariesRequestIdentity] = OMIT,
         metadata: typing.Optional[typing.Dict[str, typing.Any]] = OMIT,
         purpose_of_payment_document: typing.Optional[PurposeOfPaymentDocumentRequest] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> HttpResponse[CreateV3BeneficiariesResponse]:
+    ) -> HttpResponse[CreateBeneficiariesResponse]:
         """
         Create a new beneficiary with mandatory compliance fields. Same as V2 but `beneficiaryRelationship` and `purposeOfPayment` are required.
 
         Parameters
         ----------
-        type : CreateV3BeneficiariesRequestType
+        type : CreateBeneficiariesRequestType
             Type of beneficiary
 
-        address : CreateV3BeneficiariesRequestAddress
+        address : CreateBeneficiariesRequestAddress
             Beneficiary address
 
-        payment_methods : typing.Sequence[CreateV3BeneficiariesRequestPaymentMethodsItem]
+        payment_methods : typing.Sequence[CreateBeneficiariesRequestPaymentMethodsItem]
             At least one payment method must be provided
 
         beneficiary_relationship : BeneficiaryRelationship
@@ -1730,7 +832,7 @@ class RawBeneficiariesClient:
         business_registration_number : typing.Optional[str]
             Business registration number (required for business type)
 
-        business_type : typing.Optional[CreateV3BeneficiariesRequestBusinessType]
+        business_type : typing.Optional[CreateBeneficiariesRequestBusinessType]
             Type of business (optional)
 
         email : typing.Optional[str]
@@ -1745,7 +847,7 @@ class RawBeneficiariesClient:
         merchant_id : typing.Optional[str]
             Merchant ID (optional, auto-assigned from API key)
 
-        identity : typing.Optional[CreateV3BeneficiariesRequestIdentity]
+        identity : typing.Optional[CreateBeneficiariesRequestIdentity]
             Identity document details
 
         metadata : typing.Optional[typing.Dict[str, typing.Any]]
@@ -1758,7 +860,7 @@ class RawBeneficiariesClient:
 
         Returns
         -------
-        HttpResponse[CreateV3BeneficiariesResponse]
+        HttpResponse[CreateBeneficiariesResponse]
             Beneficiary created successfully
         """
         _response = self._client_wrapper.httpx_client.request(
@@ -1777,14 +879,14 @@ class RawBeneficiariesClient:
                 "birthDate": birth_date,
                 "merchantId": merchant_id,
                 "address": convert_and_respect_annotation_metadata(
-                    object_=address, annotation=CreateV3BeneficiariesRequestAddress, direction="write"
+                    object_=address, annotation=CreateBeneficiariesRequestAddress, direction="write"
                 ),
                 "identity": convert_and_respect_annotation_metadata(
-                    object_=identity, annotation=CreateV3BeneficiariesRequestIdentity, direction="write"
+                    object_=identity, annotation=CreateBeneficiariesRequestIdentity, direction="write"
                 ),
                 "paymentMethods": convert_and_respect_annotation_metadata(
                     object_=payment_methods,
-                    annotation=typing.Sequence[CreateV3BeneficiariesRequestPaymentMethodsItem],
+                    annotation=typing.Sequence[CreateBeneficiariesRequestPaymentMethodsItem],
                     direction="write",
                 ),
                 "metadata": metadata,
@@ -1803,9 +905,9 @@ class RawBeneficiariesClient:
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    CreateV3BeneficiariesResponse,
+                    CreateBeneficiariesResponse,
                     parse_obj_as(
-                        type_=CreateV3BeneficiariesResponse,  # type: ignore
+                        type_=CreateBeneficiariesResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -1868,356 +970,6 @@ class AsyncRawBeneficiariesClient:
     def __init__(self, *, client_wrapper: AsyncClientWrapper):
         self._client_wrapper = client_wrapper
 
-    async def list_v1(
-        self,
-        *,
-        id: typing.Optional[str] = None,
-        merchant_id: typing.Optional[str] = None,
-        status: typing.Optional[ListV1BeneficiariesRequestStatus] = None,
-        page: typing.Optional[int] = None,
-        page_size: typing.Optional[int] = None,
-        sort_by: typing.Optional[str] = None,
-        sort_order: typing.Optional[ListV1BeneficiariesRequestSortOrder] = None,
-        request_options: typing.Optional[RequestOptions] = None,
-    ) -> AsyncHttpResponse[ListV1BeneficiariesResponse]:
-        """
-        Retrieves a list of all beneficiaries associated with a merchant.
-
-        Parameters
-        ----------
-        id : typing.Optional[str]
-            Filter beneficiaries by ID
-
-        merchant_id : typing.Optional[str]
-            Identifier of the associated merchant
-
-        status : typing.Optional[ListV1BeneficiariesRequestStatus]
-            Filter beneficiaries by verification status
-
-        page : typing.Optional[int]
-            Page number for pagination
-
-        page_size : typing.Optional[int]
-            Number of items per page
-
-        sort_by : typing.Optional[str]
-            Field to sort the beneficiaries by
-
-        sort_order : typing.Optional[ListV1BeneficiariesRequestSortOrder]
-            Sort order (ascending or descending)
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        AsyncHttpResponse[ListV1BeneficiariesResponse]
-            Beneficiary list retrieved successfully
-        """
-        _response = await self._client_wrapper.httpx_client.request(
-            "v1/beneficiaries",
-            method="GET",
-            params={
-                "id": id,
-                "merchantId": merchant_id,
-                "status": status,
-                "page": page,
-                "pageSize": page_size,
-                "sortBy": sort_by,
-                "sortOrder": sort_order,
-            },
-            request_options=request_options,
-        )
-        try:
-            if 200 <= _response.status_code < 300:
-                _data = typing.cast(
-                    ListV1BeneficiariesResponse,
-                    parse_obj_as(
-                        type_=ListV1BeneficiariesResponse,  # type: ignore
-                        object_=_response.json(),
-                    ),
-                )
-                return AsyncHttpResponse(response=_response, data=_data)
-            if _response.status_code == 401:
-                raise UnauthorizedError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Any,
-                        parse_obj_as(
-                            type_=typing.Any,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 403:
-                raise ForbiddenError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Any,
-                        parse_obj_as(
-                            type_=typing.Any,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 404:
-                raise NotFoundError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Any,
-                        parse_obj_as(
-                            type_=typing.Any,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 500:
-                raise InternalServerError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        ErrorResponse,
-                        parse_obj_as(
-                            type_=ErrorResponse,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            _response_json = _response.json()
-        except JSONDecodeError:
-            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
-        except ValidationError as e:
-            raise ParsingError(
-                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
-            )
-        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
-
-    async def create_v1(
-        self, *, request: CreateV1BeneficiariesRequest, request_options: typing.Optional[RequestOptions] = None
-    ) -> AsyncHttpResponse[CreateV1BeneficiariesResponse]:
-        """
-        ## Overview
-        * Creates a new beneficiary.
-        * Supports both individual and business beneficiaries
-        * Requirements vary by country and ownerType
-
-        ## Validation Rules
-        * **Important**: Always check validation rules before creating a beneficiary
-        * Validation rules endpoint: `GET /v1/validation-rules/beneficiaries`
-        * Required query parameters:
-          * `ownerType=[individual|business]`
-          * `country=[ISO 3166-1 alpha-2 code]`
-        * Example request:
-        ```
-        GET /v1/validation-rules/beneficiaries?ownerType=individual&country=PH
-        ```
-
-        ## Bank Information
-        * For US beneficiaries with paymentType=bank_account:
-          * Routing number is required
-          * Bank ID is not needed
-        * For non-US beneficiaries with paymentType=bank_account:
-          * Bank ID is required
-          * Fetch bank list using: `GET /v1/beneficiaries/banks`
-          * Required query parameter: `countryCode=[ISO 3166-1 alpha-2 code]`
-        * Example request:
-        ```
-        GET /v1/beneficiaries/banks?countryCode=PH
-        ```
-        * Response includes bank ID and name:
-        ```json
-        {
-          "data": [
-            {
-              "id": "123",
-              "name": "Sample Bank"
-            }
-          ]
-        }
-        ```
-        * Use the `bankId` in the paymentInfo object when creating non-US beneficiaries with bank_account payment type
-
-        Parameters
-        ----------
-        request : CreateV1BeneficiariesRequest
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        AsyncHttpResponse[CreateV1BeneficiariesResponse]
-            Beneficiary created successfully
-        """
-        _response = await self._client_wrapper.httpx_client.request(
-            "v1/beneficiaries",
-            method="POST",
-            json=convert_and_respect_annotation_metadata(
-                object_=request, annotation=CreateV1BeneficiariesRequest, direction="write"
-            ),
-            request_options=request_options,
-            omit=OMIT,
-        )
-        try:
-            if 200 <= _response.status_code < 300:
-                _data = typing.cast(
-                    CreateV1BeneficiariesResponse,
-                    parse_obj_as(
-                        type_=CreateV1BeneficiariesResponse,  # type: ignore
-                        object_=_response.json(),
-                    ),
-                )
-                return AsyncHttpResponse(response=_response, data=_data)
-            if _response.status_code == 400:
-                raise BadRequestError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Any,
-                        parse_obj_as(
-                            type_=typing.Any,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 401:
-                raise UnauthorizedError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Any,
-                        parse_obj_as(
-                            type_=typing.Any,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 403:
-                raise ForbiddenError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Any,
-                        parse_obj_as(
-                            type_=typing.Any,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 404:
-                raise NotFoundError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Any,
-                        parse_obj_as(
-                            type_=typing.Any,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 500:
-                raise InternalServerError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        ErrorResponse,
-                        parse_obj_as(
-                            type_=ErrorResponse,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            _response_json = _response.json()
-        except JSONDecodeError:
-            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
-        except ValidationError as e:
-            raise ParsingError(
-                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
-            )
-        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
-
-    async def get_v1(
-        self, beneficiary_id: str, *, request_options: typing.Optional[RequestOptions] = None
-    ) -> AsyncHttpResponse[GetV1BeneficiariesResponse]:
-        """
-        Retrieves detailed information about a specific beneficiary account.
-
-        Parameters
-        ----------
-        beneficiary_id : str
-            Unique identifier for the beneficiary.
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        AsyncHttpResponse[GetV1BeneficiariesResponse]
-            Beneficiary retrieved successfully
-        """
-        _response = await self._client_wrapper.httpx_client.request(
-            f"v1/beneficiaries/{encode_path_param(beneficiary_id)}",
-            method="GET",
-            request_options=request_options,
-        )
-        try:
-            if 200 <= _response.status_code < 300:
-                _data = typing.cast(
-                    GetV1BeneficiariesResponse,
-                    parse_obj_as(
-                        type_=GetV1BeneficiariesResponse,  # type: ignore
-                        object_=_response.json(),
-                    ),
-                )
-                return AsyncHttpResponse(response=_response, data=_data)
-            if _response.status_code == 401:
-                raise UnauthorizedError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Any,
-                        parse_obj_as(
-                            type_=typing.Any,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 403:
-                raise ForbiddenError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Any,
-                        parse_obj_as(
-                            type_=typing.Any,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 404:
-                raise NotFoundError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Any,
-                        parse_obj_as(
-                            type_=typing.Any,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 500:
-                raise InternalServerError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        ErrorResponse,
-                        parse_obj_as(
-                            type_=ErrorResponse,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            _response_json = _response.json()
-        except JSONDecodeError:
-            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
-        except ValidationError as e:
-            raise ParsingError(
-                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
-            )
-        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
-
     async def delete(
         self, beneficiary_id: str, *, request_options: typing.Optional[RequestOptions] = None
     ) -> AsyncHttpResponse[DeleteBeneficiariesResponse]:
@@ -2252,128 +1004,6 @@ class AsyncRawBeneficiariesClient:
                     ),
                 )
                 return AsyncHttpResponse(response=_response, data=_data)
-            if _response.status_code == 401:
-                raise UnauthorizedError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Any,
-                        parse_obj_as(
-                            type_=typing.Any,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 403:
-                raise ForbiddenError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Any,
-                        parse_obj_as(
-                            type_=typing.Any,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 404:
-                raise NotFoundError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Any,
-                        parse_obj_as(
-                            type_=typing.Any,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 500:
-                raise InternalServerError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        ErrorResponse,
-                        parse_obj_as(
-                            type_=ErrorResponse,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            _response_json = _response.json()
-        except JSONDecodeError:
-            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
-        except ValidationError as e:
-            raise ParsingError(
-                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
-            )
-        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
-
-    async def update_v1(
-        self,
-        beneficiary_id: str,
-        *,
-        request: UpdateV1BeneficiariesRequestBody,
-        request_options: typing.Optional[RequestOptions] = None,
-    ) -> AsyncHttpResponse[UpdateV1BeneficiariesResponse]:
-        """
-        Updates an existing beneficiary's information. Note that certain fields cannot be modified after initial creation.
-
-        Non-updatable fields:
-        - type (individual/business)
-        - identificationNumber (for business beneficiaries)
-        - taxIdentificationNumber (for business beneficiaries)
-        - bankAccountType
-        - bankAccountNumber
-        - bankCode
-
-        Before updating a beneficiary, always check the validation rules using:
-        GET /v1/validation-rules/beneficiaries?ownerType=[individual|business]&country=[ISO 3166-1 alpha-2 code]
-
-        Parameters
-        ----------
-        beneficiary_id : str
-            Unique identifier for the beneficiary
-
-        request : UpdateV1BeneficiariesRequestBody
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        AsyncHttpResponse[UpdateV1BeneficiariesResponse]
-            Beneficiary created successfully
-        """
-        _response = await self._client_wrapper.httpx_client.request(
-            f"v1/beneficiaries/{encode_path_param(beneficiary_id)}",
-            method="PATCH",
-            json=convert_and_respect_annotation_metadata(
-                object_=request, annotation=UpdateV1BeneficiariesRequestBody, direction="write"
-            ),
-            headers={
-                "content-type": "application/json",
-            },
-            request_options=request_options,
-            omit=OMIT,
-        )
-        try:
-            if 200 <= _response.status_code < 300:
-                _data = typing.cast(
-                    UpdateV1BeneficiariesResponse,
-                    parse_obj_as(
-                        type_=UpdateV1BeneficiariesResponse,  # type: ignore
-                        object_=_response.json(),
-                    ),
-                )
-                return AsyncHttpResponse(response=_response, data=_data)
-            if _response.status_code == 400:
-                raise BadRequestError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Any,
-                        parse_obj_as(
-                            type_=typing.Any,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
             if _response.status_code == 401:
                 raise UnauthorizedError(
                     headers=dict(_response.headers),
@@ -2718,15 +1348,15 @@ class AsyncRawBeneficiariesClient:
             )
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
-    async def list_v2(
+    async def list(
         self,
         *,
         page: typing.Optional[int] = None,
         page_size: typing.Optional[int] = None,
-        sort_by: typing.Optional[ListV2BeneficiariesRequestSortBy] = None,
-        sort_order: typing.Optional[ListV2BeneficiariesRequestSortOrder] = None,
+        sort_by: typing.Optional[ListBeneficiariesRequestSortBy] = None,
+        sort_order: typing.Optional[ListBeneficiariesRequestSortOrder] = None,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> AsyncHttpResponse[ListV2BeneficiariesResponse]:
+    ) -> AsyncHttpResponse[ListBeneficiariesResponse]:
         """
         Retrieves a paginated list of beneficiaries using the V2 API. Unlike v1, the v2 API separates payment methods from beneficiary data. Payment methods are available on the detail endpoint.
 
@@ -2738,10 +1368,10 @@ class AsyncRawBeneficiariesClient:
         page_size : typing.Optional[int]
             Number of items per page
 
-        sort_by : typing.Optional[ListV2BeneficiariesRequestSortBy]
+        sort_by : typing.Optional[ListBeneficiariesRequestSortBy]
             Field to sort by
 
-        sort_order : typing.Optional[ListV2BeneficiariesRequestSortOrder]
+        sort_order : typing.Optional[ListBeneficiariesRequestSortOrder]
             Sort order
 
         request_options : typing.Optional[RequestOptions]
@@ -2749,7 +1379,7 @@ class AsyncRawBeneficiariesClient:
 
         Returns
         -------
-        AsyncHttpResponse[ListV2BeneficiariesResponse]
+        AsyncHttpResponse[ListBeneficiariesResponse]
             List of beneficiaries with payment methods
         """
         _response = await self._client_wrapper.httpx_client.request(
@@ -2766,9 +1396,9 @@ class AsyncRawBeneficiariesClient:
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    ListV2BeneficiariesResponse,
+                    ListBeneficiariesResponse,
                     parse_obj_as(
-                        type_=ListV2BeneficiariesResponse,  # type: ignore
+                        type_=ListBeneficiariesResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -2815,198 +1445,9 @@ class AsyncRawBeneficiariesClient:
             )
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
-    async def create_v2(
-        self,
-        *,
-        type: CreateV2BeneficiariesRequestType,
-        address: CreateV2BeneficiariesRequestAddress,
-        payment_methods: typing.Sequence[CreateV2BeneficiariesRequestPaymentMethodsItem],
-        first_name: typing.Optional[str] = OMIT,
-        last_name: typing.Optional[str] = OMIT,
-        middle_name: typing.Optional[str] = OMIT,
-        full_name: typing.Optional[str] = OMIT,
-        business_registration_number: typing.Optional[str] = OMIT,
-        business_type: typing.Optional[CreateV2BeneficiariesRequestBusinessType] = OMIT,
-        email: typing.Optional[str] = OMIT,
-        phone: typing.Optional[str] = OMIT,
-        birth_date: typing.Optional[dt.date] = OMIT,
-        merchant_id: typing.Optional[str] = OMIT,
-        identity: typing.Optional[CreateV2BeneficiariesRequestIdentity] = OMIT,
-        metadata: typing.Optional[typing.Dict[str, typing.Any]] = OMIT,
-        beneficiary_relationship: typing.Optional[BeneficiaryRelationship] = OMIT,
-        purpose_of_payment: typing.Optional[PurposeOfPayment] = OMIT,
-        purpose_of_payment_document: typing.Optional[PurposeOfPaymentDocumentRequest] = OMIT,
-        request_options: typing.Optional[RequestOptions] = None,
-    ) -> AsyncHttpResponse[CreateV2BeneficiariesResponse]:
-        """
-        Create a new beneficiary with payment methods in a single request. This v2 endpoint allows you to create a beneficiary and attach payment methods simultaneously.
-
-        Parameters
-        ----------
-        type : CreateV2BeneficiariesRequestType
-            Type of beneficiary
-
-        address : CreateV2BeneficiariesRequestAddress
-            Beneficiary address
-
-        payment_methods : typing.Sequence[CreateV2BeneficiariesRequestPaymentMethodsItem]
-            At least one payment method must be provided
-
-        first_name : typing.Optional[str]
-            First name (required for individual type)
-
-        last_name : typing.Optional[str]
-            Last name (required for individual type)
-
-        middle_name : typing.Optional[str]
-            Middle name (optional, individual type only)
-
-        full_name : typing.Optional[str]
-            Full business name (required for business type)
-
-        business_registration_number : typing.Optional[str]
-            Business registration number (required for business type)
-
-        business_type : typing.Optional[CreateV2BeneficiariesRequestBusinessType]
-            Type of business (optional)
-
-        email : typing.Optional[str]
-            Beneficiary email
-
-        phone : typing.Optional[str]
-            Beneficiary phone number
-
-        birth_date : typing.Optional[dt.date]
-            Date of birth (YYYY-MM-DD, individual type)
-
-        merchant_id : typing.Optional[str]
-            Merchant ID (optional, auto-assigned from API key)
-
-        identity : typing.Optional[CreateV2BeneficiariesRequestIdentity]
-            Identity document details
-
-        metadata : typing.Optional[typing.Dict[str, typing.Any]]
-            Custom metadata
-
-        beneficiary_relationship : typing.Optional[BeneficiaryRelationship]
-
-        purpose_of_payment : typing.Optional[PurposeOfPayment]
-
-        purpose_of_payment_document : typing.Optional[PurposeOfPaymentDocumentRequest]
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        AsyncHttpResponse[CreateV2BeneficiariesResponse]
-            Beneficiary created successfully
-        """
-        _response = await self._client_wrapper.httpx_client.request(
-            "v2/beneficiaries",
-            method="POST",
-            json={
-                "type": type,
-                "firstName": first_name,
-                "lastName": last_name,
-                "middleName": middle_name,
-                "fullName": full_name,
-                "businessRegistrationNumber": business_registration_number,
-                "businessType": business_type,
-                "email": email,
-                "phone": phone,
-                "birthDate": birth_date,
-                "merchantId": merchant_id,
-                "address": convert_and_respect_annotation_metadata(
-                    object_=address, annotation=CreateV2BeneficiariesRequestAddress, direction="write"
-                ),
-                "identity": convert_and_respect_annotation_metadata(
-                    object_=identity, annotation=CreateV2BeneficiariesRequestIdentity, direction="write"
-                ),
-                "paymentMethods": convert_and_respect_annotation_metadata(
-                    object_=payment_methods,
-                    annotation=typing.Sequence[CreateV2BeneficiariesRequestPaymentMethodsItem],
-                    direction="write",
-                ),
-                "metadata": metadata,
-                "beneficiaryRelationship": beneficiary_relationship,
-                "purposeOfPayment": purpose_of_payment,
-                "purposeOfPaymentDocument": convert_and_respect_annotation_metadata(
-                    object_=purpose_of_payment_document, annotation=PurposeOfPaymentDocumentRequest, direction="write"
-                ),
-            },
-            headers={
-                "content-type": "application/json",
-            },
-            request_options=request_options,
-            omit=OMIT,
-        )
-        try:
-            if 200 <= _response.status_code < 300:
-                _data = typing.cast(
-                    CreateV2BeneficiariesResponse,
-                    parse_obj_as(
-                        type_=CreateV2BeneficiariesResponse,  # type: ignore
-                        object_=_response.json(),
-                    ),
-                )
-                return AsyncHttpResponse(response=_response, data=_data)
-            if _response.status_code == 400:
-                raise BadRequestError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Any,
-                        parse_obj_as(
-                            type_=typing.Any,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 401:
-                raise UnauthorizedError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Any,
-                        parse_obj_as(
-                            type_=typing.Any,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 403:
-                raise ForbiddenError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Any,
-                        parse_obj_as(
-                            type_=typing.Any,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 500:
-                raise InternalServerError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        ErrorResponse,
-                        parse_obj_as(
-                            type_=ErrorResponse,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            _response_json = _response.json()
-        except JSONDecodeError:
-            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
-        except ValidationError as e:
-            raise ParsingError(
-                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
-            )
-        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
-
-    async def get_v2(
+    async def get(
         self, id: str, *, request_options: typing.Optional[RequestOptions] = None
-    ) -> AsyncHttpResponse[GetV2BeneficiariesResponse]:
+    ) -> AsyncHttpResponse[GetBeneficiariesResponse]:
         """
         Retrieve a single beneficiary by ID with their associated payment methods.
 
@@ -3020,7 +1461,7 @@ class AsyncRawBeneficiariesClient:
 
         Returns
         -------
-        AsyncHttpResponse[GetV2BeneficiariesResponse]
+        AsyncHttpResponse[GetBeneficiariesResponse]
             Beneficiary details with payment methods
         """
         _response = await self._client_wrapper.httpx_client.request(
@@ -3031,9 +1472,9 @@ class AsyncRawBeneficiariesClient:
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    GetV2BeneficiariesResponse,
+                    GetBeneficiariesResponse,
                     parse_obj_as(
-                        type_=GetV2BeneficiariesResponse,  # type: ignore
+                        type_=GetBeneficiariesResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -3091,11 +1532,11 @@ class AsyncRawBeneficiariesClient:
             )
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
-    async def update_v2(
+    async def update(
         self,
         id: str,
         *,
-        type: typing.Optional[UpdateV2BeneficiariesRequestType] = OMIT,
+        type: typing.Optional[UpdateBeneficiariesRequestType] = OMIT,
         first_name: typing.Optional[str] = OMIT,
         last_name: typing.Optional[str] = OMIT,
         middle_name: typing.Optional[str] = OMIT,
@@ -3103,13 +1544,13 @@ class AsyncRawBeneficiariesClient:
         email: typing.Optional[str] = OMIT,
         phone: typing.Optional[str] = OMIT,
         birth_date: typing.Optional[dt.date] = OMIT,
-        address: typing.Optional[UpdateV2BeneficiariesRequestAddress] = OMIT,
+        address: typing.Optional[UpdateBeneficiariesRequestAddress] = OMIT,
         metadata: typing.Optional[typing.Dict[str, typing.Any]] = OMIT,
         beneficiary_relationship: typing.Optional[BeneficiaryRelationship] = OMIT,
         purpose_of_payment: typing.Optional[PurposeOfPayment] = OMIT,
         purpose_of_payment_document: typing.Optional[PurposeOfPaymentDocumentRequest] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> AsyncHttpResponse[UpdateV2BeneficiariesResponse]:
+    ) -> AsyncHttpResponse[UpdateBeneficiariesResponse]:
         """
         Partially update a beneficiary. Only the provided fields will be updated.
 
@@ -3118,7 +1559,7 @@ class AsyncRawBeneficiariesClient:
         id : str
             Beneficiary ID
 
-        type : typing.Optional[UpdateV2BeneficiariesRequestType]
+        type : typing.Optional[UpdateBeneficiariesRequestType]
 
         first_name : typing.Optional[str]
 
@@ -3134,7 +1575,7 @@ class AsyncRawBeneficiariesClient:
 
         birth_date : typing.Optional[dt.date]
 
-        address : typing.Optional[UpdateV2BeneficiariesRequestAddress]
+        address : typing.Optional[UpdateBeneficiariesRequestAddress]
 
         metadata : typing.Optional[typing.Dict[str, typing.Any]]
 
@@ -3149,7 +1590,7 @@ class AsyncRawBeneficiariesClient:
 
         Returns
         -------
-        AsyncHttpResponse[UpdateV2BeneficiariesResponse]
+        AsyncHttpResponse[UpdateBeneficiariesResponse]
             Beneficiary updated successfully
         """
         _response = await self._client_wrapper.httpx_client.request(
@@ -3165,7 +1606,7 @@ class AsyncRawBeneficiariesClient:
                 "phone": phone,
                 "birthDate": birth_date,
                 "address": convert_and_respect_annotation_metadata(
-                    object_=address, annotation=UpdateV2BeneficiariesRequestAddress, direction="write"
+                    object_=address, annotation=UpdateBeneficiariesRequestAddress, direction="write"
                 ),
                 "metadata": metadata,
                 "beneficiaryRelationship": beneficiary_relationship,
@@ -3183,9 +1624,9 @@ class AsyncRawBeneficiariesClient:
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    UpdateV2BeneficiariesResponse,
+                    UpdateBeneficiariesResponse,
                     parse_obj_as(
-                        type_=UpdateV2BeneficiariesResponse,  # type: ignore
+                        type_=UpdateBeneficiariesResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -3254,232 +1695,12 @@ class AsyncRawBeneficiariesClient:
             )
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
-    async def validate(
-        self, beneficiary_id: str, *, request_options: typing.Optional[RequestOptions] = None
-    ) -> AsyncHttpResponse[ValidateBeneficiariesResponse]:
-        """
-        Validates a beneficiary's information, checking that all required fields are present and correct for the beneficiary's country and payment method configuration.
-
-        Parameters
-        ----------
-        beneficiary_id : str
-            Unique identifier of the beneficiary
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        AsyncHttpResponse[ValidateBeneficiariesResponse]
-            Beneficiary validated successfully
-        """
-        _response = await self._client_wrapper.httpx_client.request(
-            f"v1/beneficiaries/{encode_path_param(beneficiary_id)}/validate",
-            method="POST",
-            request_options=request_options,
-        )
-        try:
-            if 200 <= _response.status_code < 300:
-                _data = typing.cast(
-                    ValidateBeneficiariesResponse,
-                    parse_obj_as(
-                        type_=ValidateBeneficiariesResponse,  # type: ignore
-                        object_=_response.json(),
-                    ),
-                )
-                return AsyncHttpResponse(response=_response, data=_data)
-            if _response.status_code == 400:
-                raise BadRequestError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Any,
-                        parse_obj_as(
-                            type_=typing.Any,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 401:
-                raise UnauthorizedError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Any,
-                        parse_obj_as(
-                            type_=typing.Any,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 403:
-                raise ForbiddenError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Any,
-                        parse_obj_as(
-                            type_=typing.Any,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 404:
-                raise NotFoundError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Any,
-                        parse_obj_as(
-                            type_=typing.Any,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 500:
-                raise InternalServerError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        ErrorResponse,
-                        parse_obj_as(
-                            type_=ErrorResponse,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            _response_json = _response.json()
-        except JSONDecodeError:
-            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
-        except ValidationError as e:
-            raise ParsingError(
-                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
-            )
-        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
-
-    async def update_verification(
-        self,
-        beneficiary_id: str,
-        *,
-        status: UpdateVerificationBeneficiariesRequestStatus,
-        external_ref_id: typing.Optional[str] = OMIT,
-        verification_result: typing.Optional[typing.Dict[str, typing.Any]] = OMIT,
-        request_options: typing.Optional[RequestOptions] = None,
-    ) -> AsyncHttpResponse[UpdateVerificationBeneficiariesResponse]:
-        """
-        Updates the verification status of a beneficiary. Used to mark a beneficiary as verified, pending, or declined after completing identity checks.
-
-        Parameters
-        ----------
-        beneficiary_id : str
-            Unique identifier of the beneficiary
-
-        status : UpdateVerificationBeneficiariesRequestStatus
-            New verification status for the beneficiary
-
-        external_ref_id : typing.Optional[str]
-            External reference ID for the verification
-
-        verification_result : typing.Optional[typing.Dict[str, typing.Any]]
-            Arbitrary JSON object containing verification result details
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        AsyncHttpResponse[UpdateVerificationBeneficiariesResponse]
-            Beneficiary verification updated successfully
-        """
-        _response = await self._client_wrapper.httpx_client.request(
-            f"v1/beneficiaries/{encode_path_param(beneficiary_id)}/verification",
-            method="PATCH",
-            json={
-                "status": status,
-                "externalRefId": external_ref_id,
-                "verificationResult": verification_result,
-            },
-            headers={
-                "content-type": "application/json",
-            },
-            request_options=request_options,
-            omit=OMIT,
-        )
-        try:
-            if 200 <= _response.status_code < 300:
-                _data = typing.cast(
-                    UpdateVerificationBeneficiariesResponse,
-                    parse_obj_as(
-                        type_=UpdateVerificationBeneficiariesResponse,  # type: ignore
-                        object_=_response.json(),
-                    ),
-                )
-                return AsyncHttpResponse(response=_response, data=_data)
-            if _response.status_code == 400:
-                raise BadRequestError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Any,
-                        parse_obj_as(
-                            type_=typing.Any,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 401:
-                raise UnauthorizedError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Any,
-                        parse_obj_as(
-                            type_=typing.Any,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 403:
-                raise ForbiddenError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Any,
-                        parse_obj_as(
-                            type_=typing.Any,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 404:
-                raise NotFoundError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Any,
-                        parse_obj_as(
-                            type_=typing.Any,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 500:
-                raise InternalServerError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        ErrorResponse,
-                        parse_obj_as(
-                            type_=ErrorResponse,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            _response_json = _response.json()
-        except JSONDecodeError:
-            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
-        except ValidationError as e:
-            raise ParsingError(
-                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
-            )
-        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
-
-    async def create_v3(
+    async def create(
         self,
         *,
-        type: CreateV3BeneficiariesRequestType,
-        address: CreateV3BeneficiariesRequestAddress,
-        payment_methods: typing.Sequence[CreateV3BeneficiariesRequestPaymentMethodsItem],
+        type: CreateBeneficiariesRequestType,
+        address: CreateBeneficiariesRequestAddress,
+        payment_methods: typing.Sequence[CreateBeneficiariesRequestPaymentMethodsItem],
         beneficiary_relationship: BeneficiaryRelationship,
         purpose_of_payment: PurposeOfPayment,
         first_name: typing.Optional[str] = OMIT,
@@ -3487,28 +1708,28 @@ class AsyncRawBeneficiariesClient:
         middle_name: typing.Optional[str] = OMIT,
         full_name: typing.Optional[str] = OMIT,
         business_registration_number: typing.Optional[str] = OMIT,
-        business_type: typing.Optional[CreateV3BeneficiariesRequestBusinessType] = OMIT,
+        business_type: typing.Optional[CreateBeneficiariesRequestBusinessType] = OMIT,
         email: typing.Optional[str] = OMIT,
         phone: typing.Optional[str] = OMIT,
         birth_date: typing.Optional[dt.date] = OMIT,
         merchant_id: typing.Optional[str] = OMIT,
-        identity: typing.Optional[CreateV3BeneficiariesRequestIdentity] = OMIT,
+        identity: typing.Optional[CreateBeneficiariesRequestIdentity] = OMIT,
         metadata: typing.Optional[typing.Dict[str, typing.Any]] = OMIT,
         purpose_of_payment_document: typing.Optional[PurposeOfPaymentDocumentRequest] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> AsyncHttpResponse[CreateV3BeneficiariesResponse]:
+    ) -> AsyncHttpResponse[CreateBeneficiariesResponse]:
         """
         Create a new beneficiary with mandatory compliance fields. Same as V2 but `beneficiaryRelationship` and `purposeOfPayment` are required.
 
         Parameters
         ----------
-        type : CreateV3BeneficiariesRequestType
+        type : CreateBeneficiariesRequestType
             Type of beneficiary
 
-        address : CreateV3BeneficiariesRequestAddress
+        address : CreateBeneficiariesRequestAddress
             Beneficiary address
 
-        payment_methods : typing.Sequence[CreateV3BeneficiariesRequestPaymentMethodsItem]
+        payment_methods : typing.Sequence[CreateBeneficiariesRequestPaymentMethodsItem]
             At least one payment method must be provided
 
         beneficiary_relationship : BeneficiaryRelationship
@@ -3530,7 +1751,7 @@ class AsyncRawBeneficiariesClient:
         business_registration_number : typing.Optional[str]
             Business registration number (required for business type)
 
-        business_type : typing.Optional[CreateV3BeneficiariesRequestBusinessType]
+        business_type : typing.Optional[CreateBeneficiariesRequestBusinessType]
             Type of business (optional)
 
         email : typing.Optional[str]
@@ -3545,7 +1766,7 @@ class AsyncRawBeneficiariesClient:
         merchant_id : typing.Optional[str]
             Merchant ID (optional, auto-assigned from API key)
 
-        identity : typing.Optional[CreateV3BeneficiariesRequestIdentity]
+        identity : typing.Optional[CreateBeneficiariesRequestIdentity]
             Identity document details
 
         metadata : typing.Optional[typing.Dict[str, typing.Any]]
@@ -3558,7 +1779,7 @@ class AsyncRawBeneficiariesClient:
 
         Returns
         -------
-        AsyncHttpResponse[CreateV3BeneficiariesResponse]
+        AsyncHttpResponse[CreateBeneficiariesResponse]
             Beneficiary created successfully
         """
         _response = await self._client_wrapper.httpx_client.request(
@@ -3577,14 +1798,14 @@ class AsyncRawBeneficiariesClient:
                 "birthDate": birth_date,
                 "merchantId": merchant_id,
                 "address": convert_and_respect_annotation_metadata(
-                    object_=address, annotation=CreateV3BeneficiariesRequestAddress, direction="write"
+                    object_=address, annotation=CreateBeneficiariesRequestAddress, direction="write"
                 ),
                 "identity": convert_and_respect_annotation_metadata(
-                    object_=identity, annotation=CreateV3BeneficiariesRequestIdentity, direction="write"
+                    object_=identity, annotation=CreateBeneficiariesRequestIdentity, direction="write"
                 ),
                 "paymentMethods": convert_and_respect_annotation_metadata(
                     object_=payment_methods,
-                    annotation=typing.Sequence[CreateV3BeneficiariesRequestPaymentMethodsItem],
+                    annotation=typing.Sequence[CreateBeneficiariesRequestPaymentMethodsItem],
                     direction="write",
                 ),
                 "metadata": metadata,
@@ -3603,9 +1824,9 @@ class AsyncRawBeneficiariesClient:
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    CreateV3BeneficiariesResponse,
+                    CreateBeneficiariesResponse,
                     parse_obj_as(
-                        type_=CreateV3BeneficiariesResponse,  # type: ignore
+                        type_=CreateBeneficiariesResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )

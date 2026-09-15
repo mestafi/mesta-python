@@ -410,119 +410,7 @@ client.senders.list()
 </dl>
 </details>
 
-<details><summary><code>client.senders.<a href="src/mesta/senders/client.py">create_v1</a>(...) -> CreateV1SendersResponse</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-## Overview
-* Creates a new sender
-* Supports both individual and business senders
-* Requirements vary by country and ownerType
-
-## Validation Rules
-* **Important**: Always check validation rules before creating a sender
-* Validation rules endpoint: `GET /v1/validation-rules/senders`
-* Required query parameters:
-   * `ownerType=[individual|business]`
-  * `country=[ISO 3166-1 alpha-2 code]`
-* Example request:
-```
-GET /v1/validation-rules/senders?ownerType=individual&country=MX
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```python
-from mesta import Mesta, Address, IndividualSenderIdentity
-from mesta.environment import MestaEnvironment
-from mesta.senders import CreateV1SendersRequest_Individual
-import datetime
-
-client = Mesta(
-    api_key="<value>",
-    api_secret="<x-api-secret>",
-    environment=MestaEnvironment.PRODUCTION,
-)
-
-client.senders.create_v1(
-    request=CreateV1SendersRequest_Individual(
-        first_name="firstName",
-        last_name="lastName",
-        birth_date=datetime.date.fromisoformat("2023-01-15"),
-        email="email",
-        phone="phone",
-        addresses=[
-            Address(
-                street="street",
-                city="city",
-                postal_code="12345 or 00000",
-                country="country",
-            )
-        ],
-        identity=IndividualSenderIdentity(
-            document_type="PASSPORT",
-            country_code="countryCode",
-            document_number="documentNumber",
-        ),
-        gender="male",
-        occupation="accountant",
-        type="individual",
-    ),
-)
-
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**request:** `CreateV1SendersRequest` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.senders.<a href="src/mesta/senders/client.py">create_v2</a>(...) -> CreateV2SendersResponse</code></summary>
+<details><summary><code>client.senders.<a href="src/mesta/senders/client.py">create</a>(...) -> CreateSendersResponse</code></summary>
 <dl>
 <dd>
 
@@ -581,7 +469,7 @@ client = Mesta(
     environment=MestaEnvironment.PRODUCTION,
 )
 
-client.senders.create_v2(
+client.senders.create(
     request=IndividualSenderV2(
         type="individual",
         first_name="firstName",
@@ -630,7 +518,7 @@ client.senders.create_v2(
 <dl>
 <dd>
 
-**request:** `CreateV2SendersRequest` 
+**request:** `CreateSendersRequest` 
     
 </dd>
 </dl>
@@ -1235,405 +1123,7 @@ client.senders.simulate_deposit(
 </dl>
 </details>
 
-<details><summary><code>client.senders.<a href="src/mesta/senders/client.py">generate_ledger_accounts</a>(...) -> GenerateLedgerAccountsSendersResponse</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Generates ledger accounts and virtual bank accounts for a sender. These accounts are used for tracking balances and transactions.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```python
-from mesta import Mesta
-from mesta.environment import MestaEnvironment
-
-client = Mesta(
-    api_key="<value>",
-    api_secret="<x-api-secret>",
-    environment=MestaEnvironment.PRODUCTION,
-)
-
-client.senders.generate_ledger_accounts(
-    id="id",
-)
-
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**id:** `str` — ID of the sender
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
 ## Beneficiaries
-<details><summary><code>client.beneficiaries.<a href="src/mesta/beneficiaries/client.py">list_v1</a>(...) -> ListV1BeneficiariesResponse</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Retrieves a list of all beneficiaries associated with a merchant.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```python
-from mesta import Mesta
-from mesta.environment import MestaEnvironment
-
-client = Mesta(
-    api_key="<value>",
-    api_secret="<x-api-secret>",
-    environment=MestaEnvironment.PRODUCTION,
-)
-
-client.beneficiaries.list_v1(
-    merchant_id="xxxxxxxx-xxxx-4xxx-xxxx-xxxxxxxxxxxx",
-)
-
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**id:** `typing.Optional[str]` — Filter beneficiaries by ID
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**merchant_id:** `typing.Optional[str]` — Identifier of the associated merchant
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**status:** `typing.Optional[ListV1BeneficiariesRequestStatus]` — Filter beneficiaries by verification status
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**page:** `typing.Optional[int]` — Page number for pagination
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**page_size:** `typing.Optional[int]` — Number of items per page
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**sort_by:** `typing.Optional[str]` — Field to sort the beneficiaries by
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**sort_order:** `typing.Optional[ListV1BeneficiariesRequestSortOrder]` — Sort order (ascending or descending)
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.beneficiaries.<a href="src/mesta/beneficiaries/client.py">create_v1</a>(...) -> CreateV1BeneficiariesResponse</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-## Overview
-* Creates a new beneficiary.
-* Supports both individual and business beneficiaries
-* Requirements vary by country and ownerType
-
-## Validation Rules
-* **Important**: Always check validation rules before creating a beneficiary
-* Validation rules endpoint: `GET /v1/validation-rules/beneficiaries`
-* Required query parameters:
-  * `ownerType=[individual|business]`
-  * `country=[ISO 3166-1 alpha-2 code]`
-* Example request:
-```
-GET /v1/validation-rules/beneficiaries?ownerType=individual&country=PH
-```
-
-## Bank Information
-* For US beneficiaries with paymentType=bank_account:
-  * Routing number is required
-  * Bank ID is not needed
-* For non-US beneficiaries with paymentType=bank_account:
-  * Bank ID is required
-  * Fetch bank list using: `GET /v1/beneficiaries/banks`
-  * Required query parameter: `countryCode=[ISO 3166-1 alpha-2 code]`
-* Example request:
-```
-GET /v1/beneficiaries/banks?countryCode=PH
-```
-* Response includes bank ID and name:
-```json
-{
-  "data": [
-    {
-      "id": "123",
-      "name": "Sample Bank"
-    }
-  ]
-}
-```
-* Use the `bankId` in the paymentInfo object when creating non-US beneficiaries with bank_account payment type
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```python
-from mesta import Mesta, IndividualBeneficiaryAddress, BankAccount
-from mesta.environment import MestaEnvironment
-from mesta.beneficiaries import CreateV1BeneficiariesRequest_Individual
-
-client = Mesta(
-    api_key="<value>",
-    api_secret="<x-api-secret>",
-    environment=MestaEnvironment.PRODUCTION,
-)
-
-client.beneficiaries.create_v1(
-    request=CreateV1BeneficiariesRequest_Individual(
-        first_name="firstName",
-        last_name="lastName",
-        address=IndividualBeneficiaryAddress(
-            street="street",
-            city="city",
-            postal_code="12345 or 00000",
-            country="country",
-        ),
-        payment_type="bank_account",
-        payment_info=BankAccount(
-            account_number="accountNumber",
-        ),
-        type="individual",
-    ),
-)
-
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**request:** `CreateV1BeneficiariesRequest` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.beneficiaries.<a href="src/mesta/beneficiaries/client.py">get_v1</a>(...) -> GetV1BeneficiariesResponse</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Retrieves detailed information about a specific beneficiary account.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```python
-from mesta import Mesta
-from mesta.environment import MestaEnvironment
-
-client = Mesta(
-    api_key="<value>",
-    api_secret="<x-api-secret>",
-    environment=MestaEnvironment.PRODUCTION,
-)
-
-client.beneficiaries.get_v1(
-    beneficiary_id="beneficiaryId",
-)
-
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**beneficiary_id:** `str` — Unique identifier for the beneficiary.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
 <details><summary><code>client.beneficiaries.<a href="src/mesta/beneficiaries/client.py">delete</a>(...) -> DeleteBeneficiariesResponse</code></summary>
 <dl>
 <dd>
@@ -1689,115 +1179,6 @@ client.beneficiaries.delete(
 <dd>
 
 **beneficiary_id:** `str` — Unique identifier for the beneficiary.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.beneficiaries.<a href="src/mesta/beneficiaries/client.py">update_v1</a>(...) -> UpdateV1BeneficiariesResponse</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Updates an existing beneficiary's information. Note that certain fields cannot be modified after initial creation.
-
-Non-updatable fields:
-- type (individual/business)
-- identificationNumber (for business beneficiaries)
-- taxIdentificationNumber (for business beneficiaries)
-- bankAccountType
-- bankAccountNumber
-- bankCode
-
-Before updating a beneficiary, always check the validation rules using:
-GET /v1/validation-rules/beneficiaries?ownerType=[individual|business]&country=[ISO 3166-1 alpha-2 code]
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```python
-from mesta import Mesta, IndividualBeneficiaryAddress, BankAccount
-from mesta.environment import MestaEnvironment
-from mesta.beneficiaries import UpdateV1BeneficiariesRequestBody_Individual
-
-client = Mesta(
-    api_key="<value>",
-    api_secret="<x-api-secret>",
-    environment=MestaEnvironment.PRODUCTION,
-)
-
-client.beneficiaries.update_v1(
-    beneficiary_id="beneficiaryId",
-    request=UpdateV1BeneficiariesRequestBody_Individual(
-        first_name="firstName",
-        last_name="lastName",
-        address=IndividualBeneficiaryAddress(
-            street="street",
-            city="city",
-            postal_code="12345 or 00000",
-            country="country",
-        ),
-        payment_type="bank_account",
-        payment_info=BankAccount(
-            account_number="accountNumber",
-        ),
-        type="individual",
-    ),
-)
-
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**beneficiary_id:** `str` — Unique identifier for the beneficiary
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request:** `UpdateV1BeneficiariesRequestBody` 
     
 </dd>
 </dl>
@@ -2050,7 +1431,7 @@ client.beneficiaries.lookup_bank(
 </dl>
 </details>
 
-<details><summary><code>client.beneficiaries.<a href="src/mesta/beneficiaries/client.py">list_v2</a>(...) -> ListV2BeneficiariesResponse</code></summary>
+<details><summary><code>client.beneficiaries.<a href="src/mesta/beneficiaries/client.py">list</a>(...) -> ListBeneficiariesResponse</code></summary>
 <dl>
 <dd>
 
@@ -2086,7 +1467,7 @@ client = Mesta(
     environment=MestaEnvironment.PRODUCTION,
 )
 
-client.beneficiaries.list_v2()
+client.beneficiaries.list()
 
 ```
 </dd>
@@ -2118,7 +1499,7 @@ client.beneficiaries.list_v2()
 <dl>
 <dd>
 
-**sort_by:** `typing.Optional[ListV2BeneficiariesRequestSortBy]` — Field to sort by
+**sort_by:** `typing.Optional[ListBeneficiariesRequestSortBy]` — Field to sort by
     
 </dd>
 </dl>
@@ -2126,232 +1507,7 @@ client.beneficiaries.list_v2()
 <dl>
 <dd>
 
-**sort_order:** `typing.Optional[ListV2BeneficiariesRequestSortOrder]` — Sort order
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.beneficiaries.<a href="src/mesta/beneficiaries/client.py">create_v2</a>(...) -> CreateV2BeneficiariesResponse</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Create a new beneficiary with payment methods in a single request. This v2 endpoint allows you to create a beneficiary and attach payment methods simultaneously.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```python
-from mesta import Mesta
-from mesta.environment import MestaEnvironment
-from mesta.beneficiaries import CreateV2BeneficiariesRequestAddress, CreateV2BeneficiariesRequestPaymentMethodsItem
-
-client = Mesta(
-    api_key="<value>",
-    api_secret="<x-api-secret>",
-    environment=MestaEnvironment.PRODUCTION,
-)
-
-client.beneficiaries.create_v2(
-    type="individual",
-    address=CreateV2BeneficiariesRequestAddress(
-        street="123 Main St",
-        city="Manila",
-        postal_code="1000",
-        country="PH",
-    ),
-    payment_methods=[
-        CreateV2BeneficiariesRequestPaymentMethodsItem(
-            type="bank_account",
-            data={
-                "key": "value"
-            },
-        )
-    ],
-)
-
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**type:** `CreateV2BeneficiariesRequestType` — Type of beneficiary
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**address:** `CreateV2BeneficiariesRequestAddress` — Beneficiary address
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**payment_methods:** `typing.List[CreateV2BeneficiariesRequestPaymentMethodsItem]` — At least one payment method must be provided
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**first_name:** `typing.Optional[str]` — First name (required for individual type)
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**last_name:** `typing.Optional[str]` — Last name (required for individual type)
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**middle_name:** `typing.Optional[str]` — Middle name (optional, individual type only)
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**full_name:** `typing.Optional[str]` — Full business name (required for business type)
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**business_registration_number:** `typing.Optional[str]` — Business registration number (required for business type)
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**business_type:** `typing.Optional[CreateV2BeneficiariesRequestBusinessType]` — Type of business (optional)
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**email:** `typing.Optional[str]` — Beneficiary email
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**phone:** `typing.Optional[str]` — Beneficiary phone number
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**birth_date:** `typing.Optional[datetime.date]` — Date of birth (YYYY-MM-DD, individual type)
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**merchant_id:** `typing.Optional[str]` — Merchant ID (optional, auto-assigned from API key)
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**identity:** `typing.Optional[CreateV2BeneficiariesRequestIdentity]` — Identity document details
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**metadata:** `typing.Optional[typing.Dict[str, typing.Any]]` — Custom metadata
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**beneficiary_relationship:** `typing.Optional[BeneficiaryRelationship]` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**purpose_of_payment:** `typing.Optional[PurposeOfPayment]` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**purpose_of_payment_document:** `typing.Optional[PurposeOfPaymentDocumentRequest]` 
+**sort_order:** `typing.Optional[ListBeneficiariesRequestSortOrder]` — Sort order
     
 </dd>
 </dl>
@@ -2371,7 +1527,7 @@ client.beneficiaries.create_v2(
 </dl>
 </details>
 
-<details><summary><code>client.beneficiaries.<a href="src/mesta/beneficiaries/client.py">get_v2</a>(...) -> GetV2BeneficiariesResponse</code></summary>
+<details><summary><code>client.beneficiaries.<a href="src/mesta/beneficiaries/client.py">get</a>(...) -> GetBeneficiariesResponse</code></summary>
 <dl>
 <dd>
 
@@ -2407,7 +1563,7 @@ client = Mesta(
     environment=MestaEnvironment.PRODUCTION,
 )
 
-client.beneficiaries.get_v2(
+client.beneficiaries.get(
     id="id",
 )
 
@@ -2445,7 +1601,7 @@ client.beneficiaries.get_v2(
 </dl>
 </details>
 
-<details><summary><code>client.beneficiaries.<a href="src/mesta/beneficiaries/client.py">update_v2</a>(...) -> UpdateV2BeneficiariesResponse</code></summary>
+<details><summary><code>client.beneficiaries.<a href="src/mesta/beneficiaries/client.py">update</a>(...) -> UpdateBeneficiariesResponse</code></summary>
 <dl>
 <dd>
 
@@ -2481,7 +1637,7 @@ client = Mesta(
     environment=MestaEnvironment.PRODUCTION,
 )
 
-client.beneficiaries.update_v2(
+client.beneficiaries.update(
     id="id",
 )
 
@@ -2507,7 +1663,7 @@ client.beneficiaries.update_v2(
 <dl>
 <dd>
 
-**type:** `typing.Optional[UpdateV2BeneficiariesRequestType]` 
+**type:** `typing.Optional[UpdateBeneficiariesRequestType]` 
     
 </dd>
 </dl>
@@ -2571,7 +1727,7 @@ client.beneficiaries.update_v2(
 <dl>
 <dd>
 
-**address:** `typing.Optional[UpdateV2BeneficiariesRequestAddress]` 
+**address:** `typing.Optional[UpdateBeneficiariesRequestAddress]` 
     
 </dd>
 </dl>
@@ -2623,180 +1779,7 @@ client.beneficiaries.update_v2(
 </dl>
 </details>
 
-<details><summary><code>client.beneficiaries.<a href="src/mesta/beneficiaries/client.py">validate</a>(...) -> ValidateBeneficiariesResponse</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Validates a beneficiary's information, checking that all required fields are present and correct for the beneficiary's country and payment method configuration.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```python
-from mesta import Mesta
-from mesta.environment import MestaEnvironment
-
-client = Mesta(
-    api_key="<value>",
-    api_secret="<x-api-secret>",
-    environment=MestaEnvironment.PRODUCTION,
-)
-
-client.beneficiaries.validate(
-    beneficiary_id="beneficiaryId",
-)
-
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**beneficiary_id:** `str` — Unique identifier of the beneficiary
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.beneficiaries.<a href="src/mesta/beneficiaries/client.py">update_verification</a>(...) -> UpdateVerificationBeneficiariesResponse</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Updates the verification status of a beneficiary. Used to mark a beneficiary as verified, pending, or declined after completing identity checks.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```python
-from mesta import Mesta
-from mesta.environment import MestaEnvironment
-
-client = Mesta(
-    api_key="<value>",
-    api_secret="<x-api-secret>",
-    environment=MestaEnvironment.PRODUCTION,
-)
-
-client.beneficiaries.update_verification(
-    beneficiary_id="beneficiaryId",
-    status="unverified",
-)
-
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**beneficiary_id:** `str` — Unique identifier of the beneficiary
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**status:** `UpdateVerificationBeneficiariesRequestStatus` — New verification status for the beneficiary
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**external_ref_id:** `typing.Optional[str]` — External reference ID for the verification
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**verification_result:** `typing.Optional[typing.Dict[str, typing.Any]]` — Arbitrary JSON object containing verification result details
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.beneficiaries.<a href="src/mesta/beneficiaries/client.py">create_v3</a>(...) -> CreateV3BeneficiariesResponse</code></summary>
+<details><summary><code>client.beneficiaries.<a href="src/mesta/beneficiaries/client.py">create</a>(...) -> CreateBeneficiariesResponse</code></summary>
 <dl>
 <dd>
 
@@ -2825,7 +1808,7 @@ Create a new beneficiary with mandatory compliance fields. Same as V2 but `benef
 ```python
 from mesta import Mesta
 from mesta.environment import MestaEnvironment
-from mesta.beneficiaries import CreateV3BeneficiariesRequestAddress, CreateV3BeneficiariesRequestPaymentMethodsItem
+from mesta.beneficiaries import CreateBeneficiariesRequestAddress, CreateBeneficiariesRequestPaymentMethodsItem
 
 client = Mesta(
     api_key="<value>",
@@ -2833,16 +1816,16 @@ client = Mesta(
     environment=MestaEnvironment.PRODUCTION,
 )
 
-client.beneficiaries.create_v3(
+client.beneficiaries.create(
     type="individual",
-    address=CreateV3BeneficiariesRequestAddress(
+    address=CreateBeneficiariesRequestAddress(
         street="123 Main St",
         city="Manila",
         postal_code="1000",
         country="PH",
     ),
     payment_methods=[
-        CreateV3BeneficiariesRequestPaymentMethodsItem(
+        CreateBeneficiariesRequestPaymentMethodsItem(
             type="bank_account",
             data={
                 "key": "value"
@@ -2867,7 +1850,7 @@ client.beneficiaries.create_v3(
 <dl>
 <dd>
 
-**type:** `CreateV3BeneficiariesRequestType` — Type of beneficiary
+**type:** `CreateBeneficiariesRequestType` — Type of beneficiary
     
 </dd>
 </dl>
@@ -2875,7 +1858,7 @@ client.beneficiaries.create_v3(
 <dl>
 <dd>
 
-**address:** `CreateV3BeneficiariesRequestAddress` — Beneficiary address
+**address:** `CreateBeneficiariesRequestAddress` — Beneficiary address
     
 </dd>
 </dl>
@@ -2883,7 +1866,7 @@ client.beneficiaries.create_v3(
 <dl>
 <dd>
 
-**payment_methods:** `typing.List[CreateV3BeneficiariesRequestPaymentMethodsItem]` — At least one payment method must be provided
+**payment_methods:** `typing.List[CreateBeneficiariesRequestPaymentMethodsItem]` — At least one payment method must be provided
     
 </dd>
 </dl>
@@ -2947,7 +1930,7 @@ client.beneficiaries.create_v3(
 <dl>
 <dd>
 
-**business_type:** `typing.Optional[CreateV3BeneficiariesRequestBusinessType]` — Type of business (optional)
+**business_type:** `typing.Optional[CreateBeneficiariesRequestBusinessType]` — Type of business (optional)
     
 </dd>
 </dl>
@@ -2987,7 +1970,7 @@ client.beneficiaries.create_v3(
 <dl>
 <dd>
 
-**identity:** `typing.Optional[CreateV3BeneficiariesRequestIdentity]` — Identity document details
+**identity:** `typing.Optional[CreateBeneficiariesRequestIdentity]` — Identity document details
     
 </dd>
 </dl>
@@ -3429,146 +2412,6 @@ client.orders.list()
 </dl>
 </details>
 
-<details><summary><code>client.orders.<a href="src/mesta/orders/client.py">create_v1</a>(...) -> CreateV1OrdersResponse</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Initiates a order for converting and transferring USD or USDC to a specified target currency, using a previously obtained quote.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```python
-from mesta import Mesta
-from mesta.environment import MestaEnvironment
-
-client = Mesta(
-    api_key="<value>",
-    api_secret="<x-api-secret>",
-    environment=MestaEnvironment.PRODUCTION,
-)
-
-client.orders.create_v1(
-    accepted_quote_id="acceptedQuoteId",
-    sender_id="senderId",
-    beneficiary_id="beneficiaryId",
-)
-
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**accepted_quote_id:** `str` — Unique ID for the quote to use for this order.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**sender_id:** `str` — Unique identifier for the sender.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**beneficiary_id:** `str` — Unique identifier for the beneficiary.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**purpose:** `typing.Optional[Purpose]` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**metadata:** `typing.Optional[typing.Dict[str, typing.Any]]` — Custom metadata to attach to the order
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**source_of_funds:** `typing.Optional[SourceOfFunds]` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**beneficiary_relationship:** `typing.Optional[BeneficiaryRelationship]` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**documents:** `typing.Optional[typing.List[OrderDocumentInput]]` — Optional array of supporting documents
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**customer_reference_id:** `typing.Optional[str]` — Your internal reference ID for this order
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
 <details><summary><code>client.orders.<a href="src/mesta/orders/client.py">get</a>(...) -> GetOrdersResponse</code></summary>
 <dl>
 <dd>
@@ -3873,7 +2716,7 @@ client.orders.cancel(
 </dl>
 </details>
 
-<details><summary><code>client.orders.<a href="src/mesta/orders/client.py">create_v2</a>(...) -> CreateV2OrdersResponse</code></summary>
+<details><summary><code>client.orders.<a href="src/mesta/orders/client.py">create</a>(...) -> CreateOrdersResponse</code></summary>
 <dl>
 <dd>
 
@@ -3909,7 +2752,7 @@ client = Mesta(
     environment=MestaEnvironment.PRODUCTION,
 )
 
-client.orders.create_v2(
+client.orders.create(
     sender_id="550e8400-e29b-41d4-a716-446655440001",
     payment_method_id="550e8400-e29b-41d4-a716-446655440002",
     accepted_quote_id="550e8400-e29b-41d4-a716-446655440003",
@@ -5320,6 +4163,218 @@ client.events.list()
 </dl>
 </details>
 
+## Auth
+<details><summary><code>client.auth.<a href="src/mesta/auth/client.py">merchant_login</a>(...) -> MerchantLoginAuthResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Authenticates a merchant user with email and password. Returns access and refresh tokens upon successful authentication. Supports MFA via TOTP.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from mesta import Mesta
+from mesta.environment import MestaEnvironment
+
+client = Mesta(
+    api_key="<value>",
+    api_secret="<x-api-secret>",
+    environment=MestaEnvironment.PRODUCTION,
+)
+
+client.auth.merchant_login(
+    email="email",
+    password="password",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**email:** `str` — Merchant user email address
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**password:** `str` — Account password
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**totp:** `typing.Optional[str]` — Time-based one-time password for MFA (if MFA is enabled)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.auth.<a href="src/mesta/auth/client.py">authorize</a>(...) -> AuthorizeAuthResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Validates an access token or API key and returns the authenticated principal with their permissions. Used internally for request authorization.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from mesta import Mesta
+from mesta.environment import MestaEnvironment
+
+client = Mesta(
+    api_key="<value>",
+    api_secret="<x-api-secret>",
+    environment=MestaEnvironment.PRODUCTION,
+)
+
+client.auth.authorize()
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**host:** `typing.Optional[str]` — The host of the originating request
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**authorization_header:** `typing.Optional[str]` — The Authorization header value (Bearer token)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**permissions_required:** `typing.Optional[typing.List[str]]` — List of permissions required for the request
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**permission_check_type:** `typing.Optional[AuthorizeAuthRequestPermissionCheckType]` — Whether all permissions are required (and) or any one suffices (or)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**should_authorize:** `typing.Optional[bool]` — Whether to enforce permission checks
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**api_key:** `typing.Optional[str]` — API key for key-based authentication
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**api_secret:** `typing.Optional[str]` — API secret for key-based authentication
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 ## ApiKeys
 <details><summary><code>client.api_keys.<a href="src/mesta/api_keys/client.py">list</a>(...) -> ListApiKeysResponse</code></summary>
 <dl>
@@ -6031,328 +5086,6 @@ client.beneficiaries.documents.get_purpose_of_payment_presigned_url(
 </dl>
 </details>
 
-## Merchants Withdrawals
-<details><summary><code>client.merchants.withdrawals.<a href="src/mesta/merchants/withdrawals/client.py">list</a>(...)</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Paginated list of your withdrawals. Poll this or the by-id endpoint to track progress — there are no withdrawal webhooks today.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```python
-from mesta import Mesta
-from mesta.environment import MestaEnvironment
-import datetime
-
-client = Mesta(
-    api_key="<value>",
-    api_secret="<x-api-secret>",
-    environment=MestaEnvironment.PRODUCTION,
-)
-
-client.merchants.withdrawals.list(
-    sender_id="c715b301-9654-438a-8893-72c90c8ce467",
-    created_from=datetime.datetime.fromisoformat("2026-08-01T00:00:00+00:00"),
-    created_to=datetime.datetime.fromisoformat("2026-08-31T23:59:59+00:00"),
-)
-
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**page:** `typing.Optional[int]` — Page number (0-indexed)
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**page_size:** `typing.Optional[int]` — Number of records per page
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**status:** `typing.Optional[ListWithdrawalsRequestStatus]` — Filter by status. `needs_reconciliation` means the outcome is not yet known — not that the withdrawal failed.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**chain:** `typing.Optional[ListWithdrawalsRequestChain]` — Filter by network
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**currency:** `typing.Optional[ListWithdrawalsRequestCurrency]` — Filter by currency
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**sender_id:** `typing.Optional[str]` — Filter to one sender's withdrawals
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**created_from:** `typing.Optional[datetime.datetime]` — Full ISO-8601 datetime WITH a timezone offset. A bare date is rejected rather than silently read in your local timezone.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**created_to:** `typing.Optional[datetime.datetime]` — Full ISO-8601 datetime WITH a timezone offset.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.merchants.withdrawals.<a href="src/mesta/merchants/withdrawals/client.py">create</a>(...)</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Withdraw your own balance to the wallet you registered for that network.
-
-The destination is NOT supplied in the request. It is resolved from your registered, verified withdrawal wallet for the network implied by `currency`, so there is no request shape that sends funds to an address you have not already registered and verified. Register wallets in the merchant portal — registration cannot be done over the API.
-
-No fee is charged; Mesta absorbs the network fee.
-
-Only one withdrawal may be in flight per network at a time.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```python
-from mesta import Mesta
-from mesta.environment import MestaEnvironment
-
-client = Mesta(
-    api_key="<value>",
-    api_secret="<x-api-secret>",
-    environment=MestaEnvironment.PRODUCTION,
-)
-
-client.merchants.withdrawals.create(
-    idempotency_key="3f2a1c40-9b7e-4d51-8a62-0c9d4e7b1f88",
-    currency="USDC_ETH",
-    amount="250.00",
-)
-
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**idempotency_key:** `str` — Client-generated UUID, one per withdrawal attempt. Resubmitting the same key returns the original withdrawal instead of creating a second one. Reuse it when retrying a request whose response you did not receive.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**currency:** `CreateWithdrawalsRequestCurrency` — Determines the network, and therefore which registered wallet receives the funds.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**amount:** `str` — Decimal STRING, at most 2 decimal places, greater than zero. Send a string, not a number — precision matters.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**sender_id:** `typing.Optional[str]` — The sender whose balance to withdraw. Omit and set `pooled: true` to withdraw from your pooled balance instead.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**pooled:** `typing.Optional[bool]` — Set true to withdraw from your pooled balance. Mutually exclusive with `senderId`.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.merchants.withdrawals.<a href="src/mesta/merchants/withdrawals/client.py">get</a>(...)</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-A single withdrawal. `txHash` is populated once the status is `completed`. `failureReason` carries one of `screening_rejected`, `insufficient_onchain_funds`, `send_failed` or `undecidable`.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```python
-from mesta import Mesta
-from mesta.environment import MestaEnvironment
-
-client = Mesta(
-    api_key="<value>",
-    api_secret="<x-api-secret>",
-    environment=MestaEnvironment.PRODUCTION,
-)
-
-client.merchants.withdrawals.get(
-    id="b73e567f-71cc-49fa-ad13-e68e3ca57be4",
-)
-
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**id:** `str` — Withdrawal ID
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
 ## Merchants Accounts
 <details><summary><code>client.merchants.accounts.<a href="src/mesta/merchants/accounts/client.py">list</a>(...) -> ListAccountsResponse</code></summary>
 <dl>
@@ -6431,6 +5164,291 @@ client.merchants.accounts.list()
 <dd>
 
 **sort_order:** `typing.Optional[ListAccountsRequestSortOrder]` — Sort order
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.merchants.accounts.<a href="src/mesta/merchants/accounts/client.py">list_balances</a>() -> ListBalancesAccountsResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Retrieve the current balances for all merchant accounts across different currencies.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from mesta import Mesta
+from mesta.environment import MestaEnvironment
+
+client = Mesta(
+    api_key="<value>",
+    api_secret="<x-api-secret>",
+    environment=MestaEnvironment.PRODUCTION,
+)
+
+client.merchants.accounts.list_balances()
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.merchants.accounts.<a href="src/mesta/merchants/accounts/client.py">list_sender_balances</a>(...) -> ListSenderBalancesAccountsResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Retrieve the current balances for all senders, optionally filtered by currency.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from mesta import Mesta
+from mesta.environment import MestaEnvironment
+
+client = Mesta(
+    api_key="<value>",
+    api_secret="<x-api-secret>",
+    environment=MestaEnvironment.PRODUCTION,
+)
+
+client.merchants.accounts.list_sender_balances(
+    currency="USD",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**currency:** `ListSenderBalancesAccountsRequestCurrency` — Filter balances by currency code
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+## Merchants Transactions
+<details><summary><code>client.merchants.transactions.<a href="src/mesta/merchants/transactions/client.py">list</a>(...) -> ListTransactionsResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Retrieves a paginated list of merchant transactions with optional filtering.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from mesta import Mesta
+from mesta.environment import MestaEnvironment
+
+client = Mesta(
+    api_key="<value>",
+    api_secret="<x-api-secret>",
+    environment=MestaEnvironment.PRODUCTION,
+)
+
+client.merchants.transactions.list(
+    sort_by="createdAt",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**currency:** `typing.Optional[str]` — Filter by currency code
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**type:** `typing.Optional[str]` — Filter by transaction type
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**sender_id:** `typing.Optional[str]` — Filter by sender ID
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**transaction_id:** `typing.Optional[str]` — Filter by transaction ID
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**virtual_transaction_id:** `typing.Optional[str]` — Filter by virtual transaction ID
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**order_id:** `typing.Optional[str]` — Filter by order ID
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**page_size:** `typing.Optional[int]` — Records per page
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**page:** `typing.Optional[int]` — Page number
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**sort_by:** `typing.Optional[str]` — Sort column
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**sort_order:** `typing.Optional[ListTransactionsRequestSortOrder]` — Sort order
     
 </dd>
 </dl>
@@ -7142,155 +6160,6 @@ client.merchants.source_wallet_addresses.delete(
 <dd>
 
 **source_wallet_address_id:** `str` — ID of the source wallet address to delete
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-## Merchants DepositWalletAddresses
-<details><summary><code>client.merchants.deposit_wallet_addresses.<a href="src/mesta/merchants/deposit_wallet_addresses/client.py">generate</a>(...) -> GenerateDepositWalletAddressesResponse</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Generates deposit wallet addresses across supported blockchain networks for a merchant.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```python
-from mesta import Mesta
-from mesta.environment import MestaEnvironment
-
-client = Mesta(
-    api_key="<value>",
-    api_secret="<x-api-secret>",
-    environment=MestaEnvironment.PRODUCTION,
-)
-
-client.merchants.deposit_wallet_addresses.generate(
-    merchant_id="merchantId",
-)
-
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**merchant_id:** `str` — Unique identifier of the merchant
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.merchants.deposit_wallet_addresses.<a href="src/mesta/merchants/deposit_wallet_addresses/client.py">confirm</a>(...) -> ConfirmDepositWalletAddressesResponse</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Confirms and finalizes the deposit wallet addresses for a merchant. This should be called after generate-deposit-wallet-addresses to complete the setup process.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```python
-from mesta import Mesta
-from mesta.environment import MestaEnvironment
-
-client = Mesta(
-    api_key="<value>",
-    api_secret="<x-api-secret>",
-    environment=MestaEnvironment.PRODUCTION,
-)
-
-client.merchants.deposit_wallet_addresses.confirm(
-    merchant_id="merchantId",
-)
-
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**merchant_id:** `str` — Unique identifier of the merchant
     
 </dd>
 </dl>
@@ -8830,164 +7699,7 @@ client.senders.source_wallet_addresses.delete(
 </details>
 
 ## Senders Ubos
-<details><summary><code>client.senders.ubos.<a href="src/mesta/senders/ubos/client.py">create_v1</a>(...) -> CreateV1UbosResponse</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Creates a new UBO (Ultimate Beneficial Owner) for a specific sender.  Note: Document requirements (documentFront, documentBack) vary by country. Please refer to the validation-rules endpoint with ownerType='business' and the specific country to determine exact documentation requirements. Multiple UBOs can be added by calling this endpoint multiple times. The total ownership percentage across all UBOs should not exceed 100%.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```python
-from mesta import Mesta
-from mesta.environment import MestaEnvironment
-import datetime
-from mesta.senders.ubos import CreateV1UbosRequestAddress, CreateV1UbosRequestIdentity
-
-client = Mesta(
-    api_key="<value>",
-    api_secret="<x-api-secret>",
-    environment=MestaEnvironment.PRODUCTION,
-)
-
-client.senders.ubos.create_v1(
-    first_name="firstName",
-    last_name="lastName",
-    birth_date=datetime.date.fromisoformat("2023-01-15"),
-    phone="phone",
-    email="email",
-    ownership_percent=1.1,
-    address=CreateV1UbosRequestAddress(
-        street="street",
-        city="city",
-        postal_code="12345 or 00000",
-        country="country",
-    ),
-    sender_id="senderId",
-    identity=CreateV1UbosRequestIdentity(
-        document_type="PASSPORT",
-        country_code="countryCode",
-        document_number="documentNumber",
-    ),
-)
-
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**first_name:** `str` — First name of the UBO (Ultimate Beneficial Owner).
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**last_name:** `str` — Last name of the UBO (Ultimate Beneficial Owner).
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**birth_date:** `datetime.date` — Birthdate of the UBO (Ultimate Beneficial Owner) in the format yyyy-mm-dd.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**phone:** `str` — Phone number of the UBO (Ultimate Beneficial Owner) in international format (e.g., +11234567890).
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**email:** `str` — Email address of the UBO (Ultimate Beneficial Owner).
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**ownership_percent:** `float` — Ownership percentage of the UBO in the company
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**address:** `CreateV1UbosRequestAddress` — UBO postal address.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**sender_id:** `str` — Unique identifier for the sender.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**identity:** `CreateV1UbosRequestIdentity` — Ultimate Beneficial Owner information. Note: Document requirements (documentFront, documentBack) vary by country. Please refer to the validation-rules endpoint with ownerType='ubo' and the specific country to determine exact documentation requirements.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.senders.ubos.<a href="src/mesta/senders/ubos/client.py">create_v2</a>(...) -> CreateV2UbosResponse</code></summary>
+<details><summary><code>client.senders.ubos.<a href="src/mesta/senders/ubos/client.py">create</a>(...) -> CreateUbosResponse</code></summary>
 <dl>
 <dd>
 
@@ -9030,7 +7742,7 @@ Additional v2 details:
 from mesta import Mesta
 from mesta.environment import MestaEnvironment
 import datetime
-from mesta.senders.ubos import CreateV2UbosRequestAddress, CreateV2UbosRequestIdentity
+from mesta.senders.ubos import CreateUbosRequestAddress, CreateUbosRequestIdentity
 
 client = Mesta(
     api_key="<value>",
@@ -9038,21 +7750,21 @@ client = Mesta(
     environment=MestaEnvironment.PRODUCTION,
 )
 
-client.senders.ubos.create_v2(
+client.senders.ubos.create(
     first_name="firstName",
     last_name="lastName",
     birth_date=datetime.date.fromisoformat("2023-01-15"),
     phone="phone",
     email="email",
     ownership_percent=1.1,
-    address=CreateV2UbosRequestAddress(
+    address=CreateUbosRequestAddress(
         street="street",
         city="city",
         postal_code="postalCode",
         country="country",
     ),
     sender_id="senderId",
-    identity=CreateV2UbosRequestIdentity(
+    identity=CreateUbosRequestIdentity(
         document_type="PASSPORT",
         country_code="countryCode",
         document_number="documentNumber",
@@ -9122,7 +7834,7 @@ client.senders.ubos.create_v2(
 <dl>
 <dd>
 
-**address:** `CreateV2UbosRequestAddress` — UBO postal address.
+**address:** `CreateUbosRequestAddress` — UBO postal address.
     
 </dd>
 </dl>
@@ -9138,7 +7850,7 @@ client.senders.ubos.create_v2(
 <dl>
 <dd>
 
-**identity:** `CreateV2UbosRequestIdentity` — Identity information for the UBO.
+**identity:** `CreateUbosRequestIdentity` — Identity information for the UBO.
     
 </dd>
 </dl>
@@ -9194,7 +7906,7 @@ client.senders.ubos.create_v2(
 <dl>
 <dd>
 
-**pep_questionnaire:** `typing.Optional[CreateV2UbosRequestPepQuestionnaire]` — Required when `pepDeclaration` is true. Contains declarationType with conditional `self` or `association` sections.
+**pep_questionnaire:** `typing.Optional[CreateUbosRequestPepQuestionnaire]` — Required when `pepDeclaration` is true. Contains declarationType with conditional `self` or `association` sections.
     
 </dd>
 </dl>
@@ -9832,97 +8544,6 @@ client.senders.documents.delete(
 </dl>
 </details>
 
-<details><summary><code>client.senders.documents.<a href="src/mesta/senders/documents/client.py">get_presigned_url</a>(...) -> GetPresignedUrlDocumentsResponse</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Retrieves a temporary presigned URL for downloading a sender document. The URL expires after 5 minutes.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```python
-from mesta import Mesta
-from mesta.environment import MestaEnvironment
-
-client = Mesta(
-    api_key="<value>",
-    api_secret="<x-api-secret>",
-    environment=MestaEnvironment.PRODUCTION,
-)
-
-client.senders.documents.get_presigned_url(
-    id="id",
-    document_id="documentId",
-)
-
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**id:** `str` — ID of the sender
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**document_id:** `str` — ID of the document
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**type:** `typing.Optional[GetPresignedUrlDocumentsRequestType]` — Type of document to retrieve
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
 ## Senders TermsOfService
 <details><summary><code>client.senders.terms_of_service.<a href="src/mesta/senders/terms_of_service/client.py">get_status</a>(...) -> GetStatusTermsOfServiceResponse</code></summary>
 <dl>
@@ -9979,88 +8600,6 @@ client.senders.terms_of_service.get_status(
 <dd>
 
 **sender_id:** `str` — Unique identifier for the sender
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.senders.terms_of_service.<a href="src/mesta/senders/terms_of_service/client.py">create_link</a>(...) -> CreateLinkTermsOfServiceResponse</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Generates a Terms of Service acceptance link for a sender. If a valid link already exists and regenerate is not set to true, returns the existing link.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```python
-from mesta import Mesta
-from mesta.environment import MestaEnvironment
-
-client = Mesta(
-    api_key="<value>",
-    api_secret="<x-api-secret>",
-    environment=MestaEnvironment.PRODUCTION,
-)
-
-client.senders.terms_of_service.create_link(
-    id="id",
-)
-
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**id:** `str` — ID of the sender
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**regenerate:** `typing.Optional[bool]` — When true, forces generation of a new TOS link even if one already exists
     
 </dd>
 </dl>
@@ -10154,166 +8693,7 @@ client.senders.terms_of_service.get_acceptance(
 </dl>
 </details>
 
-<details><summary><code>client.senders.terms_of_service.<a href="src/mesta/senders/terms_of_service/client.py">accept</a>(...) -> AcceptTermsOfServiceResponse</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Accepts the Terms of Service on behalf of a sender using the provided token. This is a public endpoint that does not require authentication. The client's IP address and user agent are recorded automatically.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```python
-from mesta import Mesta
-from mesta.environment import MestaEnvironment
-
-client = Mesta(
-    api_key="<value>",
-    api_secret="<x-api-secret>",
-    environment=MestaEnvironment.PRODUCTION,
-)
-
-client.senders.terms_of_service.accept(
-    token="token",
-)
-
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**token:** `str` — TOS acceptance token (base64url encoded)
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
 ## Senders DepositBankAccounts
-<details><summary><code>client.senders.deposit_bank_accounts.<a href="src/mesta/senders/deposit_bank_accounts/client.py">generate_eur_gbp</a>(...) -> GenerateEurGbpDepositBankAccountsResponse</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**Deprecated.** Use [`POST /v1/senders/{id}/generate-ondemand-deposit-bank-accounts`](#post_v1-senders-id-generate-ondemand-deposit-bank-accounts) instead.
-
-Initiates the creation of EUR or GBP virtual IBAN deposit bank accounts for a sender. This is an asynchronous operation that may take up to 60 seconds to complete.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```python
-from mesta import Mesta
-from mesta.environment import MestaEnvironment
-
-client = Mesta(
-    api_key="<value>",
-    api_secret="<x-api-secret>",
-    environment=MestaEnvironment.PRODUCTION,
-)
-
-client.senders.deposit_bank_accounts.generate_eur_gbp(
-    id="id",
-    currency="EUR",
-)
-
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**id:** `str` — ID of the sender
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**currency:** `GenerateEurGbpDepositBankAccountsRequestCurrency` — The currency for the deposit bank account. Only EUR and GBP are supported.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
 <details><summary><code>client.senders.deposit_bank_accounts.<a href="src/mesta/senders/deposit_bank_accounts/client.py">generate_on_demand</a>(...) -> GenerateOnDemandDepositBankAccountsResponse</code></summary>
 <dl>
 <dd>
@@ -10378,81 +8758,6 @@ client.senders.deposit_bank_accounts.generate_on_demand(
 <dd>
 
 **currency:** `GenerateOnDemandDepositBankAccountsRequestCurrency` — The currency for the deposit bank account.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-## Senders DepositWalletAddresses
-<details><summary><code>client.senders.deposit_wallet_addresses.<a href="src/mesta/senders/deposit_wallet_addresses/client.py">confirm</a>(...) -> ConfirmDepositWalletAddressesResponse</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Confirms and finalizes the deposit wallet addresses for a sender. This should be called after generate-deposit-wallet-addresses to complete the setup process.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```python
-from mesta import Mesta
-from mesta.environment import MestaEnvironment
-
-client = Mesta(
-    api_key="<value>",
-    api_secret="<x-api-secret>",
-    environment=MestaEnvironment.PRODUCTION,
-)
-
-client.senders.deposit_wallet_addresses.confirm(
-    id="id",
-)
-
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**id:** `str` — ID of the sender
     
 </dd>
 </dl>

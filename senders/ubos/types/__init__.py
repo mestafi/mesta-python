@@ -6,44 +6,32 @@ import typing
 from importlib import import_module
 
 if typing.TYPE_CHECKING:
-    from .create_v1ubos_request_address import CreateV1UbosRequestAddress
-    from .create_v1ubos_request_identity import CreateV1UbosRequestIdentity
-    from .create_v1ubos_request_identity_document_type import CreateV1UbosRequestIdentityDocumentType
-    from .create_v1ubos_response import CreateV1UbosResponse
-    from .create_v1ubos_response_data import CreateV1UbosResponseData
-    from .create_v1ubos_response_data_address import CreateV1UbosResponseDataAddress
-    from .create_v1ubos_response_data_identity import CreateV1UbosResponseDataIdentity
-    from .create_v1ubos_response_data_identity_document_type import CreateV1UbosResponseDataIdentityDocumentType
-    from .create_v1ubos_response_data_kyc import CreateV1UbosResponseDataKyc
-    from .create_v1ubos_response_data_kyc_status import CreateV1UbosResponseDataKycStatus
-    from .create_v2ubos_request_address import CreateV2UbosRequestAddress
-    from .create_v2ubos_request_identity import CreateV2UbosRequestIdentity
-    from .create_v2ubos_request_identity_document_type import CreateV2UbosRequestIdentityDocumentType
-    from .create_v2ubos_request_pep_questionnaire import CreateV2UbosRequestPepQuestionnaire
-    from .create_v2ubos_request_pep_questionnaire_association import CreateV2UbosRequestPepQuestionnaireAssociation
-    from .create_v2ubos_request_pep_questionnaire_declaration_type import (
-        CreateV2UbosRequestPepQuestionnaireDeclarationType,
+    from .create_ubos_request_address import CreateUbosRequestAddress
+    from .create_ubos_request_identity import CreateUbosRequestIdentity
+    from .create_ubos_request_identity_document_type import CreateUbosRequestIdentityDocumentType
+    from .create_ubos_request_pep_questionnaire import CreateUbosRequestPepQuestionnaire
+    from .create_ubos_request_pep_questionnaire_association import CreateUbosRequestPepQuestionnaireAssociation
+    from .create_ubos_request_pep_questionnaire_declaration_type import CreateUbosRequestPepQuestionnaireDeclarationType
+    from .create_ubos_request_pep_questionnaire_self import CreateUbosRequestPepQuestionnaireSelf
+    from .create_ubos_request_pep_questionnaire_self_pep_category import (
+        CreateUbosRequestPepQuestionnaireSelfPepCategory,
     )
-    from .create_v2ubos_request_pep_questionnaire_self import CreateV2UbosRequestPepQuestionnaireSelf
-    from .create_v2ubos_request_pep_questionnaire_self_pep_category import (
-        CreateV2UbosRequestPepQuestionnaireSelfPepCategory,
+    from .create_ubos_response import CreateUbosResponse
+    from .create_ubos_response_data import CreateUbosResponseData
+    from .create_ubos_response_data_documents_item import CreateUbosResponseDataDocumentsItem
+    from .create_ubos_response_data_documents_item_type import CreateUbosResponseDataDocumentsItemType
+    from .create_ubos_response_data_kyc import CreateUbosResponseDataKyc
+    from .create_ubos_response_data_kyc_status import CreateUbosResponseDataKycStatus
+    from .create_ubos_response_data_pep_questionnaire import CreateUbosResponseDataPepQuestionnaire
+    from .create_ubos_response_data_pep_questionnaire_association import (
+        CreateUbosResponseDataPepQuestionnaireAssociation,
     )
-    from .create_v2ubos_response import CreateV2UbosResponse
-    from .create_v2ubos_response_data import CreateV2UbosResponseData
-    from .create_v2ubos_response_data_documents_item import CreateV2UbosResponseDataDocumentsItem
-    from .create_v2ubos_response_data_documents_item_type import CreateV2UbosResponseDataDocumentsItemType
-    from .create_v2ubos_response_data_kyc import CreateV2UbosResponseDataKyc
-    from .create_v2ubos_response_data_kyc_status import CreateV2UbosResponseDataKycStatus
-    from .create_v2ubos_response_data_pep_questionnaire import CreateV2UbosResponseDataPepQuestionnaire
-    from .create_v2ubos_response_data_pep_questionnaire_association import (
-        CreateV2UbosResponseDataPepQuestionnaireAssociation,
+    from .create_ubos_response_data_pep_questionnaire_declaration_type import (
+        CreateUbosResponseDataPepQuestionnaireDeclarationType,
     )
-    from .create_v2ubos_response_data_pep_questionnaire_declaration_type import (
-        CreateV2UbosResponseDataPepQuestionnaireDeclarationType,
-    )
-    from .create_v2ubos_response_data_pep_questionnaire_self import CreateV2UbosResponseDataPepQuestionnaireSelf
-    from .create_v2ubos_response_data_pep_questionnaire_self_pep_category import (
-        CreateV2UbosResponseDataPepQuestionnaireSelfPepCategory,
+    from .create_ubos_response_data_pep_questionnaire_self import CreateUbosResponseDataPepQuestionnaireSelf
+    from .create_ubos_response_data_pep_questionnaire_self_pep_category import (
+        CreateUbosResponseDataPepQuestionnaireSelfPepCategory,
     )
     from .delete_ubos_response import DeleteUbosResponse
     from .get_ubos_response import GetUbosResponse
@@ -108,35 +96,25 @@ if typing.TYPE_CHECKING:
         UpdateUbosResponseDataPepQuestionnaireSelfPepCategory,
     )
 _dynamic_imports: typing.Dict[str, str] = {
-    "CreateV1UbosRequestAddress": ".create_v1ubos_request_address",
-    "CreateV1UbosRequestIdentity": ".create_v1ubos_request_identity",
-    "CreateV1UbosRequestIdentityDocumentType": ".create_v1ubos_request_identity_document_type",
-    "CreateV1UbosResponse": ".create_v1ubos_response",
-    "CreateV1UbosResponseData": ".create_v1ubos_response_data",
-    "CreateV1UbosResponseDataAddress": ".create_v1ubos_response_data_address",
-    "CreateV1UbosResponseDataIdentity": ".create_v1ubos_response_data_identity",
-    "CreateV1UbosResponseDataIdentityDocumentType": ".create_v1ubos_response_data_identity_document_type",
-    "CreateV1UbosResponseDataKyc": ".create_v1ubos_response_data_kyc",
-    "CreateV1UbosResponseDataKycStatus": ".create_v1ubos_response_data_kyc_status",
-    "CreateV2UbosRequestAddress": ".create_v2ubos_request_address",
-    "CreateV2UbosRequestIdentity": ".create_v2ubos_request_identity",
-    "CreateV2UbosRequestIdentityDocumentType": ".create_v2ubos_request_identity_document_type",
-    "CreateV2UbosRequestPepQuestionnaire": ".create_v2ubos_request_pep_questionnaire",
-    "CreateV2UbosRequestPepQuestionnaireAssociation": ".create_v2ubos_request_pep_questionnaire_association",
-    "CreateV2UbosRequestPepQuestionnaireDeclarationType": ".create_v2ubos_request_pep_questionnaire_declaration_type",
-    "CreateV2UbosRequestPepQuestionnaireSelf": ".create_v2ubos_request_pep_questionnaire_self",
-    "CreateV2UbosRequestPepQuestionnaireSelfPepCategory": ".create_v2ubos_request_pep_questionnaire_self_pep_category",
-    "CreateV2UbosResponse": ".create_v2ubos_response",
-    "CreateV2UbosResponseData": ".create_v2ubos_response_data",
-    "CreateV2UbosResponseDataDocumentsItem": ".create_v2ubos_response_data_documents_item",
-    "CreateV2UbosResponseDataDocumentsItemType": ".create_v2ubos_response_data_documents_item_type",
-    "CreateV2UbosResponseDataKyc": ".create_v2ubos_response_data_kyc",
-    "CreateV2UbosResponseDataKycStatus": ".create_v2ubos_response_data_kyc_status",
-    "CreateV2UbosResponseDataPepQuestionnaire": ".create_v2ubos_response_data_pep_questionnaire",
-    "CreateV2UbosResponseDataPepQuestionnaireAssociation": ".create_v2ubos_response_data_pep_questionnaire_association",
-    "CreateV2UbosResponseDataPepQuestionnaireDeclarationType": ".create_v2ubos_response_data_pep_questionnaire_declaration_type",
-    "CreateV2UbosResponseDataPepQuestionnaireSelf": ".create_v2ubos_response_data_pep_questionnaire_self",
-    "CreateV2UbosResponseDataPepQuestionnaireSelfPepCategory": ".create_v2ubos_response_data_pep_questionnaire_self_pep_category",
+    "CreateUbosRequestAddress": ".create_ubos_request_address",
+    "CreateUbosRequestIdentity": ".create_ubos_request_identity",
+    "CreateUbosRequestIdentityDocumentType": ".create_ubos_request_identity_document_type",
+    "CreateUbosRequestPepQuestionnaire": ".create_ubos_request_pep_questionnaire",
+    "CreateUbosRequestPepQuestionnaireAssociation": ".create_ubos_request_pep_questionnaire_association",
+    "CreateUbosRequestPepQuestionnaireDeclarationType": ".create_ubos_request_pep_questionnaire_declaration_type",
+    "CreateUbosRequestPepQuestionnaireSelf": ".create_ubos_request_pep_questionnaire_self",
+    "CreateUbosRequestPepQuestionnaireSelfPepCategory": ".create_ubos_request_pep_questionnaire_self_pep_category",
+    "CreateUbosResponse": ".create_ubos_response",
+    "CreateUbosResponseData": ".create_ubos_response_data",
+    "CreateUbosResponseDataDocumentsItem": ".create_ubos_response_data_documents_item",
+    "CreateUbosResponseDataDocumentsItemType": ".create_ubos_response_data_documents_item_type",
+    "CreateUbosResponseDataKyc": ".create_ubos_response_data_kyc",
+    "CreateUbosResponseDataKycStatus": ".create_ubos_response_data_kyc_status",
+    "CreateUbosResponseDataPepQuestionnaire": ".create_ubos_response_data_pep_questionnaire",
+    "CreateUbosResponseDataPepQuestionnaireAssociation": ".create_ubos_response_data_pep_questionnaire_association",
+    "CreateUbosResponseDataPepQuestionnaireDeclarationType": ".create_ubos_response_data_pep_questionnaire_declaration_type",
+    "CreateUbosResponseDataPepQuestionnaireSelf": ".create_ubos_response_data_pep_questionnaire_self",
+    "CreateUbosResponseDataPepQuestionnaireSelfPepCategory": ".create_ubos_response_data_pep_questionnaire_self_pep_category",
     "DeleteUbosResponse": ".delete_ubos_response",
     "GetUbosResponse": ".get_ubos_response",
     "GetUbosResponseData": ".get_ubos_response_data",
@@ -210,35 +188,25 @@ def __dir__():
 
 
 __all__ = [
-    "CreateV1UbosRequestAddress",
-    "CreateV1UbosRequestIdentity",
-    "CreateV1UbosRequestIdentityDocumentType",
-    "CreateV1UbosResponse",
-    "CreateV1UbosResponseData",
-    "CreateV1UbosResponseDataAddress",
-    "CreateV1UbosResponseDataIdentity",
-    "CreateV1UbosResponseDataIdentityDocumentType",
-    "CreateV1UbosResponseDataKyc",
-    "CreateV1UbosResponseDataKycStatus",
-    "CreateV2UbosRequestAddress",
-    "CreateV2UbosRequestIdentity",
-    "CreateV2UbosRequestIdentityDocumentType",
-    "CreateV2UbosRequestPepQuestionnaire",
-    "CreateV2UbosRequestPepQuestionnaireAssociation",
-    "CreateV2UbosRequestPepQuestionnaireDeclarationType",
-    "CreateV2UbosRequestPepQuestionnaireSelf",
-    "CreateV2UbosRequestPepQuestionnaireSelfPepCategory",
-    "CreateV2UbosResponse",
-    "CreateV2UbosResponseData",
-    "CreateV2UbosResponseDataDocumentsItem",
-    "CreateV2UbosResponseDataDocumentsItemType",
-    "CreateV2UbosResponseDataKyc",
-    "CreateV2UbosResponseDataKycStatus",
-    "CreateV2UbosResponseDataPepQuestionnaire",
-    "CreateV2UbosResponseDataPepQuestionnaireAssociation",
-    "CreateV2UbosResponseDataPepQuestionnaireDeclarationType",
-    "CreateV2UbosResponseDataPepQuestionnaireSelf",
-    "CreateV2UbosResponseDataPepQuestionnaireSelfPepCategory",
+    "CreateUbosRequestAddress",
+    "CreateUbosRequestIdentity",
+    "CreateUbosRequestIdentityDocumentType",
+    "CreateUbosRequestPepQuestionnaire",
+    "CreateUbosRequestPepQuestionnaireAssociation",
+    "CreateUbosRequestPepQuestionnaireDeclarationType",
+    "CreateUbosRequestPepQuestionnaireSelf",
+    "CreateUbosRequestPepQuestionnaireSelfPepCategory",
+    "CreateUbosResponse",
+    "CreateUbosResponseData",
+    "CreateUbosResponseDataDocumentsItem",
+    "CreateUbosResponseDataDocumentsItemType",
+    "CreateUbosResponseDataKyc",
+    "CreateUbosResponseDataKycStatus",
+    "CreateUbosResponseDataPepQuestionnaire",
+    "CreateUbosResponseDataPepQuestionnaireAssociation",
+    "CreateUbosResponseDataPepQuestionnaireDeclarationType",
+    "CreateUbosResponseDataPepQuestionnaireSelf",
+    "CreateUbosResponseDataPepQuestionnaireSelfPepCategory",
     "DeleteUbosResponse",
     "GetUbosResponse",
     "GetUbosResponseData",

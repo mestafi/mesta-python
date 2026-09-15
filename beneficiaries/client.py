@@ -11,42 +11,25 @@ from ..types.beneficiary_relationship import BeneficiaryRelationship
 from ..types.purpose_of_payment import PurposeOfPayment
 from ..types.purpose_of_payment_document_request import PurposeOfPaymentDocumentRequest
 from .raw_client import AsyncRawBeneficiariesClient, RawBeneficiariesClient
-from .types.create_v1beneficiaries_request import CreateV1BeneficiariesRequest
-from .types.create_v1beneficiaries_response import CreateV1BeneficiariesResponse
-from .types.create_v2beneficiaries_request_address import CreateV2BeneficiariesRequestAddress
-from .types.create_v2beneficiaries_request_business_type import CreateV2BeneficiariesRequestBusinessType
-from .types.create_v2beneficiaries_request_identity import CreateV2BeneficiariesRequestIdentity
-from .types.create_v2beneficiaries_request_payment_methods_item import CreateV2BeneficiariesRequestPaymentMethodsItem
-from .types.create_v2beneficiaries_request_type import CreateV2BeneficiariesRequestType
-from .types.create_v2beneficiaries_response import CreateV2BeneficiariesResponse
-from .types.create_v3beneficiaries_request_address import CreateV3BeneficiariesRequestAddress
-from .types.create_v3beneficiaries_request_business_type import CreateV3BeneficiariesRequestBusinessType
-from .types.create_v3beneficiaries_request_identity import CreateV3BeneficiariesRequestIdentity
-from .types.create_v3beneficiaries_request_payment_methods_item import CreateV3BeneficiariesRequestPaymentMethodsItem
-from .types.create_v3beneficiaries_request_type import CreateV3BeneficiariesRequestType
-from .types.create_v3beneficiaries_response import CreateV3BeneficiariesResponse
+from .types.create_beneficiaries_request_address import CreateBeneficiariesRequestAddress
+from .types.create_beneficiaries_request_business_type import CreateBeneficiariesRequestBusinessType
+from .types.create_beneficiaries_request_identity import CreateBeneficiariesRequestIdentity
+from .types.create_beneficiaries_request_payment_methods_item import CreateBeneficiariesRequestPaymentMethodsItem
+from .types.create_beneficiaries_request_type import CreateBeneficiariesRequestType
+from .types.create_beneficiaries_response import CreateBeneficiariesResponse
 from .types.delete_beneficiaries_response import DeleteBeneficiariesResponse
-from .types.get_v1beneficiaries_response import GetV1BeneficiariesResponse
-from .types.get_v2beneficiaries_response import GetV2BeneficiariesResponse
-from .types.list_v1beneficiaries_request_sort_order import ListV1BeneficiariesRequestSortOrder
-from .types.list_v1beneficiaries_request_status import ListV1BeneficiariesRequestStatus
-from .types.list_v1beneficiaries_response import ListV1BeneficiariesResponse
-from .types.list_v2beneficiaries_request_sort_by import ListV2BeneficiariesRequestSortBy
-from .types.list_v2beneficiaries_request_sort_order import ListV2BeneficiariesRequestSortOrder
-from .types.list_v2beneficiaries_response import ListV2BeneficiariesResponse
+from .types.get_beneficiaries_response import GetBeneficiariesResponse
+from .types.list_beneficiaries_request_sort_by import ListBeneficiariesRequestSortBy
+from .types.list_beneficiaries_request_sort_order import ListBeneficiariesRequestSortOrder
+from .types.list_beneficiaries_response import ListBeneficiariesResponse
 from .types.lookup_bank_beneficiaries_response import LookupBankBeneficiariesResponse
 from .types.simulate_verification_result_beneficiaries_request_result import (
     SimulateVerificationResultBeneficiariesRequestResult,
 )
 from .types.simulate_verification_result_beneficiaries_response import SimulateVerificationResultBeneficiariesResponse
-from .types.update_v1beneficiaries_request_body import UpdateV1BeneficiariesRequestBody
-from .types.update_v1beneficiaries_response import UpdateV1BeneficiariesResponse
-from .types.update_v2beneficiaries_request_address import UpdateV2BeneficiariesRequestAddress
-from .types.update_v2beneficiaries_request_type import UpdateV2BeneficiariesRequestType
-from .types.update_v2beneficiaries_response import UpdateV2BeneficiariesResponse
-from .types.update_verification_beneficiaries_request_status import UpdateVerificationBeneficiariesRequestStatus
-from .types.update_verification_beneficiaries_response import UpdateVerificationBeneficiariesResponse
-from .types.validate_beneficiaries_response import ValidateBeneficiariesResponse
+from .types.update_beneficiaries_request_address import UpdateBeneficiariesRequestAddress
+from .types.update_beneficiaries_request_type import UpdateBeneficiariesRequestType
+from .types.update_beneficiaries_response import UpdateBeneficiariesResponse
 from .types.verify_beneficiaries_response import VerifyBeneficiariesResponse
 
 if typing.TYPE_CHECKING:
@@ -71,197 +54,6 @@ class BeneficiariesClient:
         RawBeneficiariesClient
         """
         return self._raw_client
-
-    def list_v1(
-        self,
-        *,
-        id: typing.Optional[str] = None,
-        merchant_id: typing.Optional[str] = None,
-        status: typing.Optional[ListV1BeneficiariesRequestStatus] = None,
-        page: typing.Optional[int] = None,
-        page_size: typing.Optional[int] = None,
-        sort_by: typing.Optional[str] = None,
-        sort_order: typing.Optional[ListV1BeneficiariesRequestSortOrder] = None,
-        request_options: typing.Optional[RequestOptions] = None,
-    ) -> ListV1BeneficiariesResponse:
-        """
-        Retrieves a list of all beneficiaries associated with a merchant.
-
-        Parameters
-        ----------
-        id : typing.Optional[str]
-            Filter beneficiaries by ID
-
-        merchant_id : typing.Optional[str]
-            Identifier of the associated merchant
-
-        status : typing.Optional[ListV1BeneficiariesRequestStatus]
-            Filter beneficiaries by verification status
-
-        page : typing.Optional[int]
-            Page number for pagination
-
-        page_size : typing.Optional[int]
-            Number of items per page
-
-        sort_by : typing.Optional[str]
-            Field to sort the beneficiaries by
-
-        sort_order : typing.Optional[ListV1BeneficiariesRequestSortOrder]
-            Sort order (ascending or descending)
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        ListV1BeneficiariesResponse
-            Beneficiary list retrieved successfully
-
-        Examples
-        --------
-        from mesta import Mesta
-
-        client = Mesta(
-            api_secret="YOUR_API_SECRET",
-            api_key="YOUR_API_KEY",
-        )
-        client.beneficiaries.list_v1(
-            merchant_id="xxxxxxxx-xxxx-4xxx-xxxx-xxxxxxxxxxxx",
-        )
-        """
-        _response = self._raw_client.list_v1(
-            id=id,
-            merchant_id=merchant_id,
-            status=status,
-            page=page,
-            page_size=page_size,
-            sort_by=sort_by,
-            sort_order=sort_order,
-            request_options=request_options,
-        )
-        return _response.data
-
-    def create_v1(
-        self, *, request: CreateV1BeneficiariesRequest, request_options: typing.Optional[RequestOptions] = None
-    ) -> CreateV1BeneficiariesResponse:
-        """
-        ## Overview
-        * Creates a new beneficiary.
-        * Supports both individual and business beneficiaries
-        * Requirements vary by country and ownerType
-
-        ## Validation Rules
-        * **Important**: Always check validation rules before creating a beneficiary
-        * Validation rules endpoint: `GET /v1/validation-rules/beneficiaries`
-        * Required query parameters:
-          * `ownerType=[individual|business]`
-          * `country=[ISO 3166-1 alpha-2 code]`
-        * Example request:
-        ```
-        GET /v1/validation-rules/beneficiaries?ownerType=individual&country=PH
-        ```
-
-        ## Bank Information
-        * For US beneficiaries with paymentType=bank_account:
-          * Routing number is required
-          * Bank ID is not needed
-        * For non-US beneficiaries with paymentType=bank_account:
-          * Bank ID is required
-          * Fetch bank list using: `GET /v1/beneficiaries/banks`
-          * Required query parameter: `countryCode=[ISO 3166-1 alpha-2 code]`
-        * Example request:
-        ```
-        GET /v1/beneficiaries/banks?countryCode=PH
-        ```
-        * Response includes bank ID and name:
-        ```json
-        {
-          "data": [
-            {
-              "id": "123",
-              "name": "Sample Bank"
-            }
-          ]
-        }
-        ```
-        * Use the `bankId` in the paymentInfo object when creating non-US beneficiaries with bank_account payment type
-
-        Parameters
-        ----------
-        request : CreateV1BeneficiariesRequest
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        CreateV1BeneficiariesResponse
-            Beneficiary created successfully
-
-        Examples
-        --------
-        from mesta import BankAccount, IndividualBeneficiaryAddress, Mesta
-        from mesta.beneficiaries import CreateV1BeneficiariesRequest_Individual
-
-        client = Mesta(
-            api_secret="YOUR_API_SECRET",
-            api_key="YOUR_API_KEY",
-        )
-        client.beneficiaries.create_v1(
-            request=CreateV1BeneficiariesRequest_Individual(
-                type="individual",
-                first_name="firstName",
-                last_name="lastName",
-                address=IndividualBeneficiaryAddress(
-                    street="street",
-                    city="city",
-                    postal_code="12345 or 00000",
-                    country="country",
-                ),
-                payment_type="bank_account",
-                payment_info=BankAccount(
-                    account_number="accountNumber",
-                ),
-            ),
-        )
-        """
-        _response = self._raw_client.create_v1(request=request, request_options=request_options)
-        return _response.data
-
-    def get_v1(
-        self, beneficiary_id: str, *, request_options: typing.Optional[RequestOptions] = None
-    ) -> GetV1BeneficiariesResponse:
-        """
-        Retrieves detailed information about a specific beneficiary account.
-
-        Parameters
-        ----------
-        beneficiary_id : str
-            Unique identifier for the beneficiary.
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        GetV1BeneficiariesResponse
-            Beneficiary retrieved successfully
-
-        Examples
-        --------
-        from mesta import Mesta
-
-        client = Mesta(
-            api_secret="YOUR_API_SECRET",
-            api_key="YOUR_API_KEY",
-        )
-        client.beneficiaries.get_v1(
-            beneficiary_id="beneficiaryId",
-        )
-        """
-        _response = self._raw_client.get_v1(beneficiary_id, request_options=request_options)
-        return _response.data
 
     def delete(
         self, beneficiary_id: str, *, request_options: typing.Optional[RequestOptions] = None
@@ -295,73 +87,6 @@ class BeneficiariesClient:
         )
         """
         _response = self._raw_client.delete(beneficiary_id, request_options=request_options)
-        return _response.data
-
-    def update_v1(
-        self,
-        beneficiary_id: str,
-        *,
-        request: UpdateV1BeneficiariesRequestBody,
-        request_options: typing.Optional[RequestOptions] = None,
-    ) -> UpdateV1BeneficiariesResponse:
-        """
-        Updates an existing beneficiary's information. Note that certain fields cannot be modified after initial creation.
-
-        Non-updatable fields:
-        - type (individual/business)
-        - identificationNumber (for business beneficiaries)
-        - taxIdentificationNumber (for business beneficiaries)
-        - bankAccountType
-        - bankAccountNumber
-        - bankCode
-
-        Before updating a beneficiary, always check the validation rules using:
-        GET /v1/validation-rules/beneficiaries?ownerType=[individual|business]&country=[ISO 3166-1 alpha-2 code]
-
-        Parameters
-        ----------
-        beneficiary_id : str
-            Unique identifier for the beneficiary
-
-        request : UpdateV1BeneficiariesRequestBody
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        UpdateV1BeneficiariesResponse
-            Beneficiary created successfully
-
-        Examples
-        --------
-        from mesta import BankAccount, IndividualBeneficiaryAddress, Mesta
-        from mesta.beneficiaries import UpdateV1BeneficiariesRequestBody_Individual
-
-        client = Mesta(
-            api_secret="YOUR_API_SECRET",
-            api_key="YOUR_API_KEY",
-        )
-        client.beneficiaries.update_v1(
-            beneficiary_id="beneficiaryId",
-            request=UpdateV1BeneficiariesRequestBody_Individual(
-                type="individual",
-                first_name="firstName",
-                last_name="lastName",
-                address=IndividualBeneficiaryAddress(
-                    street="street",
-                    city="city",
-                    postal_code="12345 or 00000",
-                    country="country",
-                ),
-                payment_type="bank_account",
-                payment_info=BankAccount(
-                    account_number="accountNumber",
-                ),
-            ),
-        )
-        """
-        _response = self._raw_client.update_v1(beneficiary_id, request=request, request_options=request_options)
         return _response.data
 
     def simulate_verification_result(
@@ -478,15 +203,15 @@ class BeneficiariesClient:
         _response = self._raw_client.lookup_bank(country_code=country_code, request_options=request_options)
         return _response.data
 
-    def list_v2(
+    def list(
         self,
         *,
         page: typing.Optional[int] = None,
         page_size: typing.Optional[int] = None,
-        sort_by: typing.Optional[ListV2BeneficiariesRequestSortBy] = None,
-        sort_order: typing.Optional[ListV2BeneficiariesRequestSortOrder] = None,
+        sort_by: typing.Optional[ListBeneficiariesRequestSortBy] = None,
+        sort_order: typing.Optional[ListBeneficiariesRequestSortOrder] = None,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> ListV2BeneficiariesResponse:
+    ) -> ListBeneficiariesResponse:
         """
         Retrieves a paginated list of beneficiaries using the V2 API. Unlike v1, the v2 API separates payment methods from beneficiary data. Payment methods are available on the detail endpoint.
 
@@ -498,10 +223,10 @@ class BeneficiariesClient:
         page_size : typing.Optional[int]
             Number of items per page
 
-        sort_by : typing.Optional[ListV2BeneficiariesRequestSortBy]
+        sort_by : typing.Optional[ListBeneficiariesRequestSortBy]
             Field to sort by
 
-        sort_order : typing.Optional[ListV2BeneficiariesRequestSortOrder]
+        sort_order : typing.Optional[ListBeneficiariesRequestSortOrder]
             Sort order
 
         request_options : typing.Optional[RequestOptions]
@@ -509,7 +234,7 @@ class BeneficiariesClient:
 
         Returns
         -------
-        ListV2BeneficiariesResponse
+        ListBeneficiariesResponse
             List of beneficiaries with payment methods
 
         Examples
@@ -520,152 +245,14 @@ class BeneficiariesClient:
             api_secret="YOUR_API_SECRET",
             api_key="YOUR_API_KEY",
         )
-        client.beneficiaries.list_v2()
+        client.beneficiaries.list()
         """
-        _response = self._raw_client.list_v2(
+        _response = self._raw_client.list(
             page=page, page_size=page_size, sort_by=sort_by, sort_order=sort_order, request_options=request_options
         )
         return _response.data
 
-    def create_v2(
-        self,
-        *,
-        type: CreateV2BeneficiariesRequestType,
-        address: CreateV2BeneficiariesRequestAddress,
-        payment_methods: typing.Sequence[CreateV2BeneficiariesRequestPaymentMethodsItem],
-        first_name: typing.Optional[str] = OMIT,
-        last_name: typing.Optional[str] = OMIT,
-        middle_name: typing.Optional[str] = OMIT,
-        full_name: typing.Optional[str] = OMIT,
-        business_registration_number: typing.Optional[str] = OMIT,
-        business_type: typing.Optional[CreateV2BeneficiariesRequestBusinessType] = OMIT,
-        email: typing.Optional[str] = OMIT,
-        phone: typing.Optional[str] = OMIT,
-        birth_date: typing.Optional[dt.date] = OMIT,
-        merchant_id: typing.Optional[str] = OMIT,
-        identity: typing.Optional[CreateV2BeneficiariesRequestIdentity] = OMIT,
-        metadata: typing.Optional[typing.Dict[str, typing.Any]] = OMIT,
-        beneficiary_relationship: typing.Optional[BeneficiaryRelationship] = OMIT,
-        purpose_of_payment: typing.Optional[PurposeOfPayment] = OMIT,
-        purpose_of_payment_document: typing.Optional[PurposeOfPaymentDocumentRequest] = OMIT,
-        request_options: typing.Optional[RequestOptions] = None,
-    ) -> CreateV2BeneficiariesResponse:
-        """
-        Create a new beneficiary with payment methods in a single request. This v2 endpoint allows you to create a beneficiary and attach payment methods simultaneously.
-
-        Parameters
-        ----------
-        type : CreateV2BeneficiariesRequestType
-            Type of beneficiary
-
-        address : CreateV2BeneficiariesRequestAddress
-            Beneficiary address
-
-        payment_methods : typing.Sequence[CreateV2BeneficiariesRequestPaymentMethodsItem]
-            At least one payment method must be provided
-
-        first_name : typing.Optional[str]
-            First name (required for individual type)
-
-        last_name : typing.Optional[str]
-            Last name (required for individual type)
-
-        middle_name : typing.Optional[str]
-            Middle name (optional, individual type only)
-
-        full_name : typing.Optional[str]
-            Full business name (required for business type)
-
-        business_registration_number : typing.Optional[str]
-            Business registration number (required for business type)
-
-        business_type : typing.Optional[CreateV2BeneficiariesRequestBusinessType]
-            Type of business (optional)
-
-        email : typing.Optional[str]
-            Beneficiary email
-
-        phone : typing.Optional[str]
-            Beneficiary phone number
-
-        birth_date : typing.Optional[dt.date]
-            Date of birth (YYYY-MM-DD, individual type)
-
-        merchant_id : typing.Optional[str]
-            Merchant ID (optional, auto-assigned from API key)
-
-        identity : typing.Optional[CreateV2BeneficiariesRequestIdentity]
-            Identity document details
-
-        metadata : typing.Optional[typing.Dict[str, typing.Any]]
-            Custom metadata
-
-        beneficiary_relationship : typing.Optional[BeneficiaryRelationship]
-
-        purpose_of_payment : typing.Optional[PurposeOfPayment]
-
-        purpose_of_payment_document : typing.Optional[PurposeOfPaymentDocumentRequest]
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        CreateV2BeneficiariesResponse
-            Beneficiary created successfully
-
-        Examples
-        --------
-        from mesta import Mesta
-        from mesta.beneficiaries import (
-            CreateV2BeneficiariesRequestAddress,
-            CreateV2BeneficiariesRequestPaymentMethodsItem,
-        )
-
-        client = Mesta(
-            api_secret="YOUR_API_SECRET",
-            api_key="YOUR_API_KEY",
-        )
-        client.beneficiaries.create_v2(
-            type="individual",
-            address=CreateV2BeneficiariesRequestAddress(
-                street="123 Main St",
-                city="Manila",
-                postal_code="1000",
-                country="PH",
-            ),
-            payment_methods=[
-                CreateV2BeneficiariesRequestPaymentMethodsItem(
-                    type="bank_account",
-                    data={"key": "value"},
-                )
-            ],
-        )
-        """
-        _response = self._raw_client.create_v2(
-            type=type,
-            address=address,
-            payment_methods=payment_methods,
-            first_name=first_name,
-            last_name=last_name,
-            middle_name=middle_name,
-            full_name=full_name,
-            business_registration_number=business_registration_number,
-            business_type=business_type,
-            email=email,
-            phone=phone,
-            birth_date=birth_date,
-            merchant_id=merchant_id,
-            identity=identity,
-            metadata=metadata,
-            beneficiary_relationship=beneficiary_relationship,
-            purpose_of_payment=purpose_of_payment,
-            purpose_of_payment_document=purpose_of_payment_document,
-            request_options=request_options,
-        )
-        return _response.data
-
-    def get_v2(self, id: str, *, request_options: typing.Optional[RequestOptions] = None) -> GetV2BeneficiariesResponse:
+    def get(self, id: str, *, request_options: typing.Optional[RequestOptions] = None) -> GetBeneficiariesResponse:
         """
         Retrieve a single beneficiary by ID with their associated payment methods.
 
@@ -679,7 +266,7 @@ class BeneficiariesClient:
 
         Returns
         -------
-        GetV2BeneficiariesResponse
+        GetBeneficiariesResponse
             Beneficiary details with payment methods
 
         Examples
@@ -690,18 +277,18 @@ class BeneficiariesClient:
             api_secret="YOUR_API_SECRET",
             api_key="YOUR_API_KEY",
         )
-        client.beneficiaries.get_v2(
+        client.beneficiaries.get(
             id="id",
         )
         """
-        _response = self._raw_client.get_v2(id, request_options=request_options)
+        _response = self._raw_client.get(id, request_options=request_options)
         return _response.data
 
-    def update_v2(
+    def update(
         self,
         id: str,
         *,
-        type: typing.Optional[UpdateV2BeneficiariesRequestType] = OMIT,
+        type: typing.Optional[UpdateBeneficiariesRequestType] = OMIT,
         first_name: typing.Optional[str] = OMIT,
         last_name: typing.Optional[str] = OMIT,
         middle_name: typing.Optional[str] = OMIT,
@@ -709,13 +296,13 @@ class BeneficiariesClient:
         email: typing.Optional[str] = OMIT,
         phone: typing.Optional[str] = OMIT,
         birth_date: typing.Optional[dt.date] = OMIT,
-        address: typing.Optional[UpdateV2BeneficiariesRequestAddress] = OMIT,
+        address: typing.Optional[UpdateBeneficiariesRequestAddress] = OMIT,
         metadata: typing.Optional[typing.Dict[str, typing.Any]] = OMIT,
         beneficiary_relationship: typing.Optional[BeneficiaryRelationship] = OMIT,
         purpose_of_payment: typing.Optional[PurposeOfPayment] = OMIT,
         purpose_of_payment_document: typing.Optional[PurposeOfPaymentDocumentRequest] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> UpdateV2BeneficiariesResponse:
+    ) -> UpdateBeneficiariesResponse:
         """
         Partially update a beneficiary. Only the provided fields will be updated.
 
@@ -724,7 +311,7 @@ class BeneficiariesClient:
         id : str
             Beneficiary ID
 
-        type : typing.Optional[UpdateV2BeneficiariesRequestType]
+        type : typing.Optional[UpdateBeneficiariesRequestType]
 
         first_name : typing.Optional[str]
 
@@ -740,7 +327,7 @@ class BeneficiariesClient:
 
         birth_date : typing.Optional[dt.date]
 
-        address : typing.Optional[UpdateV2BeneficiariesRequestAddress]
+        address : typing.Optional[UpdateBeneficiariesRequestAddress]
 
         metadata : typing.Optional[typing.Dict[str, typing.Any]]
 
@@ -755,7 +342,7 @@ class BeneficiariesClient:
 
         Returns
         -------
-        UpdateV2BeneficiariesResponse
+        UpdateBeneficiariesResponse
             Beneficiary updated successfully
 
         Examples
@@ -766,11 +353,11 @@ class BeneficiariesClient:
             api_secret="YOUR_API_SECRET",
             api_key="YOUR_API_KEY",
         )
-        client.beneficiaries.update_v2(
+        client.beneficiaries.update(
             id="id",
         )
         """
-        _response = self._raw_client.update_v2(
+        _response = self._raw_client.update(
             id,
             type=type,
             first_name=first_name,
@@ -789,102 +376,12 @@ class BeneficiariesClient:
         )
         return _response.data
 
-    def validate(
-        self, beneficiary_id: str, *, request_options: typing.Optional[RequestOptions] = None
-    ) -> ValidateBeneficiariesResponse:
-        """
-        Validates a beneficiary's information, checking that all required fields are present and correct for the beneficiary's country and payment method configuration.
-
-        Parameters
-        ----------
-        beneficiary_id : str
-            Unique identifier of the beneficiary
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        ValidateBeneficiariesResponse
-            Beneficiary validated successfully
-
-        Examples
-        --------
-        from mesta import Mesta
-
-        client = Mesta(
-            api_secret="YOUR_API_SECRET",
-            api_key="YOUR_API_KEY",
-        )
-        client.beneficiaries.validate(
-            beneficiary_id="beneficiaryId",
-        )
-        """
-        _response = self._raw_client.validate(beneficiary_id, request_options=request_options)
-        return _response.data
-
-    def update_verification(
-        self,
-        beneficiary_id: str,
-        *,
-        status: UpdateVerificationBeneficiariesRequestStatus,
-        external_ref_id: typing.Optional[str] = OMIT,
-        verification_result: typing.Optional[typing.Dict[str, typing.Any]] = OMIT,
-        request_options: typing.Optional[RequestOptions] = None,
-    ) -> UpdateVerificationBeneficiariesResponse:
-        """
-        Updates the verification status of a beneficiary. Used to mark a beneficiary as verified, pending, or declined after completing identity checks.
-
-        Parameters
-        ----------
-        beneficiary_id : str
-            Unique identifier of the beneficiary
-
-        status : UpdateVerificationBeneficiariesRequestStatus
-            New verification status for the beneficiary
-
-        external_ref_id : typing.Optional[str]
-            External reference ID for the verification
-
-        verification_result : typing.Optional[typing.Dict[str, typing.Any]]
-            Arbitrary JSON object containing verification result details
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        UpdateVerificationBeneficiariesResponse
-            Beneficiary verification updated successfully
-
-        Examples
-        --------
-        from mesta import Mesta
-
-        client = Mesta(
-            api_secret="YOUR_API_SECRET",
-            api_key="YOUR_API_KEY",
-        )
-        client.beneficiaries.update_verification(
-            beneficiary_id="beneficiaryId",
-            status="unverified",
-        )
-        """
-        _response = self._raw_client.update_verification(
-            beneficiary_id,
-            status=status,
-            external_ref_id=external_ref_id,
-            verification_result=verification_result,
-            request_options=request_options,
-        )
-        return _response.data
-
-    def create_v3(
+    def create(
         self,
         *,
-        type: CreateV3BeneficiariesRequestType,
-        address: CreateV3BeneficiariesRequestAddress,
-        payment_methods: typing.Sequence[CreateV3BeneficiariesRequestPaymentMethodsItem],
+        type: CreateBeneficiariesRequestType,
+        address: CreateBeneficiariesRequestAddress,
+        payment_methods: typing.Sequence[CreateBeneficiariesRequestPaymentMethodsItem],
         beneficiary_relationship: BeneficiaryRelationship,
         purpose_of_payment: PurposeOfPayment,
         first_name: typing.Optional[str] = OMIT,
@@ -892,28 +389,28 @@ class BeneficiariesClient:
         middle_name: typing.Optional[str] = OMIT,
         full_name: typing.Optional[str] = OMIT,
         business_registration_number: typing.Optional[str] = OMIT,
-        business_type: typing.Optional[CreateV3BeneficiariesRequestBusinessType] = OMIT,
+        business_type: typing.Optional[CreateBeneficiariesRequestBusinessType] = OMIT,
         email: typing.Optional[str] = OMIT,
         phone: typing.Optional[str] = OMIT,
         birth_date: typing.Optional[dt.date] = OMIT,
         merchant_id: typing.Optional[str] = OMIT,
-        identity: typing.Optional[CreateV3BeneficiariesRequestIdentity] = OMIT,
+        identity: typing.Optional[CreateBeneficiariesRequestIdentity] = OMIT,
         metadata: typing.Optional[typing.Dict[str, typing.Any]] = OMIT,
         purpose_of_payment_document: typing.Optional[PurposeOfPaymentDocumentRequest] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> CreateV3BeneficiariesResponse:
+    ) -> CreateBeneficiariesResponse:
         """
         Create a new beneficiary with mandatory compliance fields. Same as V2 but `beneficiaryRelationship` and `purposeOfPayment` are required.
 
         Parameters
         ----------
-        type : CreateV3BeneficiariesRequestType
+        type : CreateBeneficiariesRequestType
             Type of beneficiary
 
-        address : CreateV3BeneficiariesRequestAddress
+        address : CreateBeneficiariesRequestAddress
             Beneficiary address
 
-        payment_methods : typing.Sequence[CreateV3BeneficiariesRequestPaymentMethodsItem]
+        payment_methods : typing.Sequence[CreateBeneficiariesRequestPaymentMethodsItem]
             At least one payment method must be provided
 
         beneficiary_relationship : BeneficiaryRelationship
@@ -935,7 +432,7 @@ class BeneficiariesClient:
         business_registration_number : typing.Optional[str]
             Business registration number (required for business type)
 
-        business_type : typing.Optional[CreateV3BeneficiariesRequestBusinessType]
+        business_type : typing.Optional[CreateBeneficiariesRequestBusinessType]
             Type of business (optional)
 
         email : typing.Optional[str]
@@ -950,7 +447,7 @@ class BeneficiariesClient:
         merchant_id : typing.Optional[str]
             Merchant ID (optional, auto-assigned from API key)
 
-        identity : typing.Optional[CreateV3BeneficiariesRequestIdentity]
+        identity : typing.Optional[CreateBeneficiariesRequestIdentity]
             Identity document details
 
         metadata : typing.Optional[typing.Dict[str, typing.Any]]
@@ -963,31 +460,31 @@ class BeneficiariesClient:
 
         Returns
         -------
-        CreateV3BeneficiariesResponse
+        CreateBeneficiariesResponse
             Beneficiary created successfully
 
         Examples
         --------
         from mesta import Mesta
         from mesta.beneficiaries import (
-            CreateV3BeneficiariesRequestAddress,
-            CreateV3BeneficiariesRequestPaymentMethodsItem,
+            CreateBeneficiariesRequestAddress,
+            CreateBeneficiariesRequestPaymentMethodsItem,
         )
 
         client = Mesta(
             api_secret="YOUR_API_SECRET",
             api_key="YOUR_API_KEY",
         )
-        client.beneficiaries.create_v3(
+        client.beneficiaries.create(
             type="individual",
-            address=CreateV3BeneficiariesRequestAddress(
+            address=CreateBeneficiariesRequestAddress(
                 street="123 Main St",
                 city="Manila",
                 postal_code="1000",
                 country="PH",
             ),
             payment_methods=[
-                CreateV3BeneficiariesRequestPaymentMethodsItem(
+                CreateBeneficiariesRequestPaymentMethodsItem(
                     type="bank_account",
                     data={"key": "value"},
                 )
@@ -996,7 +493,7 @@ class BeneficiariesClient:
             purpose_of_payment="payroll",
         )
         """
-        _response = self._raw_client.create_v3(
+        _response = self._raw_client.create(
             type=type,
             address=address,
             payment_methods=payment_methods,
@@ -1045,221 +542,6 @@ class AsyncBeneficiariesClient:
         """
         return self._raw_client
 
-    async def list_v1(
-        self,
-        *,
-        id: typing.Optional[str] = None,
-        merchant_id: typing.Optional[str] = None,
-        status: typing.Optional[ListV1BeneficiariesRequestStatus] = None,
-        page: typing.Optional[int] = None,
-        page_size: typing.Optional[int] = None,
-        sort_by: typing.Optional[str] = None,
-        sort_order: typing.Optional[ListV1BeneficiariesRequestSortOrder] = None,
-        request_options: typing.Optional[RequestOptions] = None,
-    ) -> ListV1BeneficiariesResponse:
-        """
-        Retrieves a list of all beneficiaries associated with a merchant.
-
-        Parameters
-        ----------
-        id : typing.Optional[str]
-            Filter beneficiaries by ID
-
-        merchant_id : typing.Optional[str]
-            Identifier of the associated merchant
-
-        status : typing.Optional[ListV1BeneficiariesRequestStatus]
-            Filter beneficiaries by verification status
-
-        page : typing.Optional[int]
-            Page number for pagination
-
-        page_size : typing.Optional[int]
-            Number of items per page
-
-        sort_by : typing.Optional[str]
-            Field to sort the beneficiaries by
-
-        sort_order : typing.Optional[ListV1BeneficiariesRequestSortOrder]
-            Sort order (ascending or descending)
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        ListV1BeneficiariesResponse
-            Beneficiary list retrieved successfully
-
-        Examples
-        --------
-        import asyncio
-
-        from mesta import AsyncMesta
-
-        client = AsyncMesta(
-            api_secret="YOUR_API_SECRET",
-            api_key="YOUR_API_KEY",
-        )
-
-
-        async def main() -> None:
-            await client.beneficiaries.list_v1(
-                merchant_id="xxxxxxxx-xxxx-4xxx-xxxx-xxxxxxxxxxxx",
-            )
-
-
-        asyncio.run(main())
-        """
-        _response = await self._raw_client.list_v1(
-            id=id,
-            merchant_id=merchant_id,
-            status=status,
-            page=page,
-            page_size=page_size,
-            sort_by=sort_by,
-            sort_order=sort_order,
-            request_options=request_options,
-        )
-        return _response.data
-
-    async def create_v1(
-        self, *, request: CreateV1BeneficiariesRequest, request_options: typing.Optional[RequestOptions] = None
-    ) -> CreateV1BeneficiariesResponse:
-        """
-        ## Overview
-        * Creates a new beneficiary.
-        * Supports both individual and business beneficiaries
-        * Requirements vary by country and ownerType
-
-        ## Validation Rules
-        * **Important**: Always check validation rules before creating a beneficiary
-        * Validation rules endpoint: `GET /v1/validation-rules/beneficiaries`
-        * Required query parameters:
-          * `ownerType=[individual|business]`
-          * `country=[ISO 3166-1 alpha-2 code]`
-        * Example request:
-        ```
-        GET /v1/validation-rules/beneficiaries?ownerType=individual&country=PH
-        ```
-
-        ## Bank Information
-        * For US beneficiaries with paymentType=bank_account:
-          * Routing number is required
-          * Bank ID is not needed
-        * For non-US beneficiaries with paymentType=bank_account:
-          * Bank ID is required
-          * Fetch bank list using: `GET /v1/beneficiaries/banks`
-          * Required query parameter: `countryCode=[ISO 3166-1 alpha-2 code]`
-        * Example request:
-        ```
-        GET /v1/beneficiaries/banks?countryCode=PH
-        ```
-        * Response includes bank ID and name:
-        ```json
-        {
-          "data": [
-            {
-              "id": "123",
-              "name": "Sample Bank"
-            }
-          ]
-        }
-        ```
-        * Use the `bankId` in the paymentInfo object when creating non-US beneficiaries with bank_account payment type
-
-        Parameters
-        ----------
-        request : CreateV1BeneficiariesRequest
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        CreateV1BeneficiariesResponse
-            Beneficiary created successfully
-
-        Examples
-        --------
-        import asyncio
-
-        from mesta import AsyncMesta, BankAccount, IndividualBeneficiaryAddress
-        from mesta.beneficiaries import CreateV1BeneficiariesRequest_Individual
-
-        client = AsyncMesta(
-            api_secret="YOUR_API_SECRET",
-            api_key="YOUR_API_KEY",
-        )
-
-
-        async def main() -> None:
-            await client.beneficiaries.create_v1(
-                request=CreateV1BeneficiariesRequest_Individual(
-                    type="individual",
-                    first_name="firstName",
-                    last_name="lastName",
-                    address=IndividualBeneficiaryAddress(
-                        street="street",
-                        city="city",
-                        postal_code="12345 or 00000",
-                        country="country",
-                    ),
-                    payment_type="bank_account",
-                    payment_info=BankAccount(
-                        account_number="accountNumber",
-                    ),
-                ),
-            )
-
-
-        asyncio.run(main())
-        """
-        _response = await self._raw_client.create_v1(request=request, request_options=request_options)
-        return _response.data
-
-    async def get_v1(
-        self, beneficiary_id: str, *, request_options: typing.Optional[RequestOptions] = None
-    ) -> GetV1BeneficiariesResponse:
-        """
-        Retrieves detailed information about a specific beneficiary account.
-
-        Parameters
-        ----------
-        beneficiary_id : str
-            Unique identifier for the beneficiary.
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        GetV1BeneficiariesResponse
-            Beneficiary retrieved successfully
-
-        Examples
-        --------
-        import asyncio
-
-        from mesta import AsyncMesta
-
-        client = AsyncMesta(
-            api_secret="YOUR_API_SECRET",
-            api_key="YOUR_API_KEY",
-        )
-
-
-        async def main() -> None:
-            await client.beneficiaries.get_v1(
-                beneficiary_id="beneficiaryId",
-            )
-
-
-        asyncio.run(main())
-        """
-        _response = await self._raw_client.get_v1(beneficiary_id, request_options=request_options)
-        return _response.data
-
     async def delete(
         self, beneficiary_id: str, *, request_options: typing.Optional[RequestOptions] = None
     ) -> DeleteBeneficiariesResponse:
@@ -1300,81 +582,6 @@ class AsyncBeneficiariesClient:
         asyncio.run(main())
         """
         _response = await self._raw_client.delete(beneficiary_id, request_options=request_options)
-        return _response.data
-
-    async def update_v1(
-        self,
-        beneficiary_id: str,
-        *,
-        request: UpdateV1BeneficiariesRequestBody,
-        request_options: typing.Optional[RequestOptions] = None,
-    ) -> UpdateV1BeneficiariesResponse:
-        """
-        Updates an existing beneficiary's information. Note that certain fields cannot be modified after initial creation.
-
-        Non-updatable fields:
-        - type (individual/business)
-        - identificationNumber (for business beneficiaries)
-        - taxIdentificationNumber (for business beneficiaries)
-        - bankAccountType
-        - bankAccountNumber
-        - bankCode
-
-        Before updating a beneficiary, always check the validation rules using:
-        GET /v1/validation-rules/beneficiaries?ownerType=[individual|business]&country=[ISO 3166-1 alpha-2 code]
-
-        Parameters
-        ----------
-        beneficiary_id : str
-            Unique identifier for the beneficiary
-
-        request : UpdateV1BeneficiariesRequestBody
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        UpdateV1BeneficiariesResponse
-            Beneficiary created successfully
-
-        Examples
-        --------
-        import asyncio
-
-        from mesta import AsyncMesta, BankAccount, IndividualBeneficiaryAddress
-        from mesta.beneficiaries import UpdateV1BeneficiariesRequestBody_Individual
-
-        client = AsyncMesta(
-            api_secret="YOUR_API_SECRET",
-            api_key="YOUR_API_KEY",
-        )
-
-
-        async def main() -> None:
-            await client.beneficiaries.update_v1(
-                beneficiary_id="beneficiaryId",
-                request=UpdateV1BeneficiariesRequestBody_Individual(
-                    type="individual",
-                    first_name="firstName",
-                    last_name="lastName",
-                    address=IndividualBeneficiaryAddress(
-                        street="street",
-                        city="city",
-                        postal_code="12345 or 00000",
-                        country="country",
-                    ),
-                    payment_type="bank_account",
-                    payment_info=BankAccount(
-                        account_number="accountNumber",
-                    ),
-                ),
-            )
-
-
-        asyncio.run(main())
-        """
-        _response = await self._raw_client.update_v1(beneficiary_id, request=request, request_options=request_options)
         return _response.data
 
     async def simulate_verification_result(
@@ -1515,15 +722,15 @@ class AsyncBeneficiariesClient:
         _response = await self._raw_client.lookup_bank(country_code=country_code, request_options=request_options)
         return _response.data
 
-    async def list_v2(
+    async def list(
         self,
         *,
         page: typing.Optional[int] = None,
         page_size: typing.Optional[int] = None,
-        sort_by: typing.Optional[ListV2BeneficiariesRequestSortBy] = None,
-        sort_order: typing.Optional[ListV2BeneficiariesRequestSortOrder] = None,
+        sort_by: typing.Optional[ListBeneficiariesRequestSortBy] = None,
+        sort_order: typing.Optional[ListBeneficiariesRequestSortOrder] = None,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> ListV2BeneficiariesResponse:
+    ) -> ListBeneficiariesResponse:
         """
         Retrieves a paginated list of beneficiaries using the V2 API. Unlike v1, the v2 API separates payment methods from beneficiary data. Payment methods are available on the detail endpoint.
 
@@ -1535,10 +742,10 @@ class AsyncBeneficiariesClient:
         page_size : typing.Optional[int]
             Number of items per page
 
-        sort_by : typing.Optional[ListV2BeneficiariesRequestSortBy]
+        sort_by : typing.Optional[ListBeneficiariesRequestSortBy]
             Field to sort by
 
-        sort_order : typing.Optional[ListV2BeneficiariesRequestSortOrder]
+        sort_order : typing.Optional[ListBeneficiariesRequestSortOrder]
             Sort order
 
         request_options : typing.Optional[RequestOptions]
@@ -1546,7 +753,7 @@ class AsyncBeneficiariesClient:
 
         Returns
         -------
-        ListV2BeneficiariesResponse
+        ListBeneficiariesResponse
             List of beneficiaries with payment methods
 
         Examples
@@ -1562,165 +769,19 @@ class AsyncBeneficiariesClient:
 
 
         async def main() -> None:
-            await client.beneficiaries.list_v2()
+            await client.beneficiaries.list()
 
 
         asyncio.run(main())
         """
-        _response = await self._raw_client.list_v2(
+        _response = await self._raw_client.list(
             page=page, page_size=page_size, sort_by=sort_by, sort_order=sort_order, request_options=request_options
         )
         return _response.data
 
-    async def create_v2(
-        self,
-        *,
-        type: CreateV2BeneficiariesRequestType,
-        address: CreateV2BeneficiariesRequestAddress,
-        payment_methods: typing.Sequence[CreateV2BeneficiariesRequestPaymentMethodsItem],
-        first_name: typing.Optional[str] = OMIT,
-        last_name: typing.Optional[str] = OMIT,
-        middle_name: typing.Optional[str] = OMIT,
-        full_name: typing.Optional[str] = OMIT,
-        business_registration_number: typing.Optional[str] = OMIT,
-        business_type: typing.Optional[CreateV2BeneficiariesRequestBusinessType] = OMIT,
-        email: typing.Optional[str] = OMIT,
-        phone: typing.Optional[str] = OMIT,
-        birth_date: typing.Optional[dt.date] = OMIT,
-        merchant_id: typing.Optional[str] = OMIT,
-        identity: typing.Optional[CreateV2BeneficiariesRequestIdentity] = OMIT,
-        metadata: typing.Optional[typing.Dict[str, typing.Any]] = OMIT,
-        beneficiary_relationship: typing.Optional[BeneficiaryRelationship] = OMIT,
-        purpose_of_payment: typing.Optional[PurposeOfPayment] = OMIT,
-        purpose_of_payment_document: typing.Optional[PurposeOfPaymentDocumentRequest] = OMIT,
-        request_options: typing.Optional[RequestOptions] = None,
-    ) -> CreateV2BeneficiariesResponse:
-        """
-        Create a new beneficiary with payment methods in a single request. This v2 endpoint allows you to create a beneficiary and attach payment methods simultaneously.
-
-        Parameters
-        ----------
-        type : CreateV2BeneficiariesRequestType
-            Type of beneficiary
-
-        address : CreateV2BeneficiariesRequestAddress
-            Beneficiary address
-
-        payment_methods : typing.Sequence[CreateV2BeneficiariesRequestPaymentMethodsItem]
-            At least one payment method must be provided
-
-        first_name : typing.Optional[str]
-            First name (required for individual type)
-
-        last_name : typing.Optional[str]
-            Last name (required for individual type)
-
-        middle_name : typing.Optional[str]
-            Middle name (optional, individual type only)
-
-        full_name : typing.Optional[str]
-            Full business name (required for business type)
-
-        business_registration_number : typing.Optional[str]
-            Business registration number (required for business type)
-
-        business_type : typing.Optional[CreateV2BeneficiariesRequestBusinessType]
-            Type of business (optional)
-
-        email : typing.Optional[str]
-            Beneficiary email
-
-        phone : typing.Optional[str]
-            Beneficiary phone number
-
-        birth_date : typing.Optional[dt.date]
-            Date of birth (YYYY-MM-DD, individual type)
-
-        merchant_id : typing.Optional[str]
-            Merchant ID (optional, auto-assigned from API key)
-
-        identity : typing.Optional[CreateV2BeneficiariesRequestIdentity]
-            Identity document details
-
-        metadata : typing.Optional[typing.Dict[str, typing.Any]]
-            Custom metadata
-
-        beneficiary_relationship : typing.Optional[BeneficiaryRelationship]
-
-        purpose_of_payment : typing.Optional[PurposeOfPayment]
-
-        purpose_of_payment_document : typing.Optional[PurposeOfPaymentDocumentRequest]
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        CreateV2BeneficiariesResponse
-            Beneficiary created successfully
-
-        Examples
-        --------
-        import asyncio
-
-        from mesta import AsyncMesta
-        from mesta.beneficiaries import (
-            CreateV2BeneficiariesRequestAddress,
-            CreateV2BeneficiariesRequestPaymentMethodsItem,
-        )
-
-        client = AsyncMesta(
-            api_secret="YOUR_API_SECRET",
-            api_key="YOUR_API_KEY",
-        )
-
-
-        async def main() -> None:
-            await client.beneficiaries.create_v2(
-                type="individual",
-                address=CreateV2BeneficiariesRequestAddress(
-                    street="123 Main St",
-                    city="Manila",
-                    postal_code="1000",
-                    country="PH",
-                ),
-                payment_methods=[
-                    CreateV2BeneficiariesRequestPaymentMethodsItem(
-                        type="bank_account",
-                        data={"key": "value"},
-                    )
-                ],
-            )
-
-
-        asyncio.run(main())
-        """
-        _response = await self._raw_client.create_v2(
-            type=type,
-            address=address,
-            payment_methods=payment_methods,
-            first_name=first_name,
-            last_name=last_name,
-            middle_name=middle_name,
-            full_name=full_name,
-            business_registration_number=business_registration_number,
-            business_type=business_type,
-            email=email,
-            phone=phone,
-            birth_date=birth_date,
-            merchant_id=merchant_id,
-            identity=identity,
-            metadata=metadata,
-            beneficiary_relationship=beneficiary_relationship,
-            purpose_of_payment=purpose_of_payment,
-            purpose_of_payment_document=purpose_of_payment_document,
-            request_options=request_options,
-        )
-        return _response.data
-
-    async def get_v2(
+    async def get(
         self, id: str, *, request_options: typing.Optional[RequestOptions] = None
-    ) -> GetV2BeneficiariesResponse:
+    ) -> GetBeneficiariesResponse:
         """
         Retrieve a single beneficiary by ID with their associated payment methods.
 
@@ -1734,7 +795,7 @@ class AsyncBeneficiariesClient:
 
         Returns
         -------
-        GetV2BeneficiariesResponse
+        GetBeneficiariesResponse
             Beneficiary details with payment methods
 
         Examples
@@ -1750,21 +811,21 @@ class AsyncBeneficiariesClient:
 
 
         async def main() -> None:
-            await client.beneficiaries.get_v2(
+            await client.beneficiaries.get(
                 id="id",
             )
 
 
         asyncio.run(main())
         """
-        _response = await self._raw_client.get_v2(id, request_options=request_options)
+        _response = await self._raw_client.get(id, request_options=request_options)
         return _response.data
 
-    async def update_v2(
+    async def update(
         self,
         id: str,
         *,
-        type: typing.Optional[UpdateV2BeneficiariesRequestType] = OMIT,
+        type: typing.Optional[UpdateBeneficiariesRequestType] = OMIT,
         first_name: typing.Optional[str] = OMIT,
         last_name: typing.Optional[str] = OMIT,
         middle_name: typing.Optional[str] = OMIT,
@@ -1772,13 +833,13 @@ class AsyncBeneficiariesClient:
         email: typing.Optional[str] = OMIT,
         phone: typing.Optional[str] = OMIT,
         birth_date: typing.Optional[dt.date] = OMIT,
-        address: typing.Optional[UpdateV2BeneficiariesRequestAddress] = OMIT,
+        address: typing.Optional[UpdateBeneficiariesRequestAddress] = OMIT,
         metadata: typing.Optional[typing.Dict[str, typing.Any]] = OMIT,
         beneficiary_relationship: typing.Optional[BeneficiaryRelationship] = OMIT,
         purpose_of_payment: typing.Optional[PurposeOfPayment] = OMIT,
         purpose_of_payment_document: typing.Optional[PurposeOfPaymentDocumentRequest] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> UpdateV2BeneficiariesResponse:
+    ) -> UpdateBeneficiariesResponse:
         """
         Partially update a beneficiary. Only the provided fields will be updated.
 
@@ -1787,7 +848,7 @@ class AsyncBeneficiariesClient:
         id : str
             Beneficiary ID
 
-        type : typing.Optional[UpdateV2BeneficiariesRequestType]
+        type : typing.Optional[UpdateBeneficiariesRequestType]
 
         first_name : typing.Optional[str]
 
@@ -1803,7 +864,7 @@ class AsyncBeneficiariesClient:
 
         birth_date : typing.Optional[dt.date]
 
-        address : typing.Optional[UpdateV2BeneficiariesRequestAddress]
+        address : typing.Optional[UpdateBeneficiariesRequestAddress]
 
         metadata : typing.Optional[typing.Dict[str, typing.Any]]
 
@@ -1818,7 +879,7 @@ class AsyncBeneficiariesClient:
 
         Returns
         -------
-        UpdateV2BeneficiariesResponse
+        UpdateBeneficiariesResponse
             Beneficiary updated successfully
 
         Examples
@@ -1834,14 +895,14 @@ class AsyncBeneficiariesClient:
 
 
         async def main() -> None:
-            await client.beneficiaries.update_v2(
+            await client.beneficiaries.update(
                 id="id",
             )
 
 
         asyncio.run(main())
         """
-        _response = await self._raw_client.update_v2(
+        _response = await self._raw_client.update(
             id,
             type=type,
             first_name=first_name,
@@ -1860,118 +921,12 @@ class AsyncBeneficiariesClient:
         )
         return _response.data
 
-    async def validate(
-        self, beneficiary_id: str, *, request_options: typing.Optional[RequestOptions] = None
-    ) -> ValidateBeneficiariesResponse:
-        """
-        Validates a beneficiary's information, checking that all required fields are present and correct for the beneficiary's country and payment method configuration.
-
-        Parameters
-        ----------
-        beneficiary_id : str
-            Unique identifier of the beneficiary
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        ValidateBeneficiariesResponse
-            Beneficiary validated successfully
-
-        Examples
-        --------
-        import asyncio
-
-        from mesta import AsyncMesta
-
-        client = AsyncMesta(
-            api_secret="YOUR_API_SECRET",
-            api_key="YOUR_API_KEY",
-        )
-
-
-        async def main() -> None:
-            await client.beneficiaries.validate(
-                beneficiary_id="beneficiaryId",
-            )
-
-
-        asyncio.run(main())
-        """
-        _response = await self._raw_client.validate(beneficiary_id, request_options=request_options)
-        return _response.data
-
-    async def update_verification(
-        self,
-        beneficiary_id: str,
-        *,
-        status: UpdateVerificationBeneficiariesRequestStatus,
-        external_ref_id: typing.Optional[str] = OMIT,
-        verification_result: typing.Optional[typing.Dict[str, typing.Any]] = OMIT,
-        request_options: typing.Optional[RequestOptions] = None,
-    ) -> UpdateVerificationBeneficiariesResponse:
-        """
-        Updates the verification status of a beneficiary. Used to mark a beneficiary as verified, pending, or declined after completing identity checks.
-
-        Parameters
-        ----------
-        beneficiary_id : str
-            Unique identifier of the beneficiary
-
-        status : UpdateVerificationBeneficiariesRequestStatus
-            New verification status for the beneficiary
-
-        external_ref_id : typing.Optional[str]
-            External reference ID for the verification
-
-        verification_result : typing.Optional[typing.Dict[str, typing.Any]]
-            Arbitrary JSON object containing verification result details
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        UpdateVerificationBeneficiariesResponse
-            Beneficiary verification updated successfully
-
-        Examples
-        --------
-        import asyncio
-
-        from mesta import AsyncMesta
-
-        client = AsyncMesta(
-            api_secret="YOUR_API_SECRET",
-            api_key="YOUR_API_KEY",
-        )
-
-
-        async def main() -> None:
-            await client.beneficiaries.update_verification(
-                beneficiary_id="beneficiaryId",
-                status="unverified",
-            )
-
-
-        asyncio.run(main())
-        """
-        _response = await self._raw_client.update_verification(
-            beneficiary_id,
-            status=status,
-            external_ref_id=external_ref_id,
-            verification_result=verification_result,
-            request_options=request_options,
-        )
-        return _response.data
-
-    async def create_v3(
+    async def create(
         self,
         *,
-        type: CreateV3BeneficiariesRequestType,
-        address: CreateV3BeneficiariesRequestAddress,
-        payment_methods: typing.Sequence[CreateV3BeneficiariesRequestPaymentMethodsItem],
+        type: CreateBeneficiariesRequestType,
+        address: CreateBeneficiariesRequestAddress,
+        payment_methods: typing.Sequence[CreateBeneficiariesRequestPaymentMethodsItem],
         beneficiary_relationship: BeneficiaryRelationship,
         purpose_of_payment: PurposeOfPayment,
         first_name: typing.Optional[str] = OMIT,
@@ -1979,28 +934,28 @@ class AsyncBeneficiariesClient:
         middle_name: typing.Optional[str] = OMIT,
         full_name: typing.Optional[str] = OMIT,
         business_registration_number: typing.Optional[str] = OMIT,
-        business_type: typing.Optional[CreateV3BeneficiariesRequestBusinessType] = OMIT,
+        business_type: typing.Optional[CreateBeneficiariesRequestBusinessType] = OMIT,
         email: typing.Optional[str] = OMIT,
         phone: typing.Optional[str] = OMIT,
         birth_date: typing.Optional[dt.date] = OMIT,
         merchant_id: typing.Optional[str] = OMIT,
-        identity: typing.Optional[CreateV3BeneficiariesRequestIdentity] = OMIT,
+        identity: typing.Optional[CreateBeneficiariesRequestIdentity] = OMIT,
         metadata: typing.Optional[typing.Dict[str, typing.Any]] = OMIT,
         purpose_of_payment_document: typing.Optional[PurposeOfPaymentDocumentRequest] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> CreateV3BeneficiariesResponse:
+    ) -> CreateBeneficiariesResponse:
         """
         Create a new beneficiary with mandatory compliance fields. Same as V2 but `beneficiaryRelationship` and `purposeOfPayment` are required.
 
         Parameters
         ----------
-        type : CreateV3BeneficiariesRequestType
+        type : CreateBeneficiariesRequestType
             Type of beneficiary
 
-        address : CreateV3BeneficiariesRequestAddress
+        address : CreateBeneficiariesRequestAddress
             Beneficiary address
 
-        payment_methods : typing.Sequence[CreateV3BeneficiariesRequestPaymentMethodsItem]
+        payment_methods : typing.Sequence[CreateBeneficiariesRequestPaymentMethodsItem]
             At least one payment method must be provided
 
         beneficiary_relationship : BeneficiaryRelationship
@@ -2022,7 +977,7 @@ class AsyncBeneficiariesClient:
         business_registration_number : typing.Optional[str]
             Business registration number (required for business type)
 
-        business_type : typing.Optional[CreateV3BeneficiariesRequestBusinessType]
+        business_type : typing.Optional[CreateBeneficiariesRequestBusinessType]
             Type of business (optional)
 
         email : typing.Optional[str]
@@ -2037,7 +992,7 @@ class AsyncBeneficiariesClient:
         merchant_id : typing.Optional[str]
             Merchant ID (optional, auto-assigned from API key)
 
-        identity : typing.Optional[CreateV3BeneficiariesRequestIdentity]
+        identity : typing.Optional[CreateBeneficiariesRequestIdentity]
             Identity document details
 
         metadata : typing.Optional[typing.Dict[str, typing.Any]]
@@ -2050,7 +1005,7 @@ class AsyncBeneficiariesClient:
 
         Returns
         -------
-        CreateV3BeneficiariesResponse
+        CreateBeneficiariesResponse
             Beneficiary created successfully
 
         Examples
@@ -2059,8 +1014,8 @@ class AsyncBeneficiariesClient:
 
         from mesta import AsyncMesta
         from mesta.beneficiaries import (
-            CreateV3BeneficiariesRequestAddress,
-            CreateV3BeneficiariesRequestPaymentMethodsItem,
+            CreateBeneficiariesRequestAddress,
+            CreateBeneficiariesRequestPaymentMethodsItem,
         )
 
         client = AsyncMesta(
@@ -2070,16 +1025,16 @@ class AsyncBeneficiariesClient:
 
 
         async def main() -> None:
-            await client.beneficiaries.create_v3(
+            await client.beneficiaries.create(
                 type="individual",
-                address=CreateV3BeneficiariesRequestAddress(
+                address=CreateBeneficiariesRequestAddress(
                     street="123 Main St",
                     city="Manila",
                     postal_code="1000",
                     country="PH",
                 ),
                 payment_methods=[
-                    CreateV3BeneficiariesRequestPaymentMethodsItem(
+                    CreateBeneficiariesRequestPaymentMethodsItem(
                         type="bank_account",
                         data={"key": "value"},
                     )
@@ -2091,7 +1046,7 @@ class AsyncBeneficiariesClient:
 
         asyncio.run(main())
         """
-        _response = await self._raw_client.create_v3(
+        _response = await self._raw_client.create(
             type=type,
             address=address,
             payment_methods=payment_methods,

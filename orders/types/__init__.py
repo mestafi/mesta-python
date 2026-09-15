@@ -9,11 +9,8 @@ if typing.TYPE_CHECKING:
     from .cancel_orders_response import CancelOrdersResponse
     from .cancel_orders_response_data import CancelOrdersResponseData
     from .cancel_orders_response_data_status import CancelOrdersResponseDataStatus
-    from .create_v1orders_response import CreateV1OrdersResponse
-    from .create_v1orders_response_data import CreateV1OrdersResponseData
-    from .create_v1orders_response_data_status import CreateV1OrdersResponseDataStatus
-    from .create_v2orders_response import CreateV2OrdersResponse
-    from .create_v2orders_response_data import CreateV2OrdersResponseData
+    from .create_orders_response import CreateOrdersResponse
+    from .create_orders_response_data import CreateOrdersResponseData
     from .get_deposit_bank_account_orders_response import GetDepositBankAccountOrdersResponse
     from .get_deposit_bank_account_orders_response_data import GetDepositBankAccountOrdersResponseData
     from .get_deposit_bank_account_orders_response_data_bank_details import (
@@ -39,11 +36,8 @@ _dynamic_imports: typing.Dict[str, str] = {
     "CancelOrdersResponse": ".cancel_orders_response",
     "CancelOrdersResponseData": ".cancel_orders_response_data",
     "CancelOrdersResponseDataStatus": ".cancel_orders_response_data_status",
-    "CreateV1OrdersResponse": ".create_v1orders_response",
-    "CreateV1OrdersResponseData": ".create_v1orders_response_data",
-    "CreateV1OrdersResponseDataStatus": ".create_v1orders_response_data_status",
-    "CreateV2OrdersResponse": ".create_v2orders_response",
-    "CreateV2OrdersResponseData": ".create_v2orders_response_data",
+    "CreateOrdersResponse": ".create_orders_response",
+    "CreateOrdersResponseData": ".create_orders_response_data",
     "GetDepositBankAccountOrdersResponse": ".get_deposit_bank_account_orders_response",
     "GetDepositBankAccountOrdersResponseData": ".get_deposit_bank_account_orders_response_data",
     "GetDepositBankAccountOrdersResponseDataBankDetails": ".get_deposit_bank_account_orders_response_data_bank_details",
@@ -89,11 +83,8 @@ __all__ = [
     "CancelOrdersResponse",
     "CancelOrdersResponseData",
     "CancelOrdersResponseDataStatus",
-    "CreateV1OrdersResponse",
-    "CreateV1OrdersResponseData",
-    "CreateV1OrdersResponseDataStatus",
-    "CreateV2OrdersResponse",
-    "CreateV2OrdersResponseData",
+    "CreateOrdersResponse",
+    "CreateOrdersResponseData",
     "GetDepositBankAccountOrdersResponse",
     "GetDepositBankAccountOrdersResponseData",
     "GetDepositBankAccountOrdersResponseDataBankDetails",

@@ -7,12 +7,9 @@ import typing
 from ..core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ..core.request_options import RequestOptions
 from .raw_client import AsyncRawSendersClient, RawSendersClient
-from .types.create_v1senders_request import CreateV1SendersRequest
-from .types.create_v1senders_response import CreateV1SendersResponse
-from .types.create_v2senders_request import CreateV2SendersRequest
-from .types.create_v2senders_response import CreateV2SendersResponse
+from .types.create_senders_request import CreateSendersRequest
+from .types.create_senders_response import CreateSendersResponse
 from .types.delete_senders_response import DeleteSendersResponse
-from .types.generate_ledger_accounts_senders_response import GenerateLedgerAccountsSendersResponse
 from .types.get_balances_senders_response import GetBalancesSendersResponse
 from .types.get_senders_response import GetSendersResponse
 from .types.list_senders_request_sort_by import ListSendersRequestSortBy
@@ -29,7 +26,6 @@ from .types.verify_senders_response import VerifySendersResponse
 if typing.TYPE_CHECKING:
     from .associates.client import AssociatesClient, AsyncAssociatesClient
     from .deposit_bank_accounts.client import AsyncDepositBankAccountsClient, DepositBankAccountsClient
-    from .deposit_wallet_addresses.client import AsyncDepositWalletAddressesClient, DepositWalletAddressesClient
     from .documents.client import AsyncDocumentsClient, DocumentsClient
     from .source_wallet_addresses.client import AsyncSourceWalletAddressesClient, SourceWalletAddressesClient
     from .terms_of_service.client import AsyncTermsOfServiceClient, TermsOfServiceClient
@@ -50,7 +46,6 @@ class SendersClient:
         self._documents: typing.Optional[DocumentsClient] = None
         self._terms_of_service: typing.Optional[TermsOfServiceClient] = None
         self._deposit_bank_accounts: typing.Optional[DepositBankAccountsClient] = None
-        self._deposit_wallet_addresses: typing.Optional[DepositWalletAddressesClient] = None
 
     @property
     def with_raw_response(self) -> RawSendersClient:
@@ -126,83 +121,9 @@ class SendersClient:
         )
         return _response.data
 
-    def create_v1(
-        self, *, request: CreateV1SendersRequest, request_options: typing.Optional[RequestOptions] = None
-    ) -> CreateV1SendersResponse:
-        """
-        ## Overview
-        * Creates a new sender
-        * Supports both individual and business senders
-        * Requirements vary by country and ownerType
-
-        ## Validation Rules
-        * **Important**: Always check validation rules before creating a sender
-        * Validation rules endpoint: `GET /v1/validation-rules/senders`
-        * Required query parameters:
-           * `ownerType=[individual|business]`
-          * `country=[ISO 3166-1 alpha-2 code]`
-        * Example request:
-        ```
-        GET /v1/validation-rules/senders?ownerType=individual&country=MX
-        ```
-
-        Parameters
-        ----------
-        request : CreateV1SendersRequest
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        CreateV1SendersResponse
-            Sender created successfully
-
-        Examples
-        --------
-        import datetime
-
-        from mesta import Address, IndividualSenderIdentity, Mesta
-        from mesta.senders import CreateV1SendersRequest_Individual
-
-        client = Mesta(
-            api_secret="YOUR_API_SECRET",
-            api_key="YOUR_API_KEY",
-        )
-        client.senders.create_v1(
-            request=CreateV1SendersRequest_Individual(
-                type="individual",
-                first_name="firstName",
-                last_name="lastName",
-                birth_date=datetime.date.fromisoformat(
-                    "2023-01-15",
-                ),
-                email="email",
-                phone="phone",
-                addresses=[
-                    Address(
-                        street="street",
-                        city="city",
-                        postal_code="12345 or 00000",
-                        country="country",
-                    )
-                ],
-                identity=IndividualSenderIdentity(
-                    document_type="PASSPORT",
-                    country_code="countryCode",
-                    document_number="documentNumber",
-                ),
-                gender="male",
-                occupation="accountant",
-            ),
-        )
-        """
-        _response = self._raw_client.create_v1(request=request, request_options=request_options)
-        return _response.data
-
-    def create_v2(
-        self, *, request: CreateV2SendersRequest, request_options: typing.Optional[RequestOptions] = None
-    ) -> CreateV2SendersResponse:
+    def create(
+        self, *, request: CreateSendersRequest, request_options: typing.Optional[RequestOptions] = None
+    ) -> CreateSendersResponse:
         """
         ## Overview
         * Creates a new sender
@@ -230,14 +151,14 @@ class SendersClient:
 
         Parameters
         ----------
-        request : CreateV2SendersRequest
+        request : CreateSendersRequest
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
         Returns
         -------
-        CreateV2SendersResponse
+        CreateSendersResponse
             Sender created successfully
 
         Examples
@@ -250,7 +171,7 @@ class SendersClient:
             api_secret="YOUR_API_SECRET",
             api_key="YOUR_API_KEY",
         )
-        client.senders.create_v2(
+        client.senders.create(
             request=IndividualSenderV2(
                 expected_monthly_volume_estimate=1.1,
                 average_transaction_size=1.1,
@@ -283,7 +204,7 @@ class SendersClient:
             ),
         )
         """
-        _response = self._raw_client.create_v2(request=request, request_options=request_options)
+        _response = self._raw_client.create(request=request, request_options=request_options)
         return _response.data
 
     def get(self, sender_id: str, *, request_options: typing.Optional[RequestOptions] = None) -> GetSendersResponse:
@@ -584,40 +505,6 @@ class SendersClient:
         )
         return _response.data
 
-    def generate_ledger_accounts(
-        self, id: str, *, request_options: typing.Optional[RequestOptions] = None
-    ) -> GenerateLedgerAccountsSendersResponse:
-        """
-        Generates ledger accounts and virtual bank accounts for a sender. These accounts are used for tracking balances and transactions.
-
-        Parameters
-        ----------
-        id : str
-            ID of the sender
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        GenerateLedgerAccountsSendersResponse
-            Ledger accounts generated successfully
-
-        Examples
-        --------
-        from mesta import Mesta
-
-        client = Mesta(
-            api_secret="YOUR_API_SECRET",
-            api_key="YOUR_API_KEY",
-        )
-        client.senders.generate_ledger_accounts(
-            id="id",
-        )
-        """
-        _response = self._raw_client.generate_ledger_accounts(id, request_options=request_options)
-        return _response.data
-
     @property
     def associates(self):
         if self._associates is None:
@@ -674,14 +561,6 @@ class SendersClient:
             self._deposit_bank_accounts = DepositBankAccountsClient(client_wrapper=self._client_wrapper)
         return self._deposit_bank_accounts
 
-    @property
-    def deposit_wallet_addresses(self):
-        if self._deposit_wallet_addresses is None:
-            from .deposit_wallet_addresses.client import DepositWalletAddressesClient  # noqa: E402
-
-            self._deposit_wallet_addresses = DepositWalletAddressesClient(client_wrapper=self._client_wrapper)
-        return self._deposit_wallet_addresses
-
 
 class AsyncSendersClient:
     def __init__(self, *, client_wrapper: AsyncClientWrapper):
@@ -694,7 +573,6 @@ class AsyncSendersClient:
         self._documents: typing.Optional[AsyncDocumentsClient] = None
         self._terms_of_service: typing.Optional[AsyncTermsOfServiceClient] = None
         self._deposit_bank_accounts: typing.Optional[AsyncDepositBankAccountsClient] = None
-        self._deposit_wallet_addresses: typing.Optional[AsyncDepositWalletAddressesClient] = None
 
     @property
     def with_raw_response(self) -> AsyncRawSendersClient:
@@ -778,90 +656,9 @@ class AsyncSendersClient:
         )
         return _response.data
 
-    async def create_v1(
-        self, *, request: CreateV1SendersRequest, request_options: typing.Optional[RequestOptions] = None
-    ) -> CreateV1SendersResponse:
-        """
-        ## Overview
-        * Creates a new sender
-        * Supports both individual and business senders
-        * Requirements vary by country and ownerType
-
-        ## Validation Rules
-        * **Important**: Always check validation rules before creating a sender
-        * Validation rules endpoint: `GET /v1/validation-rules/senders`
-        * Required query parameters:
-           * `ownerType=[individual|business]`
-          * `country=[ISO 3166-1 alpha-2 code]`
-        * Example request:
-        ```
-        GET /v1/validation-rules/senders?ownerType=individual&country=MX
-        ```
-
-        Parameters
-        ----------
-        request : CreateV1SendersRequest
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        CreateV1SendersResponse
-            Sender created successfully
-
-        Examples
-        --------
-        import asyncio
-        import datetime
-
-        from mesta import Address, AsyncMesta, IndividualSenderIdentity
-        from mesta.senders import CreateV1SendersRequest_Individual
-
-        client = AsyncMesta(
-            api_secret="YOUR_API_SECRET",
-            api_key="YOUR_API_KEY",
-        )
-
-
-        async def main() -> None:
-            await client.senders.create_v1(
-                request=CreateV1SendersRequest_Individual(
-                    type="individual",
-                    first_name="firstName",
-                    last_name="lastName",
-                    birth_date=datetime.date.fromisoformat(
-                        "2023-01-15",
-                    ),
-                    email="email",
-                    phone="phone",
-                    addresses=[
-                        Address(
-                            street="street",
-                            city="city",
-                            postal_code="12345 or 00000",
-                            country="country",
-                        )
-                    ],
-                    identity=IndividualSenderIdentity(
-                        document_type="PASSPORT",
-                        country_code="countryCode",
-                        document_number="documentNumber",
-                    ),
-                    gender="male",
-                    occupation="accountant",
-                ),
-            )
-
-
-        asyncio.run(main())
-        """
-        _response = await self._raw_client.create_v1(request=request, request_options=request_options)
-        return _response.data
-
-    async def create_v2(
-        self, *, request: CreateV2SendersRequest, request_options: typing.Optional[RequestOptions] = None
-    ) -> CreateV2SendersResponse:
+    async def create(
+        self, *, request: CreateSendersRequest, request_options: typing.Optional[RequestOptions] = None
+    ) -> CreateSendersResponse:
         """
         ## Overview
         * Creates a new sender
@@ -889,14 +686,14 @@ class AsyncSendersClient:
 
         Parameters
         ----------
-        request : CreateV2SendersRequest
+        request : CreateSendersRequest
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
         Returns
         -------
-        CreateV2SendersResponse
+        CreateSendersResponse
             Sender created successfully
 
         Examples
@@ -918,7 +715,7 @@ class AsyncSendersClient:
 
 
         async def main() -> None:
-            await client.senders.create_v2(
+            await client.senders.create(
                 request=IndividualSenderV2(
                     expected_monthly_volume_estimate=1.1,
                     average_transaction_size=1.1,
@@ -956,7 +753,7 @@ class AsyncSendersClient:
 
         asyncio.run(main())
         """
-        _response = await self._raw_client.create_v2(request=request, request_options=request_options)
+        _response = await self._raw_client.create(request=request, request_options=request_options)
         return _response.data
 
     async def get(
@@ -1315,48 +1112,6 @@ class AsyncSendersClient:
         )
         return _response.data
 
-    async def generate_ledger_accounts(
-        self, id: str, *, request_options: typing.Optional[RequestOptions] = None
-    ) -> GenerateLedgerAccountsSendersResponse:
-        """
-        Generates ledger accounts and virtual bank accounts for a sender. These accounts are used for tracking balances and transactions.
-
-        Parameters
-        ----------
-        id : str
-            ID of the sender
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        GenerateLedgerAccountsSendersResponse
-            Ledger accounts generated successfully
-
-        Examples
-        --------
-        import asyncio
-
-        from mesta import AsyncMesta
-
-        client = AsyncMesta(
-            api_secret="YOUR_API_SECRET",
-            api_key="YOUR_API_KEY",
-        )
-
-
-        async def main() -> None:
-            await client.senders.generate_ledger_accounts(
-                id="id",
-            )
-
-
-        asyncio.run(main())
-        """
-        _response = await self._raw_client.generate_ledger_accounts(id, request_options=request_options)
-        return _response.data
-
     @property
     def associates(self):
         if self._associates is None:
@@ -1412,11 +1167,3 @@ class AsyncSendersClient:
 
             self._deposit_bank_accounts = AsyncDepositBankAccountsClient(client_wrapper=self._client_wrapper)
         return self._deposit_bank_accounts
-
-    @property
-    def deposit_wallet_addresses(self):
-        if self._deposit_wallet_addresses is None:
-            from .deposit_wallet_addresses.client import AsyncDepositWalletAddressesClient  # noqa: E402
-
-            self._deposit_wallet_addresses = AsyncDepositWalletAddressesClient(client_wrapper=self._client_wrapper)
-        return self._deposit_wallet_addresses

@@ -8,6 +8,9 @@ from .raw_client import AsyncRawAccountsClient, RawAccountsClient
 from .types.list_accounts_request_sort_by import ListAccountsRequestSortBy
 from .types.list_accounts_request_sort_order import ListAccountsRequestSortOrder
 from .types.list_accounts_response import ListAccountsResponse
+from .types.list_balances_accounts_response import ListBalancesAccountsResponse
+from .types.list_sender_balances_accounts_request_currency import ListSenderBalancesAccountsRequestCurrency
+from .types.list_sender_balances_accounts_response import ListSenderBalancesAccountsResponse
 
 
 class AccountsClient:
@@ -72,6 +75,70 @@ class AccountsClient:
         _response = self._raw_client.list(
             page_size=page_size, page=page, sort_by=sort_by, sort_order=sort_order, request_options=request_options
         )
+        return _response.data
+
+    def list_balances(self, *, request_options: typing.Optional[RequestOptions] = None) -> ListBalancesAccountsResponse:
+        """
+        Retrieve the current balances for all merchant accounts across different currencies.
+
+        Parameters
+        ----------
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        ListBalancesAccountsResponse
+            Account balances retrieved successfully
+
+        Examples
+        --------
+        from mesta import Mesta
+
+        client = Mesta(
+            api_secret="YOUR_API_SECRET",
+            api_key="YOUR_API_KEY",
+        )
+        client.merchants.accounts.list_balances()
+        """
+        _response = self._raw_client.list_balances(request_options=request_options)
+        return _response.data
+
+    def list_sender_balances(
+        self,
+        *,
+        currency: ListSenderBalancesAccountsRequestCurrency,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> ListSenderBalancesAccountsResponse:
+        """
+        Retrieve the current balances for all senders, optionally filtered by currency.
+
+        Parameters
+        ----------
+        currency : ListSenderBalancesAccountsRequestCurrency
+            Filter balances by currency code
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        ListSenderBalancesAccountsResponse
+            Sender balances retrieved successfully
+
+        Examples
+        --------
+        from mesta import Mesta
+
+        client = Mesta(
+            api_secret="YOUR_API_SECRET",
+            api_key="YOUR_API_KEY",
+        )
+        client.merchants.accounts.list_sender_balances(
+            currency="USD",
+        )
+        """
+        _response = self._raw_client.list_sender_balances(currency=currency, request_options=request_options)
         return _response.data
 
 
@@ -145,4 +212,86 @@ class AsyncAccountsClient:
         _response = await self._raw_client.list(
             page_size=page_size, page=page, sort_by=sort_by, sort_order=sort_order, request_options=request_options
         )
+        return _response.data
+
+    async def list_balances(
+        self, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> ListBalancesAccountsResponse:
+        """
+        Retrieve the current balances for all merchant accounts across different currencies.
+
+        Parameters
+        ----------
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        ListBalancesAccountsResponse
+            Account balances retrieved successfully
+
+        Examples
+        --------
+        import asyncio
+
+        from mesta import AsyncMesta
+
+        client = AsyncMesta(
+            api_secret="YOUR_API_SECRET",
+            api_key="YOUR_API_KEY",
+        )
+
+
+        async def main() -> None:
+            await client.merchants.accounts.list_balances()
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.list_balances(request_options=request_options)
+        return _response.data
+
+    async def list_sender_balances(
+        self,
+        *,
+        currency: ListSenderBalancesAccountsRequestCurrency,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> ListSenderBalancesAccountsResponse:
+        """
+        Retrieve the current balances for all senders, optionally filtered by currency.
+
+        Parameters
+        ----------
+        currency : ListSenderBalancesAccountsRequestCurrency
+            Filter balances by currency code
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        ListSenderBalancesAccountsResponse
+            Sender balances retrieved successfully
+
+        Examples
+        --------
+        import asyncio
+
+        from mesta import AsyncMesta
+
+        client = AsyncMesta(
+            api_secret="YOUR_API_SECRET",
+            api_key="YOUR_API_KEY",
+        )
+
+
+        async def main() -> None:
+            await client.merchants.accounts.list_sender_balances(
+                currency="USD",
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.list_sender_balances(currency=currency, request_options=request_options)
         return _response.data

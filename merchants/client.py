@@ -13,23 +13,21 @@ from .types.get_merchants_response import GetMerchantsResponse
 
 if typing.TYPE_CHECKING:
     from .accounts.client import AccountsClient, AsyncAccountsClient
-    from .deposit_wallet_addresses.client import AsyncDepositWalletAddressesClient, DepositWalletAddressesClient
     from .fiat_deposits.client import AsyncFiatDepositsClient, FiatDepositsClient
     from .source_wallet_addresses.client import AsyncSourceWalletAddressesClient, SourceWalletAddressesClient
     from .stablecoin_deposits.client import AsyncStablecoinDepositsClient, StablecoinDepositsClient
-    from .withdrawals.client import AsyncWithdrawalsClient, WithdrawalsClient
+    from .transactions.client import AsyncTransactionsClient, TransactionsClient
 
 
 class MerchantsClient:
     def __init__(self, *, client_wrapper: SyncClientWrapper):
         self._raw_client = RawMerchantsClient(client_wrapper=client_wrapper)
         self._client_wrapper = client_wrapper
-        self._withdrawals: typing.Optional[WithdrawalsClient] = None
         self._accounts: typing.Optional[AccountsClient] = None
+        self._transactions: typing.Optional[TransactionsClient] = None
         self._stablecoin_deposits: typing.Optional[StablecoinDepositsClient] = None
         self._fiat_deposits: typing.Optional[FiatDepositsClient] = None
         self._source_wallet_addresses: typing.Optional[SourceWalletAddressesClient] = None
-        self._deposit_wallet_addresses: typing.Optional[DepositWalletAddressesClient] = None
 
     @property
     def with_raw_response(self) -> RawMerchantsClient:
@@ -143,20 +141,20 @@ class MerchantsClient:
         return _response.data
 
     @property
-    def withdrawals(self):
-        if self._withdrawals is None:
-            from .withdrawals.client import WithdrawalsClient  # noqa: E402
-
-            self._withdrawals = WithdrawalsClient(client_wrapper=self._client_wrapper)
-        return self._withdrawals
-
-    @property
     def accounts(self):
         if self._accounts is None:
             from .accounts.client import AccountsClient  # noqa: E402
 
             self._accounts = AccountsClient(client_wrapper=self._client_wrapper)
         return self._accounts
+
+    @property
+    def transactions(self):
+        if self._transactions is None:
+            from .transactions.client import TransactionsClient  # noqa: E402
+
+            self._transactions = TransactionsClient(client_wrapper=self._client_wrapper)
+        return self._transactions
 
     @property
     def stablecoin_deposits(self):
@@ -182,25 +180,16 @@ class MerchantsClient:
             self._source_wallet_addresses = SourceWalletAddressesClient(client_wrapper=self._client_wrapper)
         return self._source_wallet_addresses
 
-    @property
-    def deposit_wallet_addresses(self):
-        if self._deposit_wallet_addresses is None:
-            from .deposit_wallet_addresses.client import DepositWalletAddressesClient  # noqa: E402
-
-            self._deposit_wallet_addresses = DepositWalletAddressesClient(client_wrapper=self._client_wrapper)
-        return self._deposit_wallet_addresses
-
 
 class AsyncMerchantsClient:
     def __init__(self, *, client_wrapper: AsyncClientWrapper):
         self._raw_client = AsyncRawMerchantsClient(client_wrapper=client_wrapper)
         self._client_wrapper = client_wrapper
-        self._withdrawals: typing.Optional[AsyncWithdrawalsClient] = None
         self._accounts: typing.Optional[AsyncAccountsClient] = None
+        self._transactions: typing.Optional[AsyncTransactionsClient] = None
         self._stablecoin_deposits: typing.Optional[AsyncStablecoinDepositsClient] = None
         self._fiat_deposits: typing.Optional[AsyncFiatDepositsClient] = None
         self._source_wallet_addresses: typing.Optional[AsyncSourceWalletAddressesClient] = None
-        self._deposit_wallet_addresses: typing.Optional[AsyncDepositWalletAddressesClient] = None
 
     @property
     def with_raw_response(self) -> AsyncRawMerchantsClient:
@@ -340,20 +329,20 @@ class AsyncMerchantsClient:
         return _response.data
 
     @property
-    def withdrawals(self):
-        if self._withdrawals is None:
-            from .withdrawals.client import AsyncWithdrawalsClient  # noqa: E402
-
-            self._withdrawals = AsyncWithdrawalsClient(client_wrapper=self._client_wrapper)
-        return self._withdrawals
-
-    @property
     def accounts(self):
         if self._accounts is None:
             from .accounts.client import AsyncAccountsClient  # noqa: E402
 
             self._accounts = AsyncAccountsClient(client_wrapper=self._client_wrapper)
         return self._accounts
+
+    @property
+    def transactions(self):
+        if self._transactions is None:
+            from .transactions.client import AsyncTransactionsClient  # noqa: E402
+
+            self._transactions = AsyncTransactionsClient(client_wrapper=self._client_wrapper)
+        return self._transactions
 
     @property
     def stablecoin_deposits(self):
@@ -378,11 +367,3 @@ class AsyncMerchantsClient:
 
             self._source_wallet_addresses = AsyncSourceWalletAddressesClient(client_wrapper=self._client_wrapper)
         return self._source_wallet_addresses
-
-    @property
-    def deposit_wallet_addresses(self):
-        if self._deposit_wallet_addresses is None:
-            from .deposit_wallet_addresses.client import AsyncDepositWalletAddressesClient  # noqa: E402
-
-            self._deposit_wallet_addresses = AsyncDepositWalletAddressesClient(client_wrapper=self._client_wrapper)
-        return self._deposit_wallet_addresses

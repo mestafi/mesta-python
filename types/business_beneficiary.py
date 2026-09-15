@@ -11,9 +11,15 @@ from .business_beneficiary_business_type import BusinessBeneficiaryBusinessType
 from .business_beneficiary_identity import BusinessBeneficiaryIdentity
 from .business_beneficiary_payment_info import BusinessBeneficiaryPaymentInfo
 from .business_beneficiary_payment_type import BusinessBeneficiaryPaymentType
+from .business_beneficiary_type import BusinessBeneficiaryType
 
 
 class BusinessBeneficiary(UniversalBaseModel):
+    type: BusinessBeneficiaryType = pydantic.Field()
+    """
+    The type for the beneficiary (business).
+    """
+
     full_name: typing_extensions.Annotated[
         str,
         FieldMetadata(alias="fullName"),

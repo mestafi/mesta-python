@@ -7,17 +7,11 @@ from importlib import import_module
 
 if typing.TYPE_CHECKING:
     from .types import (
-        GenerateEurGbpDepositBankAccountsRequestCurrency,
-        GenerateEurGbpDepositBankAccountsResponse,
-        GenerateEurGbpDepositBankAccountsResponseData,
         GenerateOnDemandDepositBankAccountsRequestCurrency,
         GenerateOnDemandDepositBankAccountsResponse,
         GenerateOnDemandDepositBankAccountsResponseData,
     )
 _dynamic_imports: typing.Dict[str, str] = {
-    "GenerateEurGbpDepositBankAccountsRequestCurrency": ".types",
-    "GenerateEurGbpDepositBankAccountsResponse": ".types",
-    "GenerateEurGbpDepositBankAccountsResponseData": ".types",
     "GenerateOnDemandDepositBankAccountsRequestCurrency": ".types",
     "GenerateOnDemandDepositBankAccountsResponse": ".types",
     "GenerateOnDemandDepositBankAccountsResponseData": ".types",
@@ -46,9 +40,6 @@ def __dir__():
 
 
 __all__ = [
-    "GenerateEurGbpDepositBankAccountsRequestCurrency",
-    "GenerateEurGbpDepositBankAccountsResponse",
-    "GenerateEurGbpDepositBankAccountsResponseData",
     "GenerateOnDemandDepositBankAccountsRequestCurrency",
     "GenerateOnDemandDepositBankAccountsResponse",
     "GenerateOnDemandDepositBankAccountsResponseData",

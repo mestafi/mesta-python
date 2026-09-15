@@ -13,8 +13,7 @@ from ..types.purpose import Purpose
 from ..types.source_of_funds import SourceOfFunds
 from .raw_client import AsyncRawOrdersClient, RawOrdersClient
 from .types.cancel_orders_response import CancelOrdersResponse
-from .types.create_v1orders_response import CreateV1OrdersResponse
-from .types.create_v2orders_response import CreateV2OrdersResponse
+from .types.create_orders_response import CreateOrdersResponse
 from .types.get_deposit_bank_account_orders_response import GetDepositBankAccountOrdersResponse
 from .types.get_deposit_wallet_address_orders_response import GetDepositWalletAddressOrdersResponse
 from .types.get_orders_response import GetOrdersResponse
@@ -135,85 +134,6 @@ class OrdersClient:
             page_size=page_size,
             sort_by=sort_by,
             sort_order=sort_order,
-            request_options=request_options,
-        )
-        return _response.data
-
-    def create_v1(
-        self,
-        *,
-        accepted_quote_id: str,
-        sender_id: str,
-        beneficiary_id: str,
-        purpose: typing.Optional[Purpose] = OMIT,
-        metadata: typing.Optional[typing.Dict[str, typing.Any]] = OMIT,
-        source_of_funds: typing.Optional[SourceOfFunds] = OMIT,
-        beneficiary_relationship: typing.Optional[BeneficiaryRelationship] = OMIT,
-        documents: typing.Optional[typing.Sequence[OrderDocumentInput]] = OMIT,
-        customer_reference_id: typing.Optional[str] = OMIT,
-        request_options: typing.Optional[RequestOptions] = None,
-    ) -> CreateV1OrdersResponse:
-        """
-        Initiates a order for converting and transferring USD or USDC to a specified target currency, using a previously obtained quote.
-
-        Parameters
-        ----------
-        accepted_quote_id : str
-            Unique ID for the quote to use for this order.
-
-        sender_id : str
-            Unique identifier for the sender.
-
-        beneficiary_id : str
-            Unique identifier for the beneficiary.
-
-        purpose : typing.Optional[Purpose]
-
-        metadata : typing.Optional[typing.Dict[str, typing.Any]]
-            Custom metadata to attach to the order
-
-        source_of_funds : typing.Optional[SourceOfFunds]
-
-        beneficiary_relationship : typing.Optional[BeneficiaryRelationship]
-
-        documents : typing.Optional[typing.Sequence[OrderDocumentInput]]
-            Optional array of supporting documents
-
-        customer_reference_id : typing.Optional[str]
-            Your internal reference ID for this order
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        CreateV1OrdersResponse
-            Order created successfully
-
-        Examples
-        --------
-        from mesta import Mesta
-
-        client = Mesta(
-            api_secret="YOUR_API_SECRET",
-            api_key="YOUR_API_KEY",
-        )
-        client.orders.create_v1(
-            accepted_quote_id="acceptedQuoteId",
-            sender_id="senderId",
-            beneficiary_id="beneficiaryId",
-        )
-        """
-        _response = self._raw_client.create_v1(
-            accepted_quote_id=accepted_quote_id,
-            sender_id=sender_id,
-            beneficiary_id=beneficiary_id,
-            purpose=purpose,
-            metadata=metadata,
-            source_of_funds=source_of_funds,
-            beneficiary_relationship=beneficiary_relationship,
-            documents=documents,
-            customer_reference_id=customer_reference_id,
             request_options=request_options,
         )
         return _response.data
@@ -361,7 +281,7 @@ class OrdersClient:
         )
         return _response.data
 
-    def create_v2(
+    def create(
         self,
         *,
         sender_id: str,
@@ -376,7 +296,7 @@ class OrdersClient:
         senders_own_funds: typing.Optional[bool] = OMIT,
         use_pooled_funds: typing.Optional[bool] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> CreateV2OrdersResponse:
+    ) -> CreateOrdersResponse:
         """
         Create a new order using a payment method ID. This is the recommended way to create orders. Requires an accepted quote, a sender, and a payment method.
 
@@ -420,7 +340,7 @@ class OrdersClient:
 
         Returns
         -------
-        CreateV2OrdersResponse
+        CreateOrdersResponse
             Order created successfully
 
         Examples
@@ -431,13 +351,13 @@ class OrdersClient:
             api_secret="YOUR_API_SECRET",
             api_key="YOUR_API_KEY",
         )
-        client.orders.create_v2(
+        client.orders.create(
             sender_id="550e8400-e29b-41d4-a716-446655440001",
             payment_method_id="550e8400-e29b-41d4-a716-446655440002",
             accepted_quote_id="550e8400-e29b-41d4-a716-446655440003",
         )
         """
-        _response = self._raw_client.create_v2(
+        _response = self._raw_client.create(
             sender_id=sender_id,
             payment_method_id=payment_method_id,
             accepted_quote_id=accepted_quote_id,
@@ -610,93 +530,6 @@ class AsyncOrdersClient:
             page_size=page_size,
             sort_by=sort_by,
             sort_order=sort_order,
-            request_options=request_options,
-        )
-        return _response.data
-
-    async def create_v1(
-        self,
-        *,
-        accepted_quote_id: str,
-        sender_id: str,
-        beneficiary_id: str,
-        purpose: typing.Optional[Purpose] = OMIT,
-        metadata: typing.Optional[typing.Dict[str, typing.Any]] = OMIT,
-        source_of_funds: typing.Optional[SourceOfFunds] = OMIT,
-        beneficiary_relationship: typing.Optional[BeneficiaryRelationship] = OMIT,
-        documents: typing.Optional[typing.Sequence[OrderDocumentInput]] = OMIT,
-        customer_reference_id: typing.Optional[str] = OMIT,
-        request_options: typing.Optional[RequestOptions] = None,
-    ) -> CreateV1OrdersResponse:
-        """
-        Initiates a order for converting and transferring USD or USDC to a specified target currency, using a previously obtained quote.
-
-        Parameters
-        ----------
-        accepted_quote_id : str
-            Unique ID for the quote to use for this order.
-
-        sender_id : str
-            Unique identifier for the sender.
-
-        beneficiary_id : str
-            Unique identifier for the beneficiary.
-
-        purpose : typing.Optional[Purpose]
-
-        metadata : typing.Optional[typing.Dict[str, typing.Any]]
-            Custom metadata to attach to the order
-
-        source_of_funds : typing.Optional[SourceOfFunds]
-
-        beneficiary_relationship : typing.Optional[BeneficiaryRelationship]
-
-        documents : typing.Optional[typing.Sequence[OrderDocumentInput]]
-            Optional array of supporting documents
-
-        customer_reference_id : typing.Optional[str]
-            Your internal reference ID for this order
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        CreateV1OrdersResponse
-            Order created successfully
-
-        Examples
-        --------
-        import asyncio
-
-        from mesta import AsyncMesta
-
-        client = AsyncMesta(
-            api_secret="YOUR_API_SECRET",
-            api_key="YOUR_API_KEY",
-        )
-
-
-        async def main() -> None:
-            await client.orders.create_v1(
-                accepted_quote_id="acceptedQuoteId",
-                sender_id="senderId",
-                beneficiary_id="beneficiaryId",
-            )
-
-
-        asyncio.run(main())
-        """
-        _response = await self._raw_client.create_v1(
-            accepted_quote_id=accepted_quote_id,
-            sender_id=sender_id,
-            beneficiary_id=beneficiary_id,
-            purpose=purpose,
-            metadata=metadata,
-            source_of_funds=source_of_funds,
-            beneficiary_relationship=beneficiary_relationship,
-            documents=documents,
-            customer_reference_id=customer_reference_id,
             request_options=request_options,
         )
         return _response.data
@@ -876,7 +709,7 @@ class AsyncOrdersClient:
         )
         return _response.data
 
-    async def create_v2(
+    async def create(
         self,
         *,
         sender_id: str,
@@ -891,7 +724,7 @@ class AsyncOrdersClient:
         senders_own_funds: typing.Optional[bool] = OMIT,
         use_pooled_funds: typing.Optional[bool] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> CreateV2OrdersResponse:
+    ) -> CreateOrdersResponse:
         """
         Create a new order using a payment method ID. This is the recommended way to create orders. Requires an accepted quote, a sender, and a payment method.
 
@@ -935,7 +768,7 @@ class AsyncOrdersClient:
 
         Returns
         -------
-        CreateV2OrdersResponse
+        CreateOrdersResponse
             Order created successfully
 
         Examples
@@ -951,7 +784,7 @@ class AsyncOrdersClient:
 
 
         async def main() -> None:
-            await client.orders.create_v2(
+            await client.orders.create(
                 sender_id="550e8400-e29b-41d4-a716-446655440001",
                 payment_method_id="550e8400-e29b-41d4-a716-446655440002",
                 accepted_quote_id="550e8400-e29b-41d4-a716-446655440003",
@@ -960,7 +793,7 @@ class AsyncOrdersClient:
 
         asyncio.run(main())
         """
-        _response = await self._raw_client.create_v2(
+        _response = await self._raw_client.create(
             sender_id=sender_id,
             payment_method_id=payment_method_id,
             accepted_quote_id=accepted_quote_id,

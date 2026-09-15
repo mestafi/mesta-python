@@ -24,8 +24,7 @@ from ..types.order_document_input import OrderDocumentInput
 from ..types.purpose import Purpose
 from ..types.source_of_funds import SourceOfFunds
 from .types.cancel_orders_response import CancelOrdersResponse
-from .types.create_v1orders_response import CreateV1OrdersResponse
-from .types.create_v2orders_response import CreateV2OrdersResponse
+from .types.create_orders_response import CreateOrdersResponse
 from .types.get_deposit_bank_account_orders_response import GetDepositBankAccountOrdersResponse
 from .types.get_deposit_wallet_address_orders_response import GetDepositWalletAddressOrdersResponse
 from .types.get_orders_response import GetOrdersResponse
@@ -138,153 +137,6 @@ class RawOrdersClient:
                     ),
                 )
                 return HttpResponse(response=_response, data=_data)
-            if _response.status_code == 401:
-                raise UnauthorizedError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Any,
-                        parse_obj_as(
-                            type_=typing.Any,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 403:
-                raise ForbiddenError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Any,
-                        parse_obj_as(
-                            type_=typing.Any,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 404:
-                raise NotFoundError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Any,
-                        parse_obj_as(
-                            type_=typing.Any,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 500:
-                raise InternalServerError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        ErrorResponse,
-                        parse_obj_as(
-                            type_=ErrorResponse,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            _response_json = _response.json()
-        except JSONDecodeError:
-            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
-        except ValidationError as e:
-            raise ParsingError(
-                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
-            )
-        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
-
-    def create_v1(
-        self,
-        *,
-        accepted_quote_id: str,
-        sender_id: str,
-        beneficiary_id: str,
-        purpose: typing.Optional[Purpose] = OMIT,
-        metadata: typing.Optional[typing.Dict[str, typing.Any]] = OMIT,
-        source_of_funds: typing.Optional[SourceOfFunds] = OMIT,
-        beneficiary_relationship: typing.Optional[BeneficiaryRelationship] = OMIT,
-        documents: typing.Optional[typing.Sequence[OrderDocumentInput]] = OMIT,
-        customer_reference_id: typing.Optional[str] = OMIT,
-        request_options: typing.Optional[RequestOptions] = None,
-    ) -> HttpResponse[CreateV1OrdersResponse]:
-        """
-        Initiates a order for converting and transferring USD or USDC to a specified target currency, using a previously obtained quote.
-
-        Parameters
-        ----------
-        accepted_quote_id : str
-            Unique ID for the quote to use for this order.
-
-        sender_id : str
-            Unique identifier for the sender.
-
-        beneficiary_id : str
-            Unique identifier for the beneficiary.
-
-        purpose : typing.Optional[Purpose]
-
-        metadata : typing.Optional[typing.Dict[str, typing.Any]]
-            Custom metadata to attach to the order
-
-        source_of_funds : typing.Optional[SourceOfFunds]
-
-        beneficiary_relationship : typing.Optional[BeneficiaryRelationship]
-
-        documents : typing.Optional[typing.Sequence[OrderDocumentInput]]
-            Optional array of supporting documents
-
-        customer_reference_id : typing.Optional[str]
-            Your internal reference ID for this order
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        HttpResponse[CreateV1OrdersResponse]
-            Order created successfully
-        """
-        _response = self._client_wrapper.httpx_client.request(
-            "v1/orders",
-            method="POST",
-            json={
-                "acceptedQuoteId": accepted_quote_id,
-                "senderId": sender_id,
-                "beneficiaryId": beneficiary_id,
-                "purpose": purpose,
-                "metadata": metadata,
-                "sourceOfFunds": source_of_funds,
-                "beneficiaryRelationship": beneficiary_relationship,
-                "documents": convert_and_respect_annotation_metadata(
-                    object_=documents, annotation=typing.Sequence[OrderDocumentInput], direction="write"
-                ),
-                "customerReferenceId": customer_reference_id,
-            },
-            headers={
-                "content-type": "application/json",
-            },
-            request_options=request_options,
-            omit=OMIT,
-        )
-        try:
-            if 200 <= _response.status_code < 300:
-                _data = typing.cast(
-                    CreateV1OrdersResponse,
-                    parse_obj_as(
-                        type_=CreateV1OrdersResponse,  # type: ignore
-                        object_=_response.json(),
-                    ),
-                )
-                return HttpResponse(response=_response, data=_data)
-            if _response.status_code == 400:
-                raise BadRequestError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Any,
-                        parse_obj_as(
-                            type_=typing.Any,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
             if _response.status_code == 401:
                 raise UnauthorizedError(
                     headers=dict(_response.headers),
@@ -722,7 +574,7 @@ class RawOrdersClient:
             )
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
-    def create_v2(
+    def create(
         self,
         *,
         sender_id: str,
@@ -737,7 +589,7 @@ class RawOrdersClient:
         senders_own_funds: typing.Optional[bool] = OMIT,
         use_pooled_funds: typing.Optional[bool] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> HttpResponse[CreateV2OrdersResponse]:
+    ) -> HttpResponse[CreateOrdersResponse]:
         """
         Create a new order using a payment method ID. This is the recommended way to create orders. Requires an accepted quote, a sender, and a payment method.
 
@@ -781,7 +633,7 @@ class RawOrdersClient:
 
         Returns
         -------
-        HttpResponse[CreateV2OrdersResponse]
+        HttpResponse[CreateOrdersResponse]
             Order created successfully
         """
         _response = self._client_wrapper.httpx_client.request(
@@ -811,9 +663,9 @@ class RawOrdersClient:
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    CreateV2OrdersResponse,
+                    CreateOrdersResponse,
                     parse_obj_as(
-                        type_=CreateV2OrdersResponse,  # type: ignore
+                        type_=CreateOrdersResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -1058,153 +910,6 @@ class AsyncRawOrdersClient:
                     ),
                 )
                 return AsyncHttpResponse(response=_response, data=_data)
-            if _response.status_code == 401:
-                raise UnauthorizedError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Any,
-                        parse_obj_as(
-                            type_=typing.Any,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 403:
-                raise ForbiddenError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Any,
-                        parse_obj_as(
-                            type_=typing.Any,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 404:
-                raise NotFoundError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Any,
-                        parse_obj_as(
-                            type_=typing.Any,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 500:
-                raise InternalServerError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        ErrorResponse,
-                        parse_obj_as(
-                            type_=ErrorResponse,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            _response_json = _response.json()
-        except JSONDecodeError:
-            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
-        except ValidationError as e:
-            raise ParsingError(
-                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
-            )
-        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
-
-    async def create_v1(
-        self,
-        *,
-        accepted_quote_id: str,
-        sender_id: str,
-        beneficiary_id: str,
-        purpose: typing.Optional[Purpose] = OMIT,
-        metadata: typing.Optional[typing.Dict[str, typing.Any]] = OMIT,
-        source_of_funds: typing.Optional[SourceOfFunds] = OMIT,
-        beneficiary_relationship: typing.Optional[BeneficiaryRelationship] = OMIT,
-        documents: typing.Optional[typing.Sequence[OrderDocumentInput]] = OMIT,
-        customer_reference_id: typing.Optional[str] = OMIT,
-        request_options: typing.Optional[RequestOptions] = None,
-    ) -> AsyncHttpResponse[CreateV1OrdersResponse]:
-        """
-        Initiates a order for converting and transferring USD or USDC to a specified target currency, using a previously obtained quote.
-
-        Parameters
-        ----------
-        accepted_quote_id : str
-            Unique ID for the quote to use for this order.
-
-        sender_id : str
-            Unique identifier for the sender.
-
-        beneficiary_id : str
-            Unique identifier for the beneficiary.
-
-        purpose : typing.Optional[Purpose]
-
-        metadata : typing.Optional[typing.Dict[str, typing.Any]]
-            Custom metadata to attach to the order
-
-        source_of_funds : typing.Optional[SourceOfFunds]
-
-        beneficiary_relationship : typing.Optional[BeneficiaryRelationship]
-
-        documents : typing.Optional[typing.Sequence[OrderDocumentInput]]
-            Optional array of supporting documents
-
-        customer_reference_id : typing.Optional[str]
-            Your internal reference ID for this order
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        AsyncHttpResponse[CreateV1OrdersResponse]
-            Order created successfully
-        """
-        _response = await self._client_wrapper.httpx_client.request(
-            "v1/orders",
-            method="POST",
-            json={
-                "acceptedQuoteId": accepted_quote_id,
-                "senderId": sender_id,
-                "beneficiaryId": beneficiary_id,
-                "purpose": purpose,
-                "metadata": metadata,
-                "sourceOfFunds": source_of_funds,
-                "beneficiaryRelationship": beneficiary_relationship,
-                "documents": convert_and_respect_annotation_metadata(
-                    object_=documents, annotation=typing.Sequence[OrderDocumentInput], direction="write"
-                ),
-                "customerReferenceId": customer_reference_id,
-            },
-            headers={
-                "content-type": "application/json",
-            },
-            request_options=request_options,
-            omit=OMIT,
-        )
-        try:
-            if 200 <= _response.status_code < 300:
-                _data = typing.cast(
-                    CreateV1OrdersResponse,
-                    parse_obj_as(
-                        type_=CreateV1OrdersResponse,  # type: ignore
-                        object_=_response.json(),
-                    ),
-                )
-                return AsyncHttpResponse(response=_response, data=_data)
-            if _response.status_code == 400:
-                raise BadRequestError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Any,
-                        parse_obj_as(
-                            type_=typing.Any,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
             if _response.status_code == 401:
                 raise UnauthorizedError(
                     headers=dict(_response.headers),
@@ -1642,7 +1347,7 @@ class AsyncRawOrdersClient:
             )
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
-    async def create_v2(
+    async def create(
         self,
         *,
         sender_id: str,
@@ -1657,7 +1362,7 @@ class AsyncRawOrdersClient:
         senders_own_funds: typing.Optional[bool] = OMIT,
         use_pooled_funds: typing.Optional[bool] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> AsyncHttpResponse[CreateV2OrdersResponse]:
+    ) -> AsyncHttpResponse[CreateOrdersResponse]:
         """
         Create a new order using a payment method ID. This is the recommended way to create orders. Requires an accepted quote, a sender, and a payment method.
 
@@ -1701,7 +1406,7 @@ class AsyncRawOrdersClient:
 
         Returns
         -------
-        AsyncHttpResponse[CreateV2OrdersResponse]
+        AsyncHttpResponse[CreateOrdersResponse]
             Order created successfully
         """
         _response = await self._client_wrapper.httpx_client.request(
@@ -1731,9 +1436,9 @@ class AsyncRawOrdersClient:
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    CreateV2OrdersResponse,
+                    CreateOrdersResponse,
                     parse_obj_as(
-                        type_=CreateV2OrdersResponse,  # type: ignore
+                        type_=CreateOrdersResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )

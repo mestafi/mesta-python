@@ -21,6 +21,7 @@ if typing.TYPE_CHECKING:
     from .business_beneficiary_identity_document_type import BusinessBeneficiaryIdentityDocumentType
     from .business_beneficiary_payment_info import BusinessBeneficiaryPaymentInfo
     from .business_beneficiary_payment_type import BusinessBeneficiaryPaymentType
+    from .business_beneficiary_type import BusinessBeneficiaryType
     from .business_sender import BusinessSender
     from .business_sender_business_type import BusinessSenderBusinessType
     from .business_sender_type import BusinessSenderType
@@ -164,6 +165,7 @@ _dynamic_imports: typing.Dict[str, str] = {
     "BusinessBeneficiaryIdentityDocumentType": ".business_beneficiary_identity_document_type",
     "BusinessBeneficiaryPaymentInfo": ".business_beneficiary_payment_info",
     "BusinessBeneficiaryPaymentType": ".business_beneficiary_payment_type",
+    "BusinessBeneficiaryType": ".business_beneficiary_type",
     "BusinessSender": ".business_sender",
     "BusinessSenderBusinessType": ".business_sender_business_type",
     "BusinessSenderType": ".business_sender_type",
@@ -325,6 +327,7 @@ __all__ = [
     "BusinessBeneficiaryIdentityDocumentType",
     "BusinessBeneficiaryPaymentInfo",
     "BusinessBeneficiaryPaymentType",
+    "BusinessBeneficiaryType",
     "BusinessSender",
     "BusinessSenderBusinessType",
     "BusinessSenderType",

@@ -18,13 +18,9 @@ from ..errors.not_found_error import NotFoundError
 from ..errors.too_many_requests_error import TooManyRequestsError
 from ..errors.unauthorized_error import UnauthorizedError
 from ..types.error_response import ErrorResponse
-from ..types.too_many_requests_error_body import TooManyRequestsErrorBody
-from .types.create_v1senders_request import CreateV1SendersRequest
-from .types.create_v1senders_response import CreateV1SendersResponse
-from .types.create_v2senders_request import CreateV2SendersRequest
-from .types.create_v2senders_response import CreateV2SendersResponse
+from .types.create_senders_request import CreateSendersRequest
+from .types.create_senders_response import CreateSendersResponse
 from .types.delete_senders_response import DeleteSendersResponse
-from .types.generate_ledger_accounts_senders_response import GenerateLedgerAccountsSendersResponse
 from .types.get_balances_senders_response import GetBalancesSendersResponse
 from .types.get_senders_response import GetSendersResponse
 from .types.list_senders_request_sort_by import ListSendersRequestSortBy
@@ -165,124 +161,9 @@ class RawSendersClient:
             )
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
-    def create_v1(
-        self, *, request: CreateV1SendersRequest, request_options: typing.Optional[RequestOptions] = None
-    ) -> HttpResponse[CreateV1SendersResponse]:
-        """
-        ## Overview
-        * Creates a new sender
-        * Supports both individual and business senders
-        * Requirements vary by country and ownerType
-
-        ## Validation Rules
-        * **Important**: Always check validation rules before creating a sender
-        * Validation rules endpoint: `GET /v1/validation-rules/senders`
-        * Required query parameters:
-           * `ownerType=[individual|business]`
-          * `country=[ISO 3166-1 alpha-2 code]`
-        * Example request:
-        ```
-        GET /v1/validation-rules/senders?ownerType=individual&country=MX
-        ```
-
-        Parameters
-        ----------
-        request : CreateV1SendersRequest
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        HttpResponse[CreateV1SendersResponse]
-            Sender created successfully
-        """
-        _response = self._client_wrapper.httpx_client.request(
-            "v1/senders",
-            method="POST",
-            json=convert_and_respect_annotation_metadata(
-                object_=request, annotation=CreateV1SendersRequest, direction="write"
-            ),
-            request_options=request_options,
-            omit=OMIT,
-        )
-        try:
-            if 200 <= _response.status_code < 300:
-                _data = typing.cast(
-                    CreateV1SendersResponse,
-                    parse_obj_as(
-                        type_=CreateV1SendersResponse,  # type: ignore
-                        object_=_response.json(),
-                    ),
-                )
-                return HttpResponse(response=_response, data=_data)
-            if _response.status_code == 400:
-                raise BadRequestError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Any,
-                        parse_obj_as(
-                            type_=typing.Any,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 401:
-                raise UnauthorizedError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Any,
-                        parse_obj_as(
-                            type_=typing.Any,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 403:
-                raise ForbiddenError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Any,
-                        parse_obj_as(
-                            type_=typing.Any,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 404:
-                raise NotFoundError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Any,
-                        parse_obj_as(
-                            type_=typing.Any,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 500:
-                raise InternalServerError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        ErrorResponse,
-                        parse_obj_as(
-                            type_=ErrorResponse,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            _response_json = _response.json()
-        except JSONDecodeError:
-            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
-        except ValidationError as e:
-            raise ParsingError(
-                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
-            )
-        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
-
-    def create_v2(
-        self, *, request: CreateV2SendersRequest, request_options: typing.Optional[RequestOptions] = None
-    ) -> HttpResponse[CreateV2SendersResponse]:
+    def create(
+        self, *, request: CreateSendersRequest, request_options: typing.Optional[RequestOptions] = None
+    ) -> HttpResponse[CreateSendersResponse]:
         """
         ## Overview
         * Creates a new sender
@@ -310,21 +191,21 @@ class RawSendersClient:
 
         Parameters
         ----------
-        request : CreateV2SendersRequest
+        request : CreateSendersRequest
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
         Returns
         -------
-        HttpResponse[CreateV2SendersResponse]
+        HttpResponse[CreateSendersResponse]
             Sender created successfully
         """
         _response = self._client_wrapper.httpx_client.request(
             "v2/senders",
             method="POST",
             json=convert_and_respect_annotation_metadata(
-                object_=request, annotation=CreateV2SendersRequest, direction="write"
+                object_=request, annotation=CreateSendersRequest, direction="write"
             ),
             request_options=request_options,
             omit=OMIT,
@@ -332,9 +213,9 @@ class RawSendersClient:
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    CreateV2SendersResponse,
+                    CreateSendersResponse,
                     parse_obj_as(
-                        type_=CreateV2SendersResponse,  # type: ignore
+                        type_=CreateSendersResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -1108,104 +989,6 @@ class RawSendersClient:
                 raise TooManyRequestsError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        TooManyRequestsErrorBody,
-                        parse_obj_as(
-                            type_=TooManyRequestsErrorBody,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 500:
-                raise InternalServerError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        ErrorResponse,
-                        parse_obj_as(
-                            type_=ErrorResponse,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            _response_json = _response.json()
-        except JSONDecodeError:
-            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
-        except ValidationError as e:
-            raise ParsingError(
-                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
-            )
-        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
-
-    def generate_ledger_accounts(
-        self, id: str, *, request_options: typing.Optional[RequestOptions] = None
-    ) -> HttpResponse[GenerateLedgerAccountsSendersResponse]:
-        """
-        Generates ledger accounts and virtual bank accounts for a sender. These accounts are used for tracking balances and transactions.
-
-        Parameters
-        ----------
-        id : str
-            ID of the sender
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        HttpResponse[GenerateLedgerAccountsSendersResponse]
-            Ledger accounts generated successfully
-        """
-        _response = self._client_wrapper.httpx_client.request(
-            f"v1/senders/{encode_path_param(id)}/generate-ledger-accounts",
-            method="POST",
-            request_options=request_options,
-        )
-        try:
-            if 200 <= _response.status_code < 300:
-                _data = typing.cast(
-                    GenerateLedgerAccountsSendersResponse,
-                    parse_obj_as(
-                        type_=GenerateLedgerAccountsSendersResponse,  # type: ignore
-                        object_=_response.json(),
-                    ),
-                )
-                return HttpResponse(response=_response, data=_data)
-            if _response.status_code == 400:
-                raise BadRequestError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Any,
-                        parse_obj_as(
-                            type_=typing.Any,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 401:
-                raise UnauthorizedError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Any,
-                        parse_obj_as(
-                            type_=typing.Any,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 403:
-                raise ForbiddenError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Any,
-                        parse_obj_as(
-                            type_=typing.Any,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 404:
-                raise NotFoundError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
                         typing.Any,
                         parse_obj_as(
                             type_=typing.Any,  # type: ignore
@@ -1356,124 +1139,9 @@ class AsyncRawSendersClient:
             )
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
-    async def create_v1(
-        self, *, request: CreateV1SendersRequest, request_options: typing.Optional[RequestOptions] = None
-    ) -> AsyncHttpResponse[CreateV1SendersResponse]:
-        """
-        ## Overview
-        * Creates a new sender
-        * Supports both individual and business senders
-        * Requirements vary by country and ownerType
-
-        ## Validation Rules
-        * **Important**: Always check validation rules before creating a sender
-        * Validation rules endpoint: `GET /v1/validation-rules/senders`
-        * Required query parameters:
-           * `ownerType=[individual|business]`
-          * `country=[ISO 3166-1 alpha-2 code]`
-        * Example request:
-        ```
-        GET /v1/validation-rules/senders?ownerType=individual&country=MX
-        ```
-
-        Parameters
-        ----------
-        request : CreateV1SendersRequest
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        AsyncHttpResponse[CreateV1SendersResponse]
-            Sender created successfully
-        """
-        _response = await self._client_wrapper.httpx_client.request(
-            "v1/senders",
-            method="POST",
-            json=convert_and_respect_annotation_metadata(
-                object_=request, annotation=CreateV1SendersRequest, direction="write"
-            ),
-            request_options=request_options,
-            omit=OMIT,
-        )
-        try:
-            if 200 <= _response.status_code < 300:
-                _data = typing.cast(
-                    CreateV1SendersResponse,
-                    parse_obj_as(
-                        type_=CreateV1SendersResponse,  # type: ignore
-                        object_=_response.json(),
-                    ),
-                )
-                return AsyncHttpResponse(response=_response, data=_data)
-            if _response.status_code == 400:
-                raise BadRequestError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Any,
-                        parse_obj_as(
-                            type_=typing.Any,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 401:
-                raise UnauthorizedError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Any,
-                        parse_obj_as(
-                            type_=typing.Any,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 403:
-                raise ForbiddenError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Any,
-                        parse_obj_as(
-                            type_=typing.Any,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 404:
-                raise NotFoundError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Any,
-                        parse_obj_as(
-                            type_=typing.Any,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 500:
-                raise InternalServerError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        ErrorResponse,
-                        parse_obj_as(
-                            type_=ErrorResponse,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            _response_json = _response.json()
-        except JSONDecodeError:
-            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
-        except ValidationError as e:
-            raise ParsingError(
-                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
-            )
-        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
-
-    async def create_v2(
-        self, *, request: CreateV2SendersRequest, request_options: typing.Optional[RequestOptions] = None
-    ) -> AsyncHttpResponse[CreateV2SendersResponse]:
+    async def create(
+        self, *, request: CreateSendersRequest, request_options: typing.Optional[RequestOptions] = None
+    ) -> AsyncHttpResponse[CreateSendersResponse]:
         """
         ## Overview
         * Creates a new sender
@@ -1501,21 +1169,21 @@ class AsyncRawSendersClient:
 
         Parameters
         ----------
-        request : CreateV2SendersRequest
+        request : CreateSendersRequest
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
         Returns
         -------
-        AsyncHttpResponse[CreateV2SendersResponse]
+        AsyncHttpResponse[CreateSendersResponse]
             Sender created successfully
         """
         _response = await self._client_wrapper.httpx_client.request(
             "v2/senders",
             method="POST",
             json=convert_and_respect_annotation_metadata(
-                object_=request, annotation=CreateV2SendersRequest, direction="write"
+                object_=request, annotation=CreateSendersRequest, direction="write"
             ),
             request_options=request_options,
             omit=OMIT,
@@ -1523,9 +1191,9 @@ class AsyncRawSendersClient:
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    CreateV2SendersResponse,
+                    CreateSendersResponse,
                     parse_obj_as(
-                        type_=CreateV2SendersResponse,  # type: ignore
+                        type_=CreateSendersResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -2297,104 +1965,6 @@ class AsyncRawSendersClient:
                 )
             if _response.status_code == 429:
                 raise TooManyRequestsError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        TooManyRequestsErrorBody,
-                        parse_obj_as(
-                            type_=TooManyRequestsErrorBody,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 500:
-                raise InternalServerError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        ErrorResponse,
-                        parse_obj_as(
-                            type_=ErrorResponse,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            _response_json = _response.json()
-        except JSONDecodeError:
-            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
-        except ValidationError as e:
-            raise ParsingError(
-                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
-            )
-        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
-
-    async def generate_ledger_accounts(
-        self, id: str, *, request_options: typing.Optional[RequestOptions] = None
-    ) -> AsyncHttpResponse[GenerateLedgerAccountsSendersResponse]:
-        """
-        Generates ledger accounts and virtual bank accounts for a sender. These accounts are used for tracking balances and transactions.
-
-        Parameters
-        ----------
-        id : str
-            ID of the sender
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        AsyncHttpResponse[GenerateLedgerAccountsSendersResponse]
-            Ledger accounts generated successfully
-        """
-        _response = await self._client_wrapper.httpx_client.request(
-            f"v1/senders/{encode_path_param(id)}/generate-ledger-accounts",
-            method="POST",
-            request_options=request_options,
-        )
-        try:
-            if 200 <= _response.status_code < 300:
-                _data = typing.cast(
-                    GenerateLedgerAccountsSendersResponse,
-                    parse_obj_as(
-                        type_=GenerateLedgerAccountsSendersResponse,  # type: ignore
-                        object_=_response.json(),
-                    ),
-                )
-                return AsyncHttpResponse(response=_response, data=_data)
-            if _response.status_code == 400:
-                raise BadRequestError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Any,
-                        parse_obj_as(
-                            type_=typing.Any,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 401:
-                raise UnauthorizedError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Any,
-                        parse_obj_as(
-                            type_=typing.Any,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 403:
-                raise ForbiddenError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Any,
-                        parse_obj_as(
-                            type_=typing.Any,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 404:
-                raise NotFoundError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Any,

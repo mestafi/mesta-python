@@ -19,13 +19,10 @@ from ...errors.not_found_error import NotFoundError
 from ...errors.unauthorized_error import UnauthorizedError
 from ...types.address import Address
 from ...types.error_response import ErrorResponse
-from .types.create_v1ubos_request_address import CreateV1UbosRequestAddress
-from .types.create_v1ubos_request_identity import CreateV1UbosRequestIdentity
-from .types.create_v1ubos_response import CreateV1UbosResponse
-from .types.create_v2ubos_request_address import CreateV2UbosRequestAddress
-from .types.create_v2ubos_request_identity import CreateV2UbosRequestIdentity
-from .types.create_v2ubos_request_pep_questionnaire import CreateV2UbosRequestPepQuestionnaire
-from .types.create_v2ubos_response import CreateV2UbosResponse
+from .types.create_ubos_request_address import CreateUbosRequestAddress
+from .types.create_ubos_request_identity import CreateUbosRequestIdentity
+from .types.create_ubos_request_pep_questionnaire import CreateUbosRequestPepQuestionnaire
+from .types.create_ubos_response import CreateUbosResponse
 from .types.delete_ubos_response import DeleteUbosResponse
 from .types.get_ubos_response import GetUbosResponse
 from .types.get_verification_url_ubos_request_action import GetVerificationUrlUbosRequestAction
@@ -43,7 +40,7 @@ class RawUbosClient:
     def __init__(self, *, client_wrapper: SyncClientWrapper):
         self._client_wrapper = client_wrapper
 
-    def create_v1(
+    def create(
         self,
         *,
         first_name: str,
@@ -52,170 +49,18 @@ class RawUbosClient:
         phone: str,
         email: str,
         ownership_percent: float,
-        address: CreateV1UbosRequestAddress,
+        address: CreateUbosRequestAddress,
         sender_id: str,
-        identity: CreateV1UbosRequestIdentity,
-        request_options: typing.Optional[RequestOptions] = None,
-    ) -> HttpResponse[CreateV1UbosResponse]:
-        """
-        Creates a new UBO (Ultimate Beneficial Owner) for a specific sender.  Note: Document requirements (documentFront, documentBack) vary by country. Please refer to the validation-rules endpoint with ownerType='business' and the specific country to determine exact documentation requirements. Multiple UBOs can be added by calling this endpoint multiple times. The total ownership percentage across all UBOs should not exceed 100%.
-
-        Parameters
-        ----------
-        first_name : str
-            First name of the UBO (Ultimate Beneficial Owner).
-
-        last_name : str
-            Last name of the UBO (Ultimate Beneficial Owner).
-
-        birth_date : dt.date
-            Birthdate of the UBO (Ultimate Beneficial Owner) in the format yyyy-mm-dd.
-
-        phone : str
-            Phone number of the UBO (Ultimate Beneficial Owner) in international format (e.g., +11234567890).
-
-        email : str
-            Email address of the UBO (Ultimate Beneficial Owner).
-
-        ownership_percent : float
-            Ownership percentage of the UBO in the company
-
-        address : CreateV1UbosRequestAddress
-            UBO postal address.
-
-        sender_id : str
-            Unique identifier for the sender.
-
-        identity : CreateV1UbosRequestIdentity
-            Ultimate Beneficial Owner information. Note: Document requirements (documentFront, documentBack) vary by country. Please refer to the validation-rules endpoint with ownerType='ubo' and the specific country to determine exact documentation requirements.
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        HttpResponse[CreateV1UbosResponse]
-            Ultimate Beneficial Owner created successfully
-        """
-        _response = self._client_wrapper.httpx_client.request(
-            "v1/senders/ubo",
-            method="POST",
-            json={
-                "firstName": first_name,
-                "lastName": last_name,
-                "birthDate": birth_date,
-                "phone": phone,
-                "email": email,
-                "ownershipPercent": ownership_percent,
-                "address": convert_and_respect_annotation_metadata(
-                    object_=address, annotation=CreateV1UbosRequestAddress, direction="write"
-                ),
-                "senderId": sender_id,
-                "identity": convert_and_respect_annotation_metadata(
-                    object_=identity, annotation=CreateV1UbosRequestIdentity, direction="write"
-                ),
-            },
-            headers={
-                "content-type": "application/json",
-            },
-            request_options=request_options,
-            omit=OMIT,
-        )
-        try:
-            if 200 <= _response.status_code < 300:
-                _data = typing.cast(
-                    CreateV1UbosResponse,
-                    parse_obj_as(
-                        type_=CreateV1UbosResponse,  # type: ignore
-                        object_=_response.json(),
-                    ),
-                )
-                return HttpResponse(response=_response, data=_data)
-            if _response.status_code == 400:
-                raise BadRequestError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Any,
-                        parse_obj_as(
-                            type_=typing.Any,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 401:
-                raise UnauthorizedError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Any,
-                        parse_obj_as(
-                            type_=typing.Any,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 403:
-                raise ForbiddenError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Any,
-                        parse_obj_as(
-                            type_=typing.Any,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 404:
-                raise NotFoundError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Any,
-                        parse_obj_as(
-                            type_=typing.Any,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 500:
-                raise InternalServerError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        ErrorResponse,
-                        parse_obj_as(
-                            type_=ErrorResponse,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            _response_json = _response.json()
-        except JSONDecodeError:
-            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
-        except ValidationError as e:
-            raise ParsingError(
-                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
-            )
-        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
-
-    def create_v2(
-        self,
-        *,
-        first_name: str,
-        last_name: str,
-        birth_date: dt.date,
-        phone: str,
-        email: str,
-        ownership_percent: float,
-        address: CreateV2UbosRequestAddress,
-        sender_id: str,
-        identity: CreateV2UbosRequestIdentity,
+        identity: CreateUbosRequestIdentity,
         pep_declaration: bool,
         nationality: typing.Optional[str] = OMIT,
         identification_number: typing.Optional[str] = OMIT,
         verification_report: typing.Optional[str] = OMIT,
         verification_report_file_name: typing.Optional[str] = OMIT,
         sof_document: typing.Optional[str] = OMIT,
-        pep_questionnaire: typing.Optional[CreateV2UbosRequestPepQuestionnaire] = OMIT,
+        pep_questionnaire: typing.Optional[CreateUbosRequestPepQuestionnaire] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> HttpResponse[CreateV2UbosResponse]:
+    ) -> HttpResponse[CreateUbosResponse]:
         """
         Creates a new UBO (Ultimate Beneficial Owner) for a specific sender. Note: Document requirements (documentFront, documentBack) vary by country. Please refer to the validation-rules endpoint with ownerType='business' and the specific country to determine exact documentation requirements. Multiple UBOs can be added by calling this endpoint multiple times. The total ownership percentage across all UBOs should not exceed 100%.
 
@@ -252,13 +97,13 @@ class RawUbosClient:
         ownership_percent : float
             Ownership percentage of the UBO in the company.
 
-        address : CreateV2UbosRequestAddress
+        address : CreateUbosRequestAddress
             UBO postal address.
 
         sender_id : str
             Unique identifier for the sender.
 
-        identity : CreateV2UbosRequestIdentity
+        identity : CreateUbosRequestIdentity
             Identity information for the UBO.
 
         pep_declaration : bool
@@ -279,7 +124,7 @@ class RawUbosClient:
         sof_document : typing.Optional[str]
             Base64 encoded source-of-funds document. Required when the UBO is younger than 25 or older than 60, when `pepDeclaration` is `true`, or when either `address.country` or `identity.countryCode` is one of: `DZ`, `AO`, `BO`, `BG`, `BF`, `CM`, `CI`, `ET`, `HT`, `IQ`, `KE`, `LA`, `LB`, `ML`, `MC`, `MZ`, `NA`, `NP`, `NI`, `NG`, `SO`, `SY`, `VN`, `VG`, `YE`.
 
-        pep_questionnaire : typing.Optional[CreateV2UbosRequestPepQuestionnaire]
+        pep_questionnaire : typing.Optional[CreateUbosRequestPepQuestionnaire]
             Required when `pepDeclaration` is true. Contains declarationType with conditional `self` or `association` sections.
 
         request_options : typing.Optional[RequestOptions]
@@ -287,7 +132,7 @@ class RawUbosClient:
 
         Returns
         -------
-        HttpResponse[CreateV2UbosResponse]
+        HttpResponse[CreateUbosResponse]
             Ultimate Beneficial Owner created successfully
         """
         _response = self._client_wrapper.httpx_client.request(
@@ -303,11 +148,11 @@ class RawUbosClient:
                 "nationality": nationality,
                 "identificationNumber": identification_number,
                 "address": convert_and_respect_annotation_metadata(
-                    object_=address, annotation=CreateV2UbosRequestAddress, direction="write"
+                    object_=address, annotation=CreateUbosRequestAddress, direction="write"
                 ),
                 "senderId": sender_id,
                 "identity": convert_and_respect_annotation_metadata(
-                    object_=identity, annotation=CreateV2UbosRequestIdentity, direction="write"
+                    object_=identity, annotation=CreateUbosRequestIdentity, direction="write"
                 ),
                 "verificationReport": verification_report,
                 "verificationReportFileName": verification_report_file_name,
@@ -315,7 +160,7 @@ class RawUbosClient:
                 "sofDocument": sof_document,
                 "pepQuestionnaire": convert_and_respect_annotation_metadata(
                     object_=pep_questionnaire,
-                    annotation=typing.Optional[CreateV2UbosRequestPepQuestionnaire],
+                    annotation=typing.Optional[CreateUbosRequestPepQuestionnaire],
                     direction="write",
                 ),
             },
@@ -328,9 +173,9 @@ class RawUbosClient:
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    CreateV2UbosResponse,
+                    CreateUbosResponse,
                     parse_obj_as(
-                        type_=CreateV2UbosResponse,  # type: ignore
+                        type_=CreateUbosResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -881,7 +726,7 @@ class AsyncRawUbosClient:
     def __init__(self, *, client_wrapper: AsyncClientWrapper):
         self._client_wrapper = client_wrapper
 
-    async def create_v1(
+    async def create(
         self,
         *,
         first_name: str,
@@ -890,170 +735,18 @@ class AsyncRawUbosClient:
         phone: str,
         email: str,
         ownership_percent: float,
-        address: CreateV1UbosRequestAddress,
+        address: CreateUbosRequestAddress,
         sender_id: str,
-        identity: CreateV1UbosRequestIdentity,
-        request_options: typing.Optional[RequestOptions] = None,
-    ) -> AsyncHttpResponse[CreateV1UbosResponse]:
-        """
-        Creates a new UBO (Ultimate Beneficial Owner) for a specific sender.  Note: Document requirements (documentFront, documentBack) vary by country. Please refer to the validation-rules endpoint with ownerType='business' and the specific country to determine exact documentation requirements. Multiple UBOs can be added by calling this endpoint multiple times. The total ownership percentage across all UBOs should not exceed 100%.
-
-        Parameters
-        ----------
-        first_name : str
-            First name of the UBO (Ultimate Beneficial Owner).
-
-        last_name : str
-            Last name of the UBO (Ultimate Beneficial Owner).
-
-        birth_date : dt.date
-            Birthdate of the UBO (Ultimate Beneficial Owner) in the format yyyy-mm-dd.
-
-        phone : str
-            Phone number of the UBO (Ultimate Beneficial Owner) in international format (e.g., +11234567890).
-
-        email : str
-            Email address of the UBO (Ultimate Beneficial Owner).
-
-        ownership_percent : float
-            Ownership percentage of the UBO in the company
-
-        address : CreateV1UbosRequestAddress
-            UBO postal address.
-
-        sender_id : str
-            Unique identifier for the sender.
-
-        identity : CreateV1UbosRequestIdentity
-            Ultimate Beneficial Owner information. Note: Document requirements (documentFront, documentBack) vary by country. Please refer to the validation-rules endpoint with ownerType='ubo' and the specific country to determine exact documentation requirements.
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        AsyncHttpResponse[CreateV1UbosResponse]
-            Ultimate Beneficial Owner created successfully
-        """
-        _response = await self._client_wrapper.httpx_client.request(
-            "v1/senders/ubo",
-            method="POST",
-            json={
-                "firstName": first_name,
-                "lastName": last_name,
-                "birthDate": birth_date,
-                "phone": phone,
-                "email": email,
-                "ownershipPercent": ownership_percent,
-                "address": convert_and_respect_annotation_metadata(
-                    object_=address, annotation=CreateV1UbosRequestAddress, direction="write"
-                ),
-                "senderId": sender_id,
-                "identity": convert_and_respect_annotation_metadata(
-                    object_=identity, annotation=CreateV1UbosRequestIdentity, direction="write"
-                ),
-            },
-            headers={
-                "content-type": "application/json",
-            },
-            request_options=request_options,
-            omit=OMIT,
-        )
-        try:
-            if 200 <= _response.status_code < 300:
-                _data = typing.cast(
-                    CreateV1UbosResponse,
-                    parse_obj_as(
-                        type_=CreateV1UbosResponse,  # type: ignore
-                        object_=_response.json(),
-                    ),
-                )
-                return AsyncHttpResponse(response=_response, data=_data)
-            if _response.status_code == 400:
-                raise BadRequestError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Any,
-                        parse_obj_as(
-                            type_=typing.Any,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 401:
-                raise UnauthorizedError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Any,
-                        parse_obj_as(
-                            type_=typing.Any,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 403:
-                raise ForbiddenError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Any,
-                        parse_obj_as(
-                            type_=typing.Any,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 404:
-                raise NotFoundError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Any,
-                        parse_obj_as(
-                            type_=typing.Any,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 500:
-                raise InternalServerError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        ErrorResponse,
-                        parse_obj_as(
-                            type_=ErrorResponse,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            _response_json = _response.json()
-        except JSONDecodeError:
-            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
-        except ValidationError as e:
-            raise ParsingError(
-                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
-            )
-        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
-
-    async def create_v2(
-        self,
-        *,
-        first_name: str,
-        last_name: str,
-        birth_date: dt.date,
-        phone: str,
-        email: str,
-        ownership_percent: float,
-        address: CreateV2UbosRequestAddress,
-        sender_id: str,
-        identity: CreateV2UbosRequestIdentity,
+        identity: CreateUbosRequestIdentity,
         pep_declaration: bool,
         nationality: typing.Optional[str] = OMIT,
         identification_number: typing.Optional[str] = OMIT,
         verification_report: typing.Optional[str] = OMIT,
         verification_report_file_name: typing.Optional[str] = OMIT,
         sof_document: typing.Optional[str] = OMIT,
-        pep_questionnaire: typing.Optional[CreateV2UbosRequestPepQuestionnaire] = OMIT,
+        pep_questionnaire: typing.Optional[CreateUbosRequestPepQuestionnaire] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> AsyncHttpResponse[CreateV2UbosResponse]:
+    ) -> AsyncHttpResponse[CreateUbosResponse]:
         """
         Creates a new UBO (Ultimate Beneficial Owner) for a specific sender. Note: Document requirements (documentFront, documentBack) vary by country. Please refer to the validation-rules endpoint with ownerType='business' and the specific country to determine exact documentation requirements. Multiple UBOs can be added by calling this endpoint multiple times. The total ownership percentage across all UBOs should not exceed 100%.
 
@@ -1090,13 +783,13 @@ class AsyncRawUbosClient:
         ownership_percent : float
             Ownership percentage of the UBO in the company.
 
-        address : CreateV2UbosRequestAddress
+        address : CreateUbosRequestAddress
             UBO postal address.
 
         sender_id : str
             Unique identifier for the sender.
 
-        identity : CreateV2UbosRequestIdentity
+        identity : CreateUbosRequestIdentity
             Identity information for the UBO.
 
         pep_declaration : bool
@@ -1117,7 +810,7 @@ class AsyncRawUbosClient:
         sof_document : typing.Optional[str]
             Base64 encoded source-of-funds document. Required when the UBO is younger than 25 or older than 60, when `pepDeclaration` is `true`, or when either `address.country` or `identity.countryCode` is one of: `DZ`, `AO`, `BO`, `BG`, `BF`, `CM`, `CI`, `ET`, `HT`, `IQ`, `KE`, `LA`, `LB`, `ML`, `MC`, `MZ`, `NA`, `NP`, `NI`, `NG`, `SO`, `SY`, `VN`, `VG`, `YE`.
 
-        pep_questionnaire : typing.Optional[CreateV2UbosRequestPepQuestionnaire]
+        pep_questionnaire : typing.Optional[CreateUbosRequestPepQuestionnaire]
             Required when `pepDeclaration` is true. Contains declarationType with conditional `self` or `association` sections.
 
         request_options : typing.Optional[RequestOptions]
@@ -1125,7 +818,7 @@ class AsyncRawUbosClient:
 
         Returns
         -------
-        AsyncHttpResponse[CreateV2UbosResponse]
+        AsyncHttpResponse[CreateUbosResponse]
             Ultimate Beneficial Owner created successfully
         """
         _response = await self._client_wrapper.httpx_client.request(
@@ -1141,11 +834,11 @@ class AsyncRawUbosClient:
                 "nationality": nationality,
                 "identificationNumber": identification_number,
                 "address": convert_and_respect_annotation_metadata(
-                    object_=address, annotation=CreateV2UbosRequestAddress, direction="write"
+                    object_=address, annotation=CreateUbosRequestAddress, direction="write"
                 ),
                 "senderId": sender_id,
                 "identity": convert_and_respect_annotation_metadata(
-                    object_=identity, annotation=CreateV2UbosRequestIdentity, direction="write"
+                    object_=identity, annotation=CreateUbosRequestIdentity, direction="write"
                 ),
                 "verificationReport": verification_report,
                 "verificationReportFileName": verification_report_file_name,
@@ -1153,7 +846,7 @@ class AsyncRawUbosClient:
                 "sofDocument": sof_document,
                 "pepQuestionnaire": convert_and_respect_annotation_metadata(
                     object_=pep_questionnaire,
-                    annotation=typing.Optional[CreateV2UbosRequestPepQuestionnaire],
+                    annotation=typing.Optional[CreateUbosRequestPepQuestionnaire],
                     direction="write",
                 ),
             },
@@ -1166,9 +859,9 @@ class AsyncRawUbosClient:
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    CreateV2UbosResponse,
+                    CreateUbosResponse,
                     parse_obj_as(
-                        type_=CreateV2UbosResponse,  # type: ignore
+                        type_=CreateUbosResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )

@@ -7,13 +7,10 @@ from ...core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ...core.request_options import RequestOptions
 from ...types.address import Address
 from .raw_client import AsyncRawUbosClient, RawUbosClient
-from .types.create_v1ubos_request_address import CreateV1UbosRequestAddress
-from .types.create_v1ubos_request_identity import CreateV1UbosRequestIdentity
-from .types.create_v1ubos_response import CreateV1UbosResponse
-from .types.create_v2ubos_request_address import CreateV2UbosRequestAddress
-from .types.create_v2ubos_request_identity import CreateV2UbosRequestIdentity
-from .types.create_v2ubos_request_pep_questionnaire import CreateV2UbosRequestPepQuestionnaire
-from .types.create_v2ubos_response import CreateV2UbosResponse
+from .types.create_ubos_request_address import CreateUbosRequestAddress
+from .types.create_ubos_request_identity import CreateUbosRequestIdentity
+from .types.create_ubos_request_pep_questionnaire import CreateUbosRequestPepQuestionnaire
+from .types.create_ubos_response import CreateUbosResponse
 from .types.delete_ubos_response import DeleteUbosResponse
 from .types.get_ubos_response import GetUbosResponse
 from .types.get_verification_url_ubos_request_action import GetVerificationUrlUbosRequestAction
@@ -41,7 +38,7 @@ class UbosClient:
         """
         return self._raw_client
 
-    def create_v1(
+    def create(
         self,
         *,
         first_name: str,
@@ -50,123 +47,18 @@ class UbosClient:
         phone: str,
         email: str,
         ownership_percent: float,
-        address: CreateV1UbosRequestAddress,
+        address: CreateUbosRequestAddress,
         sender_id: str,
-        identity: CreateV1UbosRequestIdentity,
-        request_options: typing.Optional[RequestOptions] = None,
-    ) -> CreateV1UbosResponse:
-        """
-        Creates a new UBO (Ultimate Beneficial Owner) for a specific sender.  Note: Document requirements (documentFront, documentBack) vary by country. Please refer to the validation-rules endpoint with ownerType='business' and the specific country to determine exact documentation requirements. Multiple UBOs can be added by calling this endpoint multiple times. The total ownership percentage across all UBOs should not exceed 100%.
-
-        Parameters
-        ----------
-        first_name : str
-            First name of the UBO (Ultimate Beneficial Owner).
-
-        last_name : str
-            Last name of the UBO (Ultimate Beneficial Owner).
-
-        birth_date : dt.date
-            Birthdate of the UBO (Ultimate Beneficial Owner) in the format yyyy-mm-dd.
-
-        phone : str
-            Phone number of the UBO (Ultimate Beneficial Owner) in international format (e.g., +11234567890).
-
-        email : str
-            Email address of the UBO (Ultimate Beneficial Owner).
-
-        ownership_percent : float
-            Ownership percentage of the UBO in the company
-
-        address : CreateV1UbosRequestAddress
-            UBO postal address.
-
-        sender_id : str
-            Unique identifier for the sender.
-
-        identity : CreateV1UbosRequestIdentity
-            Ultimate Beneficial Owner information. Note: Document requirements (documentFront, documentBack) vary by country. Please refer to the validation-rules endpoint with ownerType='ubo' and the specific country to determine exact documentation requirements.
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        CreateV1UbosResponse
-            Ultimate Beneficial Owner created successfully
-
-        Examples
-        --------
-        import datetime
-
-        from mesta import Mesta
-        from mesta.senders.ubos import (
-            CreateV1UbosRequestAddress,
-            CreateV1UbosRequestIdentity,
-        )
-
-        client = Mesta(
-            api_secret="YOUR_API_SECRET",
-            api_key="YOUR_API_KEY",
-        )
-        client.senders.ubos.create_v1(
-            first_name="firstName",
-            last_name="lastName",
-            birth_date=datetime.date.fromisoformat(
-                "2023-01-15",
-            ),
-            phone="phone",
-            email="email",
-            ownership_percent=1.1,
-            address=CreateV1UbosRequestAddress(
-                street="street",
-                city="city",
-                postal_code="12345 or 00000",
-                country="country",
-            ),
-            sender_id="senderId",
-            identity=CreateV1UbosRequestIdentity(
-                document_type="PASSPORT",
-                country_code="countryCode",
-                document_number="documentNumber",
-            ),
-        )
-        """
-        _response = self._raw_client.create_v1(
-            first_name=first_name,
-            last_name=last_name,
-            birth_date=birth_date,
-            phone=phone,
-            email=email,
-            ownership_percent=ownership_percent,
-            address=address,
-            sender_id=sender_id,
-            identity=identity,
-            request_options=request_options,
-        )
-        return _response.data
-
-    def create_v2(
-        self,
-        *,
-        first_name: str,
-        last_name: str,
-        birth_date: dt.date,
-        phone: str,
-        email: str,
-        ownership_percent: float,
-        address: CreateV2UbosRequestAddress,
-        sender_id: str,
-        identity: CreateV2UbosRequestIdentity,
+        identity: CreateUbosRequestIdentity,
         pep_declaration: bool,
         nationality: typing.Optional[str] = OMIT,
         identification_number: typing.Optional[str] = OMIT,
         verification_report: typing.Optional[str] = OMIT,
         verification_report_file_name: typing.Optional[str] = OMIT,
         sof_document: typing.Optional[str] = OMIT,
-        pep_questionnaire: typing.Optional[CreateV2UbosRequestPepQuestionnaire] = OMIT,
+        pep_questionnaire: typing.Optional[CreateUbosRequestPepQuestionnaire] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> CreateV2UbosResponse:
+    ) -> CreateUbosResponse:
         """
         Creates a new UBO (Ultimate Beneficial Owner) for a specific sender. Note: Document requirements (documentFront, documentBack) vary by country. Please refer to the validation-rules endpoint with ownerType='business' and the specific country to determine exact documentation requirements. Multiple UBOs can be added by calling this endpoint multiple times. The total ownership percentage across all UBOs should not exceed 100%.
 
@@ -203,13 +95,13 @@ class UbosClient:
         ownership_percent : float
             Ownership percentage of the UBO in the company.
 
-        address : CreateV2UbosRequestAddress
+        address : CreateUbosRequestAddress
             UBO postal address.
 
         sender_id : str
             Unique identifier for the sender.
 
-        identity : CreateV2UbosRequestIdentity
+        identity : CreateUbosRequestIdentity
             Identity information for the UBO.
 
         pep_declaration : bool
@@ -230,7 +122,7 @@ class UbosClient:
         sof_document : typing.Optional[str]
             Base64 encoded source-of-funds document. Required when the UBO is younger than 25 or older than 60, when `pepDeclaration` is `true`, or when either `address.country` or `identity.countryCode` is one of: `DZ`, `AO`, `BO`, `BG`, `BF`, `CM`, `CI`, `ET`, `HT`, `IQ`, `KE`, `LA`, `LB`, `ML`, `MC`, `MZ`, `NA`, `NP`, `NI`, `NG`, `SO`, `SY`, `VN`, `VG`, `YE`.
 
-        pep_questionnaire : typing.Optional[CreateV2UbosRequestPepQuestionnaire]
+        pep_questionnaire : typing.Optional[CreateUbosRequestPepQuestionnaire]
             Required when `pepDeclaration` is true. Contains declarationType with conditional `self` or `association` sections.
 
         request_options : typing.Optional[RequestOptions]
@@ -238,7 +130,7 @@ class UbosClient:
 
         Returns
         -------
-        CreateV2UbosResponse
+        CreateUbosResponse
             Ultimate Beneficial Owner created successfully
 
         Examples
@@ -247,15 +139,15 @@ class UbosClient:
 
         from mesta import Mesta
         from mesta.senders.ubos import (
-            CreateV2UbosRequestAddress,
-            CreateV2UbosRequestIdentity,
+            CreateUbosRequestAddress,
+            CreateUbosRequestIdentity,
         )
 
         client = Mesta(
             api_secret="YOUR_API_SECRET",
             api_key="YOUR_API_KEY",
         )
-        client.senders.ubos.create_v2(
+        client.senders.ubos.create(
             first_name="firstName",
             last_name="lastName",
             birth_date=datetime.date.fromisoformat(
@@ -264,14 +156,14 @@ class UbosClient:
             phone="phone",
             email="email",
             ownership_percent=1.1,
-            address=CreateV2UbosRequestAddress(
+            address=CreateUbosRequestAddress(
                 street="street",
                 city="city",
                 postal_code="postalCode",
                 country="country",
             ),
             sender_id="senderId",
-            identity=CreateV2UbosRequestIdentity(
+            identity=CreateUbosRequestIdentity(
                 document_type="PASSPORT",
                 country_code="countryCode",
                 document_number="documentNumber",
@@ -279,7 +171,7 @@ class UbosClient:
             pep_declaration=True,
         )
         """
-        _response = self._raw_client.create_v2(
+        _response = self._raw_client.create(
             first_name=first_name,
             last_name=last_name,
             birth_date=birth_date,
@@ -543,7 +435,7 @@ class AsyncUbosClient:
         """
         return self._raw_client
 
-    async def create_v1(
+    async def create(
         self,
         *,
         first_name: str,
@@ -552,130 +444,18 @@ class AsyncUbosClient:
         phone: str,
         email: str,
         ownership_percent: float,
-        address: CreateV1UbosRequestAddress,
+        address: CreateUbosRequestAddress,
         sender_id: str,
-        identity: CreateV1UbosRequestIdentity,
-        request_options: typing.Optional[RequestOptions] = None,
-    ) -> CreateV1UbosResponse:
-        """
-        Creates a new UBO (Ultimate Beneficial Owner) for a specific sender.  Note: Document requirements (documentFront, documentBack) vary by country. Please refer to the validation-rules endpoint with ownerType='business' and the specific country to determine exact documentation requirements. Multiple UBOs can be added by calling this endpoint multiple times. The total ownership percentage across all UBOs should not exceed 100%.
-
-        Parameters
-        ----------
-        first_name : str
-            First name of the UBO (Ultimate Beneficial Owner).
-
-        last_name : str
-            Last name of the UBO (Ultimate Beneficial Owner).
-
-        birth_date : dt.date
-            Birthdate of the UBO (Ultimate Beneficial Owner) in the format yyyy-mm-dd.
-
-        phone : str
-            Phone number of the UBO (Ultimate Beneficial Owner) in international format (e.g., +11234567890).
-
-        email : str
-            Email address of the UBO (Ultimate Beneficial Owner).
-
-        ownership_percent : float
-            Ownership percentage of the UBO in the company
-
-        address : CreateV1UbosRequestAddress
-            UBO postal address.
-
-        sender_id : str
-            Unique identifier for the sender.
-
-        identity : CreateV1UbosRequestIdentity
-            Ultimate Beneficial Owner information. Note: Document requirements (documentFront, documentBack) vary by country. Please refer to the validation-rules endpoint with ownerType='ubo' and the specific country to determine exact documentation requirements.
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        CreateV1UbosResponse
-            Ultimate Beneficial Owner created successfully
-
-        Examples
-        --------
-        import asyncio
-        import datetime
-
-        from mesta import AsyncMesta
-        from mesta.senders.ubos import (
-            CreateV1UbosRequestAddress,
-            CreateV1UbosRequestIdentity,
-        )
-
-        client = AsyncMesta(
-            api_secret="YOUR_API_SECRET",
-            api_key="YOUR_API_KEY",
-        )
-
-
-        async def main() -> None:
-            await client.senders.ubos.create_v1(
-                first_name="firstName",
-                last_name="lastName",
-                birth_date=datetime.date.fromisoformat(
-                    "2023-01-15",
-                ),
-                phone="phone",
-                email="email",
-                ownership_percent=1.1,
-                address=CreateV1UbosRequestAddress(
-                    street="street",
-                    city="city",
-                    postal_code="12345 or 00000",
-                    country="country",
-                ),
-                sender_id="senderId",
-                identity=CreateV1UbosRequestIdentity(
-                    document_type="PASSPORT",
-                    country_code="countryCode",
-                    document_number="documentNumber",
-                ),
-            )
-
-
-        asyncio.run(main())
-        """
-        _response = await self._raw_client.create_v1(
-            first_name=first_name,
-            last_name=last_name,
-            birth_date=birth_date,
-            phone=phone,
-            email=email,
-            ownership_percent=ownership_percent,
-            address=address,
-            sender_id=sender_id,
-            identity=identity,
-            request_options=request_options,
-        )
-        return _response.data
-
-    async def create_v2(
-        self,
-        *,
-        first_name: str,
-        last_name: str,
-        birth_date: dt.date,
-        phone: str,
-        email: str,
-        ownership_percent: float,
-        address: CreateV2UbosRequestAddress,
-        sender_id: str,
-        identity: CreateV2UbosRequestIdentity,
+        identity: CreateUbosRequestIdentity,
         pep_declaration: bool,
         nationality: typing.Optional[str] = OMIT,
         identification_number: typing.Optional[str] = OMIT,
         verification_report: typing.Optional[str] = OMIT,
         verification_report_file_name: typing.Optional[str] = OMIT,
         sof_document: typing.Optional[str] = OMIT,
-        pep_questionnaire: typing.Optional[CreateV2UbosRequestPepQuestionnaire] = OMIT,
+        pep_questionnaire: typing.Optional[CreateUbosRequestPepQuestionnaire] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> CreateV2UbosResponse:
+    ) -> CreateUbosResponse:
         """
         Creates a new UBO (Ultimate Beneficial Owner) for a specific sender. Note: Document requirements (documentFront, documentBack) vary by country. Please refer to the validation-rules endpoint with ownerType='business' and the specific country to determine exact documentation requirements. Multiple UBOs can be added by calling this endpoint multiple times. The total ownership percentage across all UBOs should not exceed 100%.
 
@@ -712,13 +492,13 @@ class AsyncUbosClient:
         ownership_percent : float
             Ownership percentage of the UBO in the company.
 
-        address : CreateV2UbosRequestAddress
+        address : CreateUbosRequestAddress
             UBO postal address.
 
         sender_id : str
             Unique identifier for the sender.
 
-        identity : CreateV2UbosRequestIdentity
+        identity : CreateUbosRequestIdentity
             Identity information for the UBO.
 
         pep_declaration : bool
@@ -739,7 +519,7 @@ class AsyncUbosClient:
         sof_document : typing.Optional[str]
             Base64 encoded source-of-funds document. Required when the UBO is younger than 25 or older than 60, when `pepDeclaration` is `true`, or when either `address.country` or `identity.countryCode` is one of: `DZ`, `AO`, `BO`, `BG`, `BF`, `CM`, `CI`, `ET`, `HT`, `IQ`, `KE`, `LA`, `LB`, `ML`, `MC`, `MZ`, `NA`, `NP`, `NI`, `NG`, `SO`, `SY`, `VN`, `VG`, `YE`.
 
-        pep_questionnaire : typing.Optional[CreateV2UbosRequestPepQuestionnaire]
+        pep_questionnaire : typing.Optional[CreateUbosRequestPepQuestionnaire]
             Required when `pepDeclaration` is true. Contains declarationType with conditional `self` or `association` sections.
 
         request_options : typing.Optional[RequestOptions]
@@ -747,7 +527,7 @@ class AsyncUbosClient:
 
         Returns
         -------
-        CreateV2UbosResponse
+        CreateUbosResponse
             Ultimate Beneficial Owner created successfully
 
         Examples
@@ -757,8 +537,8 @@ class AsyncUbosClient:
 
         from mesta import AsyncMesta
         from mesta.senders.ubos import (
-            CreateV2UbosRequestAddress,
-            CreateV2UbosRequestIdentity,
+            CreateUbosRequestAddress,
+            CreateUbosRequestIdentity,
         )
 
         client = AsyncMesta(
@@ -768,7 +548,7 @@ class AsyncUbosClient:
 
 
         async def main() -> None:
-            await client.senders.ubos.create_v2(
+            await client.senders.ubos.create(
                 first_name="firstName",
                 last_name="lastName",
                 birth_date=datetime.date.fromisoformat(
@@ -777,14 +557,14 @@ class AsyncUbosClient:
                 phone="phone",
                 email="email",
                 ownership_percent=1.1,
-                address=CreateV2UbosRequestAddress(
+                address=CreateUbosRequestAddress(
                     street="street",
                     city="city",
                     postal_code="postalCode",
                     country="country",
                 ),
                 sender_id="senderId",
-                identity=CreateV2UbosRequestIdentity(
+                identity=CreateUbosRequestIdentity(
                     document_type="PASSPORT",
                     country_code="countryCode",
                     document_number="documentNumber",
@@ -795,7 +575,7 @@ class AsyncUbosClient:
 
         asyncio.run(main())
         """
-        _response = await self._raw_client.create_v2(
+        _response = await self._raw_client.create(
             first_name=first_name,
             last_name=last_name,
             birth_date=birth_date,

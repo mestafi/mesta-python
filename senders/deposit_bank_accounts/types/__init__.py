@@ -6,20 +6,12 @@ import typing
 from importlib import import_module
 
 if typing.TYPE_CHECKING:
-    from .generate_eur_gbp_deposit_bank_accounts_request_currency import (
-        GenerateEurGbpDepositBankAccountsRequestCurrency,
-    )
-    from .generate_eur_gbp_deposit_bank_accounts_response import GenerateEurGbpDepositBankAccountsResponse
-    from .generate_eur_gbp_deposit_bank_accounts_response_data import GenerateEurGbpDepositBankAccountsResponseData
     from .generate_on_demand_deposit_bank_accounts_request_currency import (
         GenerateOnDemandDepositBankAccountsRequestCurrency,
     )
     from .generate_on_demand_deposit_bank_accounts_response import GenerateOnDemandDepositBankAccountsResponse
     from .generate_on_demand_deposit_bank_accounts_response_data import GenerateOnDemandDepositBankAccountsResponseData
 _dynamic_imports: typing.Dict[str, str] = {
-    "GenerateEurGbpDepositBankAccountsRequestCurrency": ".generate_eur_gbp_deposit_bank_accounts_request_currency",
-    "GenerateEurGbpDepositBankAccountsResponse": ".generate_eur_gbp_deposit_bank_accounts_response",
-    "GenerateEurGbpDepositBankAccountsResponseData": ".generate_eur_gbp_deposit_bank_accounts_response_data",
     "GenerateOnDemandDepositBankAccountsRequestCurrency": ".generate_on_demand_deposit_bank_accounts_request_currency",
     "GenerateOnDemandDepositBankAccountsResponse": ".generate_on_demand_deposit_bank_accounts_response",
     "GenerateOnDemandDepositBankAccountsResponseData": ".generate_on_demand_deposit_bank_accounts_response_data",
@@ -48,9 +40,6 @@ def __dir__():
 
 
 __all__ = [
-    "GenerateEurGbpDepositBankAccountsRequestCurrency",
-    "GenerateEurGbpDepositBankAccountsResponse",
-    "GenerateEurGbpDepositBankAccountsResponseData",
     "GenerateOnDemandDepositBankAccountsRequestCurrency",
     "GenerateOnDemandDepositBankAccountsResponse",
     "GenerateOnDemandDepositBankAccountsResponseData",

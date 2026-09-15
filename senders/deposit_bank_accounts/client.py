@@ -5,10 +5,6 @@ import typing
 from ...core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ...core.request_options import RequestOptions
 from .raw_client import AsyncRawDepositBankAccountsClient, RawDepositBankAccountsClient
-from .types.generate_eur_gbp_deposit_bank_accounts_request_currency import (
-    GenerateEurGbpDepositBankAccountsRequestCurrency,
-)
-from .types.generate_eur_gbp_deposit_bank_accounts_response import GenerateEurGbpDepositBankAccountsResponse
 from .types.generate_on_demand_deposit_bank_accounts_request_currency import (
     GenerateOnDemandDepositBankAccountsRequestCurrency,
 )
@@ -32,50 +28,6 @@ class DepositBankAccountsClient:
         RawDepositBankAccountsClient
         """
         return self._raw_client
-
-    def generate_eur_gbp(
-        self,
-        id: str,
-        *,
-        currency: GenerateEurGbpDepositBankAccountsRequestCurrency,
-        request_options: typing.Optional[RequestOptions] = None,
-    ) -> GenerateEurGbpDepositBankAccountsResponse:
-        """
-        **Deprecated.** Use [`POST /v1/senders/{id}/generate-ondemand-deposit-bank-accounts`](#post_v1-senders-id-generate-ondemand-deposit-bank-accounts) instead.
-
-        Initiates the creation of EUR or GBP virtual IBAN deposit bank accounts for a sender. This is an asynchronous operation that may take up to 60 seconds to complete.
-
-        Parameters
-        ----------
-        id : str
-            ID of the sender
-
-        currency : GenerateEurGbpDepositBankAccountsRequestCurrency
-            The currency for the deposit bank account. Only EUR and GBP are supported.
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        GenerateEurGbpDepositBankAccountsResponse
-            Deposit bank account creation initiated successfully
-
-        Examples
-        --------
-        from mesta import Mesta
-
-        client = Mesta(
-            api_secret="YOUR_API_SECRET",
-            api_key="YOUR_API_KEY",
-        )
-        client.senders.deposit_bank_accounts.generate_eur_gbp(
-            id="id",
-            currency="EUR",
-        )
-        """
-        _response = self._raw_client.generate_eur_gbp(id, currency=currency, request_options=request_options)
-        return _response.data
 
     def generate_on_demand(
         self,
@@ -134,58 +86,6 @@ class AsyncDepositBankAccountsClient:
         AsyncRawDepositBankAccountsClient
         """
         return self._raw_client
-
-    async def generate_eur_gbp(
-        self,
-        id: str,
-        *,
-        currency: GenerateEurGbpDepositBankAccountsRequestCurrency,
-        request_options: typing.Optional[RequestOptions] = None,
-    ) -> GenerateEurGbpDepositBankAccountsResponse:
-        """
-        **Deprecated.** Use [`POST /v1/senders/{id}/generate-ondemand-deposit-bank-accounts`](#post_v1-senders-id-generate-ondemand-deposit-bank-accounts) instead.
-
-        Initiates the creation of EUR or GBP virtual IBAN deposit bank accounts for a sender. This is an asynchronous operation that may take up to 60 seconds to complete.
-
-        Parameters
-        ----------
-        id : str
-            ID of the sender
-
-        currency : GenerateEurGbpDepositBankAccountsRequestCurrency
-            The currency for the deposit bank account. Only EUR and GBP are supported.
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        GenerateEurGbpDepositBankAccountsResponse
-            Deposit bank account creation initiated successfully
-
-        Examples
-        --------
-        import asyncio
-
-        from mesta import AsyncMesta
-
-        client = AsyncMesta(
-            api_secret="YOUR_API_SECRET",
-            api_key="YOUR_API_KEY",
-        )
-
-
-        async def main() -> None:
-            await client.senders.deposit_bank_accounts.generate_eur_gbp(
-                id="id",
-                currency="EUR",
-            )
-
-
-        asyncio.run(main())
-        """
-        _response = await self._raw_client.generate_eur_gbp(id, currency=currency, request_options=request_options)
-        return _response.data
 
     async def generate_on_demand(
         self,

@@ -7,18 +7,12 @@ from importlib import import_module
 
 if typing.TYPE_CHECKING:
     from .delete_documents_response import DeleteDocumentsResponse
-    from .get_presigned_url_documents_request_type import GetPresignedUrlDocumentsRequestType
-    from .get_presigned_url_documents_response import GetPresignedUrlDocumentsResponse
-    from .get_presigned_url_documents_response_data import GetPresignedUrlDocumentsResponseData
     from .upload_documents_request_type import UploadDocumentsRequestType
     from .upload_documents_response import UploadDocumentsResponse
     from .upload_documents_response_data import UploadDocumentsResponseData
     from .upload_documents_response_data_type import UploadDocumentsResponseDataType
 _dynamic_imports: typing.Dict[str, str] = {
     "DeleteDocumentsResponse": ".delete_documents_response",
-    "GetPresignedUrlDocumentsRequestType": ".get_presigned_url_documents_request_type",
-    "GetPresignedUrlDocumentsResponse": ".get_presigned_url_documents_response",
-    "GetPresignedUrlDocumentsResponseData": ".get_presigned_url_documents_response_data",
     "UploadDocumentsRequestType": ".upload_documents_request_type",
     "UploadDocumentsResponse": ".upload_documents_response",
     "UploadDocumentsResponseData": ".upload_documents_response_data",
@@ -49,9 +43,6 @@ def __dir__():
 
 __all__ = [
     "DeleteDocumentsResponse",
-    "GetPresignedUrlDocumentsRequestType",
-    "GetPresignedUrlDocumentsResponse",
-    "GetPresignedUrlDocumentsResponseData",
     "UploadDocumentsRequestType",
     "UploadDocumentsResponse",
     "UploadDocumentsResponseData",

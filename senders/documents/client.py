@@ -6,8 +6,6 @@ from ...core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ...core.request_options import RequestOptions
 from .raw_client import AsyncRawDocumentsClient, RawDocumentsClient
 from .types.delete_documents_response import DeleteDocumentsResponse
-from .types.get_presigned_url_documents_request_type import GetPresignedUrlDocumentsRequestType
-from .types.get_presigned_url_documents_response import GetPresignedUrlDocumentsResponse
 from .types.upload_documents_request_type import UploadDocumentsRequestType
 from .types.upload_documents_response import UploadDocumentsResponse
 
@@ -120,52 +118,6 @@ class DocumentsClient:
         )
         """
         _response = self._raw_client.delete(sender_id, document_id, request_options=request_options)
-        return _response.data
-
-    def get_presigned_url(
-        self,
-        id: str,
-        document_id: str,
-        *,
-        type: typing.Optional[GetPresignedUrlDocumentsRequestType] = None,
-        request_options: typing.Optional[RequestOptions] = None,
-    ) -> GetPresignedUrlDocumentsResponse:
-        """
-        Retrieves a temporary presigned URL for downloading a sender document. The URL expires after 5 minutes.
-
-        Parameters
-        ----------
-        id : str
-            ID of the sender
-
-        document_id : str
-            ID of the document
-
-        type : typing.Optional[GetPresignedUrlDocumentsRequestType]
-            Type of document to retrieve
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        GetPresignedUrlDocumentsResponse
-            Presigned URL generated successfully
-
-        Examples
-        --------
-        from mesta import Mesta
-
-        client = Mesta(
-            api_secret="YOUR_API_SECRET",
-            api_key="YOUR_API_KEY",
-        )
-        client.senders.documents.get_presigned_url(
-            id="id",
-            document_id="documentId",
-        )
-        """
-        _response = self._raw_client.get_presigned_url(id, document_id, type=type, request_options=request_options)
         return _response.data
 
 
@@ -290,60 +242,4 @@ class AsyncDocumentsClient:
         asyncio.run(main())
         """
         _response = await self._raw_client.delete(sender_id, document_id, request_options=request_options)
-        return _response.data
-
-    async def get_presigned_url(
-        self,
-        id: str,
-        document_id: str,
-        *,
-        type: typing.Optional[GetPresignedUrlDocumentsRequestType] = None,
-        request_options: typing.Optional[RequestOptions] = None,
-    ) -> GetPresignedUrlDocumentsResponse:
-        """
-        Retrieves a temporary presigned URL for downloading a sender document. The URL expires after 5 minutes.
-
-        Parameters
-        ----------
-        id : str
-            ID of the sender
-
-        document_id : str
-            ID of the document
-
-        type : typing.Optional[GetPresignedUrlDocumentsRequestType]
-            Type of document to retrieve
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        GetPresignedUrlDocumentsResponse
-            Presigned URL generated successfully
-
-        Examples
-        --------
-        import asyncio
-
-        from mesta import AsyncMesta
-
-        client = AsyncMesta(
-            api_secret="YOUR_API_SECRET",
-            api_key="YOUR_API_KEY",
-        )
-
-
-        async def main() -> None:
-            await client.senders.documents.get_presigned_url(
-                id="id",
-                document_id="documentId",
-            )
-
-
-        asyncio.run(main())
-        """
-        _response = await self._raw_client.get_presigned_url(
-            id, document_id, type=type, request_options=request_options
-        )
         return _response.data

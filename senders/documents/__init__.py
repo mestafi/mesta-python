@@ -8,9 +8,6 @@ from importlib import import_module
 if typing.TYPE_CHECKING:
     from .types import (
         DeleteDocumentsResponse,
-        GetPresignedUrlDocumentsRequestType,
-        GetPresignedUrlDocumentsResponse,
-        GetPresignedUrlDocumentsResponseData,
         UploadDocumentsRequestType,
         UploadDocumentsResponse,
         UploadDocumentsResponseData,
@@ -18,9 +15,6 @@ if typing.TYPE_CHECKING:
     )
 _dynamic_imports: typing.Dict[str, str] = {
     "DeleteDocumentsResponse": ".types",
-    "GetPresignedUrlDocumentsRequestType": ".types",
-    "GetPresignedUrlDocumentsResponse": ".types",
-    "GetPresignedUrlDocumentsResponseData": ".types",
     "UploadDocumentsRequestType": ".types",
     "UploadDocumentsResponse": ".types",
     "UploadDocumentsResponseData": ".types",
@@ -51,9 +45,6 @@ def __dir__():
 
 __all__ = [
     "DeleteDocumentsResponse",
-    "GetPresignedUrlDocumentsRequestType",
-    "GetPresignedUrlDocumentsResponse",
-    "GetPresignedUrlDocumentsResponseData",
     "UploadDocumentsRequestType",
     "UploadDocumentsResponse",
     "UploadDocumentsResponseData",

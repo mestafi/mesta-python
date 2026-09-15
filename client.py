@@ -11,6 +11,7 @@ from .environment import MestaEnvironment
 
 if typing.TYPE_CHECKING:
     from .api_keys.client import ApiKeysClient, AsyncApiKeysClient
+    from .auth.client import AsyncAuthClient, AuthClient
     from .beneficiaries.client import AsyncBeneficiariesClient, BeneficiariesClient
     from .events.client import AsyncEventsClient, EventsClient
     from .merchants.client import AsyncMerchantsClient, MerchantsClient
@@ -122,6 +123,7 @@ class Mesta:
         self._payment_methods: typing.Optional[PaymentMethodsClient] = None
         self._validation_rules: typing.Optional[ValidationRulesClient] = None
         self._events: typing.Optional[EventsClient] = None
+        self._auth: typing.Optional[AuthClient] = None
         self._api_keys: typing.Optional[ApiKeysClient] = None
         self._transfers: typing.Optional[TransfersClient] = None
 
@@ -204,6 +206,14 @@ class Mesta:
 
             self._events = EventsClient(client_wrapper=self._client_wrapper)
         return self._events
+
+    @property
+    def auth(self):
+        if self._auth is None:
+            from .auth.client import AuthClient  # noqa: E402
+
+            self._auth = AuthClient(client_wrapper=self._client_wrapper)
+        return self._auth
 
     @property
     def api_keys(self):
@@ -336,6 +346,7 @@ class AsyncMesta:
         self._payment_methods: typing.Optional[AsyncPaymentMethodsClient] = None
         self._validation_rules: typing.Optional[AsyncValidationRulesClient] = None
         self._events: typing.Optional[AsyncEventsClient] = None
+        self._auth: typing.Optional[AsyncAuthClient] = None
         self._api_keys: typing.Optional[AsyncApiKeysClient] = None
         self._transfers: typing.Optional[AsyncTransfersClient] = None
 
@@ -418,6 +429,14 @@ class AsyncMesta:
 
             self._events = AsyncEventsClient(client_wrapper=self._client_wrapper)
         return self._events
+
+    @property
+    def auth(self):
+        if self._auth is None:
+            from .auth.client import AsyncAuthClient  # noqa: E402
+
+            self._auth = AsyncAuthClient(client_wrapper=self._client_wrapper)
+        return self._auth
 
     @property
     def api_keys(self):

@@ -5,13 +5,8 @@ import typing
 from ...core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ...core.request_options import RequestOptions
 from .raw_client import AsyncRawTermsOfServiceClient, RawTermsOfServiceClient
-from .types.accept_terms_of_service_response import AcceptTermsOfServiceResponse
-from .types.create_link_terms_of_service_response import CreateLinkTermsOfServiceResponse
 from .types.get_acceptance_terms_of_service_response import GetAcceptanceTermsOfServiceResponse
 from .types.get_status_terms_of_service_response import GetStatusTermsOfServiceResponse
-
-# this is used as the default value for optional parameters
-OMIT = typing.cast(typing.Any, ...)
 
 
 class TermsOfServiceClient:
@@ -63,47 +58,6 @@ class TermsOfServiceClient:
         _response = self._raw_client.get_status(sender_id, request_options=request_options)
         return _response.data
 
-    def create_link(
-        self,
-        id: str,
-        *,
-        regenerate: typing.Optional[bool] = OMIT,
-        request_options: typing.Optional[RequestOptions] = None,
-    ) -> CreateLinkTermsOfServiceResponse:
-        """
-        Generates a Terms of Service acceptance link for a sender. If a valid link already exists and regenerate is not set to true, returns the existing link.
-
-        Parameters
-        ----------
-        id : str
-            ID of the sender
-
-        regenerate : typing.Optional[bool]
-            When true, forces generation of a new TOS link even if one already exists
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        CreateLinkTermsOfServiceResponse
-            TOS link generated or retrieved successfully
-
-        Examples
-        --------
-        from mesta import Mesta
-
-        client = Mesta(
-            api_secret="YOUR_API_SECRET",
-            api_key="YOUR_API_KEY",
-        )
-        client.senders.terms_of_service.create_link(
-            id="id",
-        )
-        """
-        _response = self._raw_client.create_link(id, regenerate=regenerate, request_options=request_options)
-        return _response.data
-
     def get_acceptance(
         self, token: str, *, request_options: typing.Optional[RequestOptions] = None
     ) -> GetAcceptanceTermsOfServiceResponse:
@@ -136,40 +90,6 @@ class TermsOfServiceClient:
         )
         """
         _response = self._raw_client.get_acceptance(token, request_options=request_options)
-        return _response.data
-
-    def accept(
-        self, token: str, *, request_options: typing.Optional[RequestOptions] = None
-    ) -> AcceptTermsOfServiceResponse:
-        """
-        Accepts the Terms of Service on behalf of a sender using the provided token. This is a public endpoint that does not require authentication. The client's IP address and user agent are recorded automatically.
-
-        Parameters
-        ----------
-        token : str
-            TOS acceptance token (base64url encoded)
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        AcceptTermsOfServiceResponse
-            Terms of Service accepted successfully
-
-        Examples
-        --------
-        from mesta import Mesta
-
-        client = Mesta(
-            api_secret="YOUR_API_SECRET",
-            api_key="YOUR_API_KEY",
-        )
-        client.senders.terms_of_service.accept(
-            token="token",
-        )
-        """
-        _response = self._raw_client.accept(token, request_options=request_options)
         return _response.data
 
 
@@ -230,55 +150,6 @@ class AsyncTermsOfServiceClient:
         _response = await self._raw_client.get_status(sender_id, request_options=request_options)
         return _response.data
 
-    async def create_link(
-        self,
-        id: str,
-        *,
-        regenerate: typing.Optional[bool] = OMIT,
-        request_options: typing.Optional[RequestOptions] = None,
-    ) -> CreateLinkTermsOfServiceResponse:
-        """
-        Generates a Terms of Service acceptance link for a sender. If a valid link already exists and regenerate is not set to true, returns the existing link.
-
-        Parameters
-        ----------
-        id : str
-            ID of the sender
-
-        regenerate : typing.Optional[bool]
-            When true, forces generation of a new TOS link even if one already exists
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        CreateLinkTermsOfServiceResponse
-            TOS link generated or retrieved successfully
-
-        Examples
-        --------
-        import asyncio
-
-        from mesta import AsyncMesta
-
-        client = AsyncMesta(
-            api_secret="YOUR_API_SECRET",
-            api_key="YOUR_API_KEY",
-        )
-
-
-        async def main() -> None:
-            await client.senders.terms_of_service.create_link(
-                id="id",
-            )
-
-
-        asyncio.run(main())
-        """
-        _response = await self._raw_client.create_link(id, regenerate=regenerate, request_options=request_options)
-        return _response.data
-
     async def get_acceptance(
         self, token: str, *, request_options: typing.Optional[RequestOptions] = None
     ) -> GetAcceptanceTermsOfServiceResponse:
@@ -319,46 +190,4 @@ class AsyncTermsOfServiceClient:
         asyncio.run(main())
         """
         _response = await self._raw_client.get_acceptance(token, request_options=request_options)
-        return _response.data
-
-    async def accept(
-        self, token: str, *, request_options: typing.Optional[RequestOptions] = None
-    ) -> AcceptTermsOfServiceResponse:
-        """
-        Accepts the Terms of Service on behalf of a sender using the provided token. This is a public endpoint that does not require authentication. The client's IP address and user agent are recorded automatically.
-
-        Parameters
-        ----------
-        token : str
-            TOS acceptance token (base64url encoded)
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        AcceptTermsOfServiceResponse
-            Terms of Service accepted successfully
-
-        Examples
-        --------
-        import asyncio
-
-        from mesta import AsyncMesta
-
-        client = AsyncMesta(
-            api_secret="YOUR_API_SECRET",
-            api_key="YOUR_API_KEY",
-        )
-
-
-        async def main() -> None:
-            await client.senders.terms_of_service.accept(
-                token="token",
-            )
-
-
-        asyncio.run(main())
-        """
-        _response = await self._raw_client.accept(token, request_options=request_options)
         return _response.data
