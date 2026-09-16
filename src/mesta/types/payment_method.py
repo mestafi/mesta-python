@@ -1,0 +1,84 @@
+
+import datetime as dt
+import typing
+
+import pydantic
+import typing_extensions
+from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
+from ..core.serialization import FieldMetadata
+from .payment_method_data import PaymentMethodData
+from .payment_method_status import PaymentMethodStatus
+from .payment_method_type import PaymentMethodType
+
+
+class PaymentMethod(UniversalBaseModel):
+    """
+    Payment method object
+    """
+
+    id: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    Unique payment method ID
+    """
+
+    beneficiary_id: typing_extensions.Annotated[
+        typing.Optional[str],
+        FieldMetadata(alias="beneficiaryId"),
+        pydantic.Field(alias="beneficiaryId", description="Associated beneficiary ID"),
+    ] = None
+    """
+    Associated beneficiary ID
+    """
+
+    merchant_id: typing_extensions.Annotated[
+        typing.Optional[str],
+        FieldMetadata(alias="merchantId"),
+        pydantic.Field(alias="merchantId", description="Associated merchant ID"),
+    ] = None
+    """
+    Associated merchant ID
+    """
+
+    type: typing.Optional[PaymentMethodType] = None
+    status: typing.Optional[PaymentMethodStatus] = None
+    label: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    Display label for the payment method
+    """
+
+    data: typing.Optional[PaymentMethodData] = pydantic.Field(default=None)
+    """
+    Payment method data. Structure depends on type field.
+    """
+
+    created_at: typing_extensions.Annotated[
+        typing.Optional[dt.datetime],
+        FieldMetadata(alias="createdAt"),
+        pydantic.Field(alias="createdAt", description="Creation timestamp"),
+    ] = None
+    """
+    Creation timestamp
+    """
+
+    updated_at: typing_extensions.Annotated[
+        typing.Optional[dt.datetime],
+        FieldMetadata(alias="updatedAt"),
+        pydantic.Field(alias="updatedAt", description="Last update timestamp"),
+    ] = None
+    """
+    Last update timestamp
+    """
+
+    version: typing.Optional[int] = pydantic.Field(default=None)
+    """
+    Version number for optimistic locking
+    """
+
+    if IS_PYDANTIC_V2:
+        model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2
+    else:
+
+        class Config:
+            frozen = True
+            smart_union = True
+            extra = pydantic.Extra.allow

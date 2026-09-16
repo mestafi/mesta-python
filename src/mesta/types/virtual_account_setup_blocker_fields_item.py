@@ -1,0 +1,37 @@
+
+import typing
+
+import pydantic
+import typing_extensions
+from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
+from ..core.serialization import FieldMetadata
+from .virtual_account_setup_blocker_fields_item_document_type import VirtualAccountSetupBlockerFieldsItemDocumentType
+
+
+class VirtualAccountSetupBlockerFieldsItem(UniversalBaseModel):
+    name: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    Public property missing from the subject. This is never an internal canonical requirement key and may be nested inside an action body container.
+    """
+
+    label: str
+    document_type: typing_extensions.Annotated[
+        typing.Optional[VirtualAccountSetupBlockerFieldsItemDocumentType],
+        FieldMetadata(alias="documentType"),
+        pydantic.Field(
+            alias="documentType",
+            description="For a document field, the exact value to send as the upload request's `type`.",
+        ),
+    ] = None
+    """
+    For a document field, the exact value to send as the upload request's `type`.
+    """
+
+    if IS_PYDANTIC_V2:
+        model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2
+    else:
+
+        class Config:
+            frozen = True
+            smart_union = True
+            extra = pydantic.Extra.allow

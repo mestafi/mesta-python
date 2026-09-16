@@ -1,0 +1,23 @@
+
+import typing
+
+Purpose = typing.Union[
+    typing.Literal[
+        "operational_expense",
+        "vendor_payment",
+        "subsidiary_transfer",
+        "accounting_services",
+        "administrative_expenses",
+        "business_profits",
+        "financial_lease",
+        "fines_and_penalties",
+        "insurance_premium",
+        "interest_on_loans",
+        "legal_services",
+        "other_personal_services",
+        "payment_for_goods_and_services",
+        "pilgrimage_religious_related",
+        "research_and_development_services",
+    ],
+    typing.Any,
+]

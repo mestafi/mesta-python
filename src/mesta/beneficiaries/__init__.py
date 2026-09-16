@@ -1,0 +1,203 @@
+
+# isort: skip_file
+
+import typing
+from importlib import import_module
+
+if typing.TYPE_CHECKING:
+    from .types import (
+        CreateBeneficiariesRequestAddress,
+        CreateBeneficiariesRequestBusinessType,
+        CreateBeneficiariesRequestIdentity,
+        CreateBeneficiariesRequestIdentityDocumentType,
+        CreateBeneficiariesRequestPaymentMethodsItem,
+        CreateBeneficiariesRequestType,
+        CreateBeneficiariesResponse,
+        CreateBeneficiariesResponseData,
+        CreateBeneficiariesResponseDataAddress,
+        CreateBeneficiariesResponseDataBusinessType,
+        CreateBeneficiariesResponseDataIdentity,
+        CreateBeneficiariesResponseDataIdentityDocumentType,
+        CreateBeneficiariesResponseDataStatus,
+        CreateBeneficiariesResponseDataType,
+        CreateBeneficiariesResponseDataVerification,
+        CreateBeneficiariesResponseDataVerificationStatus,
+        DeleteBeneficiariesResponse,
+        GetBeneficiariesResponse,
+        GetBeneficiariesResponseData,
+        GetBeneficiariesResponseDataAddress,
+        GetBeneficiariesResponseDataBusinessType,
+        GetBeneficiariesResponseDataIdentity,
+        GetBeneficiariesResponseDataIdentityDocumentType,
+        GetBeneficiariesResponseDataIdentityFront,
+        GetBeneficiariesResponseDataStatus,
+        GetBeneficiariesResponseDataType,
+        GetBeneficiariesResponseDataVerification,
+        GetBeneficiariesResponseDataVerificationStatus,
+        ListBeneficiariesRequestSortBy,
+        ListBeneficiariesRequestSortOrder,
+        ListBeneficiariesResponse,
+        ListBeneficiariesResponseDataItem,
+        ListBeneficiariesResponseDataItemAddress,
+        ListBeneficiariesResponseDataItemBusinessType,
+        ListBeneficiariesResponseDataItemIdentity,
+        ListBeneficiariesResponseDataItemIdentityDocumentType,
+        ListBeneficiariesResponseDataItemIdentityFront,
+        ListBeneficiariesResponseDataItemStatus,
+        ListBeneficiariesResponseDataItemType,
+        ListBeneficiariesResponseDataItemVerification,
+        ListBeneficiariesResponseDataItemVerificationStatus,
+        LookupBankBeneficiariesResponse,
+        LookupBankBeneficiariesResponseDataItem,
+        SimulateVerificationResultBeneficiariesRequestResult,
+        SimulateVerificationResultBeneficiariesResponse,
+        UpdateBeneficiariesRequestAddress,
+        UpdateBeneficiariesRequestType,
+        UpdateBeneficiariesResponse,
+        VerifyBeneficiariesResponse,
+    )
+    from . import documents
+    from .documents import (
+        GetPresignedUrlDocumentsRequestType,
+        GetPresignedUrlDocumentsResponse,
+        GetPresignedUrlDocumentsResponseData,
+        GetPresignedUrlDocumentsResponseDataType,
+        GetPurposeOfPaymentPresignedUrlDocumentsResponse,
+    )
+_dynamic_imports: typing.Dict[str, str] = {
+    "CreateBeneficiariesRequestAddress": ".types",
+    "CreateBeneficiariesRequestBusinessType": ".types",
+    "CreateBeneficiariesRequestIdentity": ".types",
+    "CreateBeneficiariesRequestIdentityDocumentType": ".types",
+    "CreateBeneficiariesRequestPaymentMethodsItem": ".types",
+    "CreateBeneficiariesRequestType": ".types",
+    "CreateBeneficiariesResponse": ".types",
+    "CreateBeneficiariesResponseData": ".types",
+    "CreateBeneficiariesResponseDataAddress": ".types",
+    "CreateBeneficiariesResponseDataBusinessType": ".types",
+    "CreateBeneficiariesResponseDataIdentity": ".types",
+    "CreateBeneficiariesResponseDataIdentityDocumentType": ".types",
+    "CreateBeneficiariesResponseDataStatus": ".types",
+    "CreateBeneficiariesResponseDataType": ".types",
+    "CreateBeneficiariesResponseDataVerification": ".types",
+    "CreateBeneficiariesResponseDataVerificationStatus": ".types",
+    "DeleteBeneficiariesResponse": ".types",
+    "GetBeneficiariesResponse": ".types",
+    "GetBeneficiariesResponseData": ".types",
+    "GetBeneficiariesResponseDataAddress": ".types",
+    "GetBeneficiariesResponseDataBusinessType": ".types",
+    "GetBeneficiariesResponseDataIdentity": ".types",
+    "GetBeneficiariesResponseDataIdentityDocumentType": ".types",
+    "GetBeneficiariesResponseDataIdentityFront": ".types",
+    "GetBeneficiariesResponseDataStatus": ".types",
+    "GetBeneficiariesResponseDataType": ".types",
+    "GetBeneficiariesResponseDataVerification": ".types",
+    "GetBeneficiariesResponseDataVerificationStatus": ".types",
+    "GetPresignedUrlDocumentsRequestType": ".documents",
+    "GetPresignedUrlDocumentsResponse": ".documents",
+    "GetPresignedUrlDocumentsResponseData": ".documents",
+    "GetPresignedUrlDocumentsResponseDataType": ".documents",
+    "GetPurposeOfPaymentPresignedUrlDocumentsResponse": ".documents",
+    "ListBeneficiariesRequestSortBy": ".types",
+    "ListBeneficiariesRequestSortOrder": ".types",
+    "ListBeneficiariesResponse": ".types",
+    "ListBeneficiariesResponseDataItem": ".types",
+    "ListBeneficiariesResponseDataItemAddress": ".types",
+    "ListBeneficiariesResponseDataItemBusinessType": ".types",
+    "ListBeneficiariesResponseDataItemIdentity": ".types",
+    "ListBeneficiariesResponseDataItemIdentityDocumentType": ".types",
+    "ListBeneficiariesResponseDataItemIdentityFront": ".types",
+    "ListBeneficiariesResponseDataItemStatus": ".types",
+    "ListBeneficiariesResponseDataItemType": ".types",
+    "ListBeneficiariesResponseDataItemVerification": ".types",
+    "ListBeneficiariesResponseDataItemVerificationStatus": ".types",
+    "LookupBankBeneficiariesResponse": ".types",
+    "LookupBankBeneficiariesResponseDataItem": ".types",
+    "SimulateVerificationResultBeneficiariesRequestResult": ".types",
+    "SimulateVerificationResultBeneficiariesResponse": ".types",
+    "UpdateBeneficiariesRequestAddress": ".types",
+    "UpdateBeneficiariesRequestType": ".types",
+    "UpdateBeneficiariesResponse": ".types",
+    "VerifyBeneficiariesResponse": ".types",
+    "documents": ".documents",
+}
+
+
+def __getattr__(attr_name: str) -> typing.Any:
+    module_name = _dynamic_imports.get(attr_name)
+    if module_name is None:
+        raise AttributeError(f"No {attr_name} found in _dynamic_imports for module name -> {__name__}")
+    try:
+        module = import_module(module_name, __package__)
+        if module_name == f".{attr_name}":
+            return module
+        else:
+            return getattr(module, attr_name)
+    except ImportError as e:
+        raise ImportError(f"Failed to import {attr_name} from {module_name}: {e}") from e
+    except AttributeError as e:
+        raise AttributeError(f"Failed to get {attr_name} from {module_name}: {e}") from e
+
+
+def __dir__():
+    lazy_attrs = list(_dynamic_imports.keys())
+    return sorted(lazy_attrs)
+
+
+__all__ = [
+    "CreateBeneficiariesRequestAddress",
+    "CreateBeneficiariesRequestBusinessType",
+    "CreateBeneficiariesRequestIdentity",
+    "CreateBeneficiariesRequestIdentityDocumentType",
+    "CreateBeneficiariesRequestPaymentMethodsItem",
+    "CreateBeneficiariesRequestType",
+    "CreateBeneficiariesResponse",
+    "CreateBeneficiariesResponseData",
+    "CreateBeneficiariesResponseDataAddress",
+    "CreateBeneficiariesResponseDataBusinessType",
+    "CreateBeneficiariesResponseDataIdentity",
+    "CreateBeneficiariesResponseDataIdentityDocumentType",
+    "CreateBeneficiariesResponseDataStatus",
+    "CreateBeneficiariesResponseDataType",
+    "CreateBeneficiariesResponseDataVerification",
+    "CreateBeneficiariesResponseDataVerificationStatus",
+    "DeleteBeneficiariesResponse",
+    "GetBeneficiariesResponse",
+    "GetBeneficiariesResponseData",
+    "GetBeneficiariesResponseDataAddress",
+    "GetBeneficiariesResponseDataBusinessType",
+    "GetBeneficiariesResponseDataIdentity",
+    "GetBeneficiariesResponseDataIdentityDocumentType",
+    "GetBeneficiariesResponseDataIdentityFront",
+    "GetBeneficiariesResponseDataStatus",
+    "GetBeneficiariesResponseDataType",
+    "GetBeneficiariesResponseDataVerification",
+    "GetBeneficiariesResponseDataVerificationStatus",
+    "GetPresignedUrlDocumentsRequestType",
+    "GetPresignedUrlDocumentsResponse",
+    "GetPresignedUrlDocumentsResponseData",
+    "GetPresignedUrlDocumentsResponseDataType",
+    "GetPurposeOfPaymentPresignedUrlDocumentsResponse",
+    "ListBeneficiariesRequestSortBy",
+    "ListBeneficiariesRequestSortOrder",
+    "ListBeneficiariesResponse",
+    "ListBeneficiariesResponseDataItem",
+    "ListBeneficiariesResponseDataItemAddress",
+    "ListBeneficiariesResponseDataItemBusinessType",
+    "ListBeneficiariesResponseDataItemIdentity",
+    "ListBeneficiariesResponseDataItemIdentityDocumentType",
+    "ListBeneficiariesResponseDataItemIdentityFront",
+    "ListBeneficiariesResponseDataItemStatus",
+    "ListBeneficiariesResponseDataItemType",
+    "ListBeneficiariesResponseDataItemVerification",
+    "ListBeneficiariesResponseDataItemVerificationStatus",
+    "LookupBankBeneficiariesResponse",
+    "LookupBankBeneficiariesResponseDataItem",
+    "SimulateVerificationResultBeneficiariesRequestResult",
+    "SimulateVerificationResultBeneficiariesResponse",
+    "UpdateBeneficiariesRequestAddress",
+    "UpdateBeneficiariesRequestType",
+    "UpdateBeneficiariesResponse",
+    "VerifyBeneficiariesResponse",
+    "documents",
+]

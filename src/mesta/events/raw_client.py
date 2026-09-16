@@ -1,0 +1,263 @@
+
+import typing
+from json.decoder import JSONDecodeError
+
+from ..core.api_error import ApiError
+from ..core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
+from ..core.http_response import AsyncHttpResponse, HttpResponse
+from ..core.parse_error import ParsingError
+from ..core.pydantic_utilities import parse_obj_as
+from ..core.request_options import RequestOptions
+from ..errors.forbidden_error import ForbiddenError
+from ..errors.internal_server_error import InternalServerError
+from ..errors.unauthorized_error import UnauthorizedError
+from ..types.error_response import ErrorResponse
+from .types.list_events_request_aggregate_type import ListEventsRequestAggregateType
+from .types.list_events_request_sort_by import ListEventsRequestSortBy
+from .types.list_events_request_sort_order import ListEventsRequestSortOrder
+from .types.list_events_response import ListEventsResponse
+from pydantic import ValidationError
+
+
+class RawEventsClient:
+    def __init__(self, *, client_wrapper: SyncClientWrapper):
+        self._client_wrapper = client_wrapper
+
+    def list(
+        self,
+        *,
+        page: typing.Optional[int] = None,
+        page_size: typing.Optional[int] = None,
+        sort_by: typing.Optional[ListEventsRequestSortBy] = None,
+        sort_order: typing.Optional[ListEventsRequestSortOrder] = None,
+        aggregate_type: typing.Optional[ListEventsRequestAggregateType] = None,
+        merchant_id: typing.Optional[str] = None,
+        aggregate_id: typing.Optional[str] = None,
+        name: typing.Optional[str] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> HttpResponse[ListEventsResponse]:
+        """
+        Retrieve a paginated list of external events. Filter by aggregate type, merchant, or event name.
+
+        Parameters
+        ----------
+        page : typing.Optional[int]
+            Page number (0-indexed)
+
+        page_size : typing.Optional[int]
+            Number of records per page
+
+        sort_by : typing.Optional[ListEventsRequestSortBy]
+            Field to sort by
+
+        sort_order : typing.Optional[ListEventsRequestSortOrder]
+            Sort order
+
+        aggregate_type : typing.Optional[ListEventsRequestAggregateType]
+            Filter by aggregate type
+
+        merchant_id : typing.Optional[str]
+            Filter by merchant ID
+
+        aggregate_id : typing.Optional[str]
+            Filter by aggregate ID
+
+        name : typing.Optional[str]
+            Filter by event name
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        HttpResponse[ListEventsResponse]
+            Paginated list of external events
+        """
+        _response = self._client_wrapper.httpx_client.request(
+            "v1/external-events",
+            method="GET",
+            params={
+                "page": page,
+                "pageSize": page_size,
+                "sortBy": sort_by,
+                "sortOrder": sort_order,
+                "aggregateType": aggregate_type,
+                "merchantId": merchant_id,
+                "aggregateId": aggregate_id,
+                "name": name,
+            },
+            request_options=request_options,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    ListEventsResponse,
+                    parse_obj_as(
+                        type_=ListEventsResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return HttpResponse(response=_response, data=_data)
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Any,
+                        parse_obj_as(
+                            type_=typing.Any,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 403:
+                raise ForbiddenError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Any,
+                        parse_obj_as(
+                            type_=typing.Any,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        ErrorResponse,
+                        parse_obj_as(
+                            type_=ErrorResponse,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
+        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
+
+
+class AsyncRawEventsClient:
+    def __init__(self, *, client_wrapper: AsyncClientWrapper):
+        self._client_wrapper = client_wrapper
+
+    async def list(
+        self,
+        *,
+        page: typing.Optional[int] = None,
+        page_size: typing.Optional[int] = None,
+        sort_by: typing.Optional[ListEventsRequestSortBy] = None,
+        sort_order: typing.Optional[ListEventsRequestSortOrder] = None,
+        aggregate_type: typing.Optional[ListEventsRequestAggregateType] = None,
+        merchant_id: typing.Optional[str] = None,
+        aggregate_id: typing.Optional[str] = None,
+        name: typing.Optional[str] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> AsyncHttpResponse[ListEventsResponse]:
+        """
+        Retrieve a paginated list of external events. Filter by aggregate type, merchant, or event name.
+
+        Parameters
+        ----------
+        page : typing.Optional[int]
+            Page number (0-indexed)
+
+        page_size : typing.Optional[int]
+            Number of records per page
+
+        sort_by : typing.Optional[ListEventsRequestSortBy]
+            Field to sort by
+
+        sort_order : typing.Optional[ListEventsRequestSortOrder]
+            Sort order
+
+        aggregate_type : typing.Optional[ListEventsRequestAggregateType]
+            Filter by aggregate type
+
+        merchant_id : typing.Optional[str]
+            Filter by merchant ID
+
+        aggregate_id : typing.Optional[str]
+            Filter by aggregate ID
+
+        name : typing.Optional[str]
+            Filter by event name
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        AsyncHttpResponse[ListEventsResponse]
+            Paginated list of external events
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            "v1/external-events",
+            method="GET",
+            params={
+                "page": page,
+                "pageSize": page_size,
+                "sortBy": sort_by,
+                "sortOrder": sort_order,
+                "aggregateType": aggregate_type,
+                "merchantId": merchant_id,
+                "aggregateId": aggregate_id,
+                "name": name,
+            },
+            request_options=request_options,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    ListEventsResponse,
+                    parse_obj_as(
+                        type_=ListEventsResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return AsyncHttpResponse(response=_response, data=_data)
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Any,
+                        parse_obj_as(
+                            type_=typing.Any,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 403:
+                raise ForbiddenError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Any,
+                        parse_obj_as(
+                            type_=typing.Any,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        ErrorResponse,
+                        parse_obj_as(
+                            type_=ErrorResponse,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
+        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)

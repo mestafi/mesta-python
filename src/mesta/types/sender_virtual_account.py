@@ -1,0 +1,48 @@
+
+import typing
+
+import pydantic
+import typing_extensions
+from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
+from ..core.serialization import FieldMetadata
+from .sender_virtual_account_bank_details import SenderVirtualAccountBankDetails
+from .sender_virtual_account_currency import SenderVirtualAccountCurrency
+
+
+class SenderVirtualAccount(UniversalBaseModel):
+    """
+    A virtual bank account available to the sender.
+    """
+
+    id: typing.Optional[str] = None
+    name: typing.Optional[str] = None
+    address: typing.Optional[str] = None
+    account_number: typing_extensions.Annotated[
+        typing.Optional[str], FieldMetadata(alias="accountNumber"), pydantic.Field(alias="accountNumber")
+    ] = None
+    routing_details: typing_extensions.Annotated[
+        typing.Optional[typing.List[typing.Dict[str, typing.Any]]],
+        FieldMetadata(alias="routingDetails"),
+        pydantic.Field(alias="routingDetails"),
+    ] = None
+    reference: typing.Optional[str] = None
+    bank_details: typing_extensions.Annotated[
+        typing.Optional[SenderVirtualAccountBankDetails],
+        FieldMetadata(alias="bankDetails"),
+        pydantic.Field(alias="bankDetails"),
+    ] = None
+    bic: typing.Optional[str] = None
+    sort_code: typing_extensions.Annotated[
+        typing.Optional[str], FieldMetadata(alias="sortCode"), pydantic.Field(alias="sortCode")
+    ] = None
+    currency: typing.Optional[SenderVirtualAccountCurrency] = None
+    status: typing.Optional[str] = None
+
+    if IS_PYDANTIC_V2:
+        model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2
+    else:
+
+        class Config:
+            frozen = True
+            smart_union = True
+            extra = pydantic.Extra.allow

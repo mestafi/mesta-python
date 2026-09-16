@@ -1,0 +1,113 @@
+
+import typing
+
+from ..core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
+from ..core.request_options import RequestOptions
+from .raw_client import AsyncRawWalletAddressesClient, RawWalletAddressesClient
+from .types.get_wallet_addresses_response import GetWalletAddressesResponse
+
+
+class WalletAddressesClient:
+    def __init__(self, *, client_wrapper: SyncClientWrapper):
+        self._raw_client = RawWalletAddressesClient(client_wrapper=client_wrapper)
+
+    @property
+    def with_raw_response(self) -> RawWalletAddressesClient:
+        """
+        Retrieves a raw implementation of this client that returns raw responses.
+
+        Returns
+        -------
+        RawWalletAddressesClient
+        """
+        return self._raw_client
+
+    def get(self, id: str, *, request_options: typing.Optional[RequestOptions] = None) -> GetWalletAddressesResponse:
+        """
+        Retrieves a single source wallet address by its unique identifier.
+
+        Parameters
+        ----------
+        id : str
+            Unique identifier of the source wallet address
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        GetWalletAddressesResponse
+            Source wallet address retrieved successfully
+
+        Examples
+        --------
+        from mesta import Mesta
+
+        client = Mesta(
+            api_secret="YOUR_API_SECRET",
+            api_key="YOUR_API_KEY",
+        )
+        client.wallet_addresses.get(
+            id="id",
+        )
+        """
+        _response = self._raw_client.get(id, request_options=request_options)
+        return _response.data
+
+
+class AsyncWalletAddressesClient:
+    def __init__(self, *, client_wrapper: AsyncClientWrapper):
+        self._raw_client = AsyncRawWalletAddressesClient(client_wrapper=client_wrapper)
+
+    @property
+    def with_raw_response(self) -> AsyncRawWalletAddressesClient:
+        """
+        Retrieves a raw implementation of this client that returns raw responses.
+
+        Returns
+        -------
+        AsyncRawWalletAddressesClient
+        """
+        return self._raw_client
+
+    async def get(
+        self, id: str, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> GetWalletAddressesResponse:
+        """
+        Retrieves a single source wallet address by its unique identifier.
+
+        Parameters
+        ----------
+        id : str
+            Unique identifier of the source wallet address
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        GetWalletAddressesResponse
+            Source wallet address retrieved successfully
+
+        Examples
+        --------
+        import asyncio
+
+        from mesta import AsyncMesta
+
+        client = AsyncMesta(
+            api_secret="YOUR_API_SECRET",
+            api_key="YOUR_API_KEY",
+        )
+
+
+        async def main() -> None:
+            await client.wallet_addresses.get(
+                id="id",
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.get(id, request_options=request_options)
+        return _response.data

@@ -1,0 +1,36 @@
+
+import typing
+
+import pydantic
+import typing_extensions
+from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
+from ..core.serialization import FieldMetadata
+
+
+class FiatDepositDetailDepositDetailsRoutingCodesItem(UniversalBaseModel):
+    routing_code_key: typing_extensions.Annotated[
+        typing.Optional[str],
+        FieldMetadata(alias="routingCodeKey"),
+        pydantic.Field(alias="routingCodeKey", description="Type of routing code"),
+    ] = None
+    """
+    Type of routing code
+    """
+
+    routing_code_value: typing_extensions.Annotated[
+        typing.Optional[str],
+        FieldMetadata(alias="routingCodeValue"),
+        pydantic.Field(alias="routingCodeValue", description="Value of the routing code"),
+    ] = None
+    """
+    Value of the routing code
+    """
+
+    if IS_PYDANTIC_V2:
+        model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2
+    else:
+
+        class Config:
+            frozen = True
+            smart_union = True
+            extra = pydantic.Extra.allow

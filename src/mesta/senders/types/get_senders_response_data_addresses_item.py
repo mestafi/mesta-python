@@ -1,0 +1,47 @@
+
+import typing
+
+import pydantic
+import typing_extensions
+from ...core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
+from ...core.serialization import FieldMetadata
+
+
+class GetSendersResponseDataAddressesItem(UniversalBaseModel):
+    street: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    Street address
+    """
+
+    city: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    City name
+    """
+
+    state: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    State/province code
+    """
+
+    country: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    Two-letter country code
+    """
+
+    postal_code: typing_extensions.Annotated[
+        typing.Optional[str],
+        FieldMetadata(alias="postalCode"),
+        pydantic.Field(alias="postalCode", description="Postal/ZIP code"),
+    ] = None
+    """
+    Postal/ZIP code
+    """
+
+    if IS_PYDANTIC_V2:
+        model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2
+    else:
+
+        class Config:
+            frozen = True
+            smart_union = True
+            extra = pydantic.Extra.allow

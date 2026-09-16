@@ -1,0 +1,33 @@
+
+import datetime as dt
+import typing
+
+import pydantic
+import typing_extensions
+from ....core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
+from ....core.serialization import FieldMetadata
+
+
+class UpdateVirtualAccountSetupDataUboDetailsItem(UniversalBaseModel):
+    ubo_id: typing_extensions.Annotated[str, FieldMetadata(alias="uboId"), pydantic.Field(alias="uboId")]
+    birth_date: typing_extensions.Annotated[
+        typing.Optional[dt.date], FieldMetadata(alias="birthDate"), pydantic.Field(alias="birthDate")
+    ] = None
+    ownership_percent: typing_extensions.Annotated[
+        typing.Optional[float], FieldMetadata(alias="ownershipPercent"), pydantic.Field(alias="ownershipPercent")
+    ] = None
+    tax_identification_number: typing_extensions.Annotated[
+        typing.Optional[str],
+        FieldMetadata(alias="taxIdentificationNumber"),
+        pydantic.Field(alias="taxIdentificationNumber"),
+    ] = None
+    nationality: typing.Optional[str] = None
+
+    if IS_PYDANTIC_V2:
+        model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2
+    else:
+
+        class Config:
+            frozen = True
+            smart_union = True
+            extra = pydantic.Extra.allow

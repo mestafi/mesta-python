@@ -1,0 +1,55 @@
+
+import datetime as dt
+import typing
+
+import pydantic
+import typing_extensions
+from ...core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
+from ...core.serialization import FieldMetadata
+
+
+class GetSendersResponseDataUboItemPepQuestionnaireAssociation(UniversalBaseModel):
+    """
+    Required when declarationType is IMMEDIATE_FAMILY or CLOSE_ASSOCIATE.
+    """
+
+    pep_full_name: typing_extensions.Annotated[
+        typing.Optional[str], FieldMetadata(alias="pepFullName"), pydantic.Field(alias="pepFullName")
+    ] = None
+    relationship: typing.Optional[str] = None
+    pep_job_title: typing_extensions.Annotated[
+        typing.Optional[str], FieldMetadata(alias="pepJobTitle"), pydantic.Field(alias="pepJobTitle")
+    ] = None
+    pep_country_or_jurisdiction: typing_extensions.Annotated[
+        typing.Optional[str],
+        FieldMetadata(alias="pepCountryOrJurisdiction"),
+        pydantic.Field(alias="pepCountryOrJurisdiction"),
+    ] = None
+    service_start_date: typing_extensions.Annotated[
+        typing.Optional[dt.date], FieldMetadata(alias="serviceStartDate"), pydantic.Field(alias="serviceStartDate")
+    ] = None
+    service_end_date: typing_extensions.Annotated[
+        typing.Optional[dt.date], FieldMetadata(alias="serviceEndDate"), pydantic.Field(alias="serviceEndDate")
+    ] = None
+    source_of_wealth: typing_extensions.Annotated[
+        typing.Optional[str], FieldMetadata(alias="sourceOfWealth"), pydantic.Field(alias="sourceOfWealth")
+    ] = None
+    total_estimated_net_worth_usd: typing_extensions.Annotated[
+        typing.Optional[float],
+        FieldMetadata(alias="totalEstimatedNetWorthUsd"),
+        pydantic.Field(alias="totalEstimatedNetWorthUsd"),
+    ] = None
+    accuracy_statement_accepted: typing_extensions.Annotated[
+        typing.Optional[bool],
+        FieldMetadata(alias="accuracyStatementAccepted"),
+        pydantic.Field(alias="accuracyStatementAccepted"),
+    ] = None
+
+    if IS_PYDANTIC_V2:
+        model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2
+    else:
+
+        class Config:
+            frozen = True
+            smart_union = True
+            extra = pydantic.Extra.allow

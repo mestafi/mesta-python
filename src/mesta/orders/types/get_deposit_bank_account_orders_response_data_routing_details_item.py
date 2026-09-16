@@ -1,0 +1,36 @@
+
+import typing
+
+import pydantic
+import typing_extensions
+from ...core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
+from ...core.serialization import FieldMetadata
+
+
+class GetDepositBankAccountOrdersResponseDataRoutingDetailsItem(UniversalBaseModel):
+    transfer_type: typing_extensions.Annotated[
+        typing.Optional[str],
+        FieldMetadata(alias="transferType"),
+        pydantic.Field(alias="transferType", description="Transfer type for this routing entry"),
+    ] = None
+    """
+    Transfer type for this routing entry
+    """
+
+    routing_number: typing_extensions.Annotated[
+        typing.Optional[str],
+        FieldMetadata(alias="routingNumber"),
+        pydantic.Field(alias="routingNumber", description="Routing number"),
+    ] = None
+    """
+    Routing number
+    """
+
+    if IS_PYDANTIC_V2:
+        model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2
+    else:
+
+        class Config:
+            frozen = True
+            smart_union = True
+            extra = pydantic.Extra.allow

@@ -1,0 +1,391 @@
+
+import typing
+
+from ...core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
+from ...core.request_options import RequestOptions
+from .raw_client import AsyncRawBeneficiariesClient, RawBeneficiariesClient
+from .types.get_beneficiaries_request_owner_type import GetBeneficiariesRequestOwnerType
+from .types.get_beneficiaries_response import GetBeneficiariesResponse
+from .types.list_countries_beneficiaries_response import ListCountriesBeneficiariesResponse
+from .types.list_document_types_beneficiaries_request_owner_type import ListDocumentTypesBeneficiariesRequestOwnerType
+from .types.list_document_types_beneficiaries_response import ListDocumentTypesBeneficiariesResponse
+from .types.list_payment_types_beneficiaries_request_owner_type import ListPaymentTypesBeneficiariesRequestOwnerType
+from .types.list_payment_types_beneficiaries_response import ListPaymentTypesBeneficiariesResponse
+
+
+class BeneficiariesClient:
+    def __init__(self, *, client_wrapper: SyncClientWrapper):
+        self._raw_client = RawBeneficiariesClient(client_wrapper=client_wrapper)
+
+    @property
+    def with_raw_response(self) -> RawBeneficiariesClient:
+        """
+        Retrieves a raw implementation of this client that returns raw responses.
+
+        Returns
+        -------
+        RawBeneficiariesClient
+        """
+        return self._raw_client
+
+    def get(
+        self,
+        *,
+        owner_type: GetBeneficiariesRequestOwnerType,
+        country: str,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> GetBeneficiariesResponse:
+        """
+        Retrieves all validation rules required for creating a beneficiary, including required fields and payment information requirements.
+
+        Parameters
+        ----------
+        owner_type : GetBeneficiariesRequestOwnerType
+
+        country : str
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        GetBeneficiariesResponse
+            Successfully retrieved beneficiary validation rules
+
+        Examples
+        --------
+        from mesta import Mesta
+
+        client = Mesta(
+            api_secret="YOUR_API_SECRET",
+            api_key="YOUR_API_KEY",
+        )
+        client.validation_rules.beneficiaries.get(
+            owner_type="individual",
+            country="country",
+        )
+        """
+        _response = self._raw_client.get(owner_type=owner_type, country=country, request_options=request_options)
+        return _response.data
+
+    def list_document_types(
+        self,
+        *,
+        owner_type: ListDocumentTypesBeneficiariesRequestOwnerType,
+        country: str,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> ListDocumentTypesBeneficiariesResponse:
+        """
+        Retrieves the list of required documents for beneficiary verification based on country and owner type. Note that some countries may not require any documents.
+
+        Parameters
+        ----------
+        owner_type : ListDocumentTypesBeneficiariesRequestOwnerType
+            Type of beneficiary entity
+
+        country : str
+            Two-letter ISO country code
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        ListDocumentTypesBeneficiariesResponse
+            Successfully retrieved document requirements
+
+        Examples
+        --------
+        from mesta import Mesta
+
+        client = Mesta(
+            api_secret="YOUR_API_SECRET",
+            api_key="YOUR_API_KEY",
+        )
+        client.validation_rules.beneficiaries.list_document_types(
+            owner_type="individual",
+            country="country",
+        )
+        """
+        _response = self._raw_client.list_document_types(
+            owner_type=owner_type, country=country, request_options=request_options
+        )
+        return _response.data
+
+    def list_payment_types(
+        self,
+        *,
+        owner_type: ListPaymentTypesBeneficiariesRequestOwnerType,
+        country: str,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> ListPaymentTypesBeneficiariesResponse:
+        """
+        Retrieves the list of supported payment types and their required fields for a beneficiary in a specific country. Use this to determine what payment information needs to be collected.
+
+        Parameters
+        ----------
+        owner_type : ListPaymentTypesBeneficiariesRequestOwnerType
+            Type of beneficiary entity
+
+        country : str
+            Two-letter ISO country code
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        ListPaymentTypesBeneficiariesResponse
+            Successfully retrieved supported payment types
+
+        Examples
+        --------
+        from mesta import Mesta
+
+        client = Mesta(
+            api_secret="YOUR_API_SECRET",
+            api_key="YOUR_API_KEY",
+        )
+        client.validation_rules.beneficiaries.list_payment_types(
+            owner_type="individual",
+            country="country",
+        )
+        """
+        _response = self._raw_client.list_payment_types(
+            owner_type=owner_type, country=country, request_options=request_options
+        )
+        return _response.data
+
+    def list_countries(
+        self, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> ListCountriesBeneficiariesResponse:
+        """
+        Retrieve a list of countries to which payments can be delivered.
+
+        Parameters
+        ----------
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        ListCountriesBeneficiariesResponse
+            List of supported beneficiary countries
+
+        Examples
+        --------
+        from mesta import Mesta
+
+        client = Mesta(
+            api_secret="YOUR_API_SECRET",
+            api_key="YOUR_API_KEY",
+        )
+        client.validation_rules.beneficiaries.list_countries()
+        """
+        _response = self._raw_client.list_countries(request_options=request_options)
+        return _response.data
+
+
+class AsyncBeneficiariesClient:
+    def __init__(self, *, client_wrapper: AsyncClientWrapper):
+        self._raw_client = AsyncRawBeneficiariesClient(client_wrapper=client_wrapper)
+
+    @property
+    def with_raw_response(self) -> AsyncRawBeneficiariesClient:
+        """
+        Retrieves a raw implementation of this client that returns raw responses.
+
+        Returns
+        -------
+        AsyncRawBeneficiariesClient
+        """
+        return self._raw_client
+
+    async def get(
+        self,
+        *,
+        owner_type: GetBeneficiariesRequestOwnerType,
+        country: str,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> GetBeneficiariesResponse:
+        """
+        Retrieves all validation rules required for creating a beneficiary, including required fields and payment information requirements.
+
+        Parameters
+        ----------
+        owner_type : GetBeneficiariesRequestOwnerType
+
+        country : str
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        GetBeneficiariesResponse
+            Successfully retrieved beneficiary validation rules
+
+        Examples
+        --------
+        import asyncio
+
+        from mesta import AsyncMesta
+
+        client = AsyncMesta(
+            api_secret="YOUR_API_SECRET",
+            api_key="YOUR_API_KEY",
+        )
+
+
+        async def main() -> None:
+            await client.validation_rules.beneficiaries.get(
+                owner_type="individual",
+                country="country",
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.get(owner_type=owner_type, country=country, request_options=request_options)
+        return _response.data
+
+    async def list_document_types(
+        self,
+        *,
+        owner_type: ListDocumentTypesBeneficiariesRequestOwnerType,
+        country: str,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> ListDocumentTypesBeneficiariesResponse:
+        """
+        Retrieves the list of required documents for beneficiary verification based on country and owner type. Note that some countries may not require any documents.
+
+        Parameters
+        ----------
+        owner_type : ListDocumentTypesBeneficiariesRequestOwnerType
+            Type of beneficiary entity
+
+        country : str
+            Two-letter ISO country code
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        ListDocumentTypesBeneficiariesResponse
+            Successfully retrieved document requirements
+
+        Examples
+        --------
+        import asyncio
+
+        from mesta import AsyncMesta
+
+        client = AsyncMesta(
+            api_secret="YOUR_API_SECRET",
+            api_key="YOUR_API_KEY",
+        )
+
+
+        async def main() -> None:
+            await client.validation_rules.beneficiaries.list_document_types(
+                owner_type="individual",
+                country="country",
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.list_document_types(
+            owner_type=owner_type, country=country, request_options=request_options
+        )
+        return _response.data
+
+    async def list_payment_types(
+        self,
+        *,
+        owner_type: ListPaymentTypesBeneficiariesRequestOwnerType,
+        country: str,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> ListPaymentTypesBeneficiariesResponse:
+        """
+        Retrieves the list of supported payment types and their required fields for a beneficiary in a specific country. Use this to determine what payment information needs to be collected.
+
+        Parameters
+        ----------
+        owner_type : ListPaymentTypesBeneficiariesRequestOwnerType
+            Type of beneficiary entity
+
+        country : str
+            Two-letter ISO country code
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        ListPaymentTypesBeneficiariesResponse
+            Successfully retrieved supported payment types
+
+        Examples
+        --------
+        import asyncio
+
+        from mesta import AsyncMesta
+
+        client = AsyncMesta(
+            api_secret="YOUR_API_SECRET",
+            api_key="YOUR_API_KEY",
+        )
+
+
+        async def main() -> None:
+            await client.validation_rules.beneficiaries.list_payment_types(
+                owner_type="individual",
+                country="country",
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.list_payment_types(
+            owner_type=owner_type, country=country, request_options=request_options
+        )
+        return _response.data
+
+    async def list_countries(
+        self, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> ListCountriesBeneficiariesResponse:
+        """
+        Retrieve a list of countries to which payments can be delivered.
+
+        Parameters
+        ----------
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        ListCountriesBeneficiariesResponse
+            List of supported beneficiary countries
+
+        Examples
+        --------
+        import asyncio
+
+        from mesta import AsyncMesta
+
+        client = AsyncMesta(
+            api_secret="YOUR_API_SECRET",
+            api_key="YOUR_API_KEY",
+        )
+
+
+        async def main() -> None:
+            await client.validation_rules.beneficiaries.list_countries()
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.list_countries(request_options=request_options)
+        return _response.data

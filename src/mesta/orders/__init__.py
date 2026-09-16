@@ -1,0 +1,110 @@
+
+# isort: skip_file
+
+import typing
+from importlib import import_module
+
+if typing.TYPE_CHECKING:
+    from .types import (
+        CancelOrdersResponse,
+        CancelOrdersResponseData,
+        CancelOrdersResponseDataStatus,
+        CreateOrdersResponse,
+        CreateOrdersResponseData,
+        GetDepositBankAccountOrdersResponse,
+        GetDepositBankAccountOrdersResponseData,
+        GetDepositBankAccountOrdersResponseDataBankDetails,
+        GetDepositBankAccountOrdersResponseDataRoutingDetailsItem,
+        GetDepositWalletAddressOrdersResponse,
+        GetDepositWalletAddressOrdersResponseData,
+        GetDepositWalletAddressOrdersResponseDataChain,
+        GetOrdersResponse,
+        GetOrdersResponseData,
+        GetOrdersResponseDataStatus,
+        ListEventsOrdersResponse,
+        ListEventsOrdersResponseDataItem,
+        ListOrdersRequestSortOrder,
+        ListOrdersRequestStatus,
+        ListOrdersResponse,
+        ListOrdersResponseDataItem,
+        ListOrdersResponseDataItemStatus,
+    )
+    from . import documents
+    from .documents import GetPresignedUrlDocumentsResponse, GetPresignedUrlDocumentsResponseData
+_dynamic_imports: typing.Dict[str, str] = {
+    "CancelOrdersResponse": ".types",
+    "CancelOrdersResponseData": ".types",
+    "CancelOrdersResponseDataStatus": ".types",
+    "CreateOrdersResponse": ".types",
+    "CreateOrdersResponseData": ".types",
+    "GetDepositBankAccountOrdersResponse": ".types",
+    "GetDepositBankAccountOrdersResponseData": ".types",
+    "GetDepositBankAccountOrdersResponseDataBankDetails": ".types",
+    "GetDepositBankAccountOrdersResponseDataRoutingDetailsItem": ".types",
+    "GetDepositWalletAddressOrdersResponse": ".types",
+    "GetDepositWalletAddressOrdersResponseData": ".types",
+    "GetDepositWalletAddressOrdersResponseDataChain": ".types",
+    "GetOrdersResponse": ".types",
+    "GetOrdersResponseData": ".types",
+    "GetOrdersResponseDataStatus": ".types",
+    "GetPresignedUrlDocumentsResponse": ".documents",
+    "GetPresignedUrlDocumentsResponseData": ".documents",
+    "ListEventsOrdersResponse": ".types",
+    "ListEventsOrdersResponseDataItem": ".types",
+    "ListOrdersRequestSortOrder": ".types",
+    "ListOrdersRequestStatus": ".types",
+    "ListOrdersResponse": ".types",
+    "ListOrdersResponseDataItem": ".types",
+    "ListOrdersResponseDataItemStatus": ".types",
+    "documents": ".documents",
+}
+
+
+def __getattr__(attr_name: str) -> typing.Any:
+    module_name = _dynamic_imports.get(attr_name)
+    if module_name is None:
+        raise AttributeError(f"No {attr_name} found in _dynamic_imports for module name -> {__name__}")
+    try:
+        module = import_module(module_name, __package__)
+        if module_name == f".{attr_name}":
+            return module
+        else:
+            return getattr(module, attr_name)
+    except ImportError as e:
+        raise ImportError(f"Failed to import {attr_name} from {module_name}: {e}") from e
+    except AttributeError as e:
+        raise AttributeError(f"Failed to get {attr_name} from {module_name}: {e}") from e
+
+
+def __dir__():
+    lazy_attrs = list(_dynamic_imports.keys())
+    return sorted(lazy_attrs)
+
+
+__all__ = [
+    "CancelOrdersResponse",
+    "CancelOrdersResponseData",
+    "CancelOrdersResponseDataStatus",
+    "CreateOrdersResponse",
+    "CreateOrdersResponseData",
+    "GetDepositBankAccountOrdersResponse",
+    "GetDepositBankAccountOrdersResponseData",
+    "GetDepositBankAccountOrdersResponseDataBankDetails",
+    "GetDepositBankAccountOrdersResponseDataRoutingDetailsItem",
+    "GetDepositWalletAddressOrdersResponse",
+    "GetDepositWalletAddressOrdersResponseData",
+    "GetDepositWalletAddressOrdersResponseDataChain",
+    "GetOrdersResponse",
+    "GetOrdersResponseData",
+    "GetOrdersResponseDataStatus",
+    "GetPresignedUrlDocumentsResponse",
+    "GetPresignedUrlDocumentsResponseData",
+    "ListEventsOrdersResponse",
+    "ListEventsOrdersResponseDataItem",
+    "ListOrdersRequestSortOrder",
+    "ListOrdersRequestStatus",
+    "ListOrdersResponse",
+    "ListOrdersResponseDataItem",
+    "ListOrdersResponseDataItemStatus",
+    "documents",
+]

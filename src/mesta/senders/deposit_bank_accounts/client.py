@@ -1,0 +1,137 @@
+
+import typing
+
+from ...core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
+from ...core.request_options import RequestOptions
+from .raw_client import AsyncRawDepositBankAccountsClient, RawDepositBankAccountsClient
+from .types.generate_on_demand_deposit_bank_accounts_request_currency import (
+    GenerateOnDemandDepositBankAccountsRequestCurrency,
+)
+from .types.generate_on_demand_deposit_bank_accounts_response import GenerateOnDemandDepositBankAccountsResponse
+
+# this is used as the default value for optional parameters
+OMIT = typing.cast(typing.Any, ...)
+
+
+class DepositBankAccountsClient:
+    def __init__(self, *, client_wrapper: SyncClientWrapper):
+        self._raw_client = RawDepositBankAccountsClient(client_wrapper=client_wrapper)
+
+    @property
+    def with_raw_response(self) -> RawDepositBankAccountsClient:
+        """
+        Retrieves a raw implementation of this client that returns raw responses.
+
+        Returns
+        -------
+        RawDepositBankAccountsClient
+        """
+        return self._raw_client
+
+    def generate_on_demand(
+        self,
+        id: str,
+        *,
+        currency: GenerateOnDemandDepositBankAccountsRequestCurrency,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> GenerateOnDemandDepositBankAccountsResponse:
+        """
+        Initiates the creation of a deposit bank account for a sender on demand, in the requested currency.
+
+        Parameters
+        ----------
+        id : str
+            ID of the sender
+
+        currency : GenerateOnDemandDepositBankAccountsRequestCurrency
+            The currency for the deposit bank account.
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        GenerateOnDemandDepositBankAccountsResponse
+            Deposit bank account creation initiated successfully
+
+        Examples
+        --------
+        from mesta import Mesta
+
+        client = Mesta(
+            api_secret="YOUR_API_SECRET",
+            api_key="YOUR_API_KEY",
+        )
+        client.senders.deposit_bank_accounts.generate_on_demand(
+            id="id",
+            currency="EUR",
+        )
+        """
+        _response = self._raw_client.generate_on_demand(id, currency=currency, request_options=request_options)
+        return _response.data
+
+
+class AsyncDepositBankAccountsClient:
+    def __init__(self, *, client_wrapper: AsyncClientWrapper):
+        self._raw_client = AsyncRawDepositBankAccountsClient(client_wrapper=client_wrapper)
+
+    @property
+    def with_raw_response(self) -> AsyncRawDepositBankAccountsClient:
+        """
+        Retrieves a raw implementation of this client that returns raw responses.
+
+        Returns
+        -------
+        AsyncRawDepositBankAccountsClient
+        """
+        return self._raw_client
+
+    async def generate_on_demand(
+        self,
+        id: str,
+        *,
+        currency: GenerateOnDemandDepositBankAccountsRequestCurrency,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> GenerateOnDemandDepositBankAccountsResponse:
+        """
+        Initiates the creation of a deposit bank account for a sender on demand, in the requested currency.
+
+        Parameters
+        ----------
+        id : str
+            ID of the sender
+
+        currency : GenerateOnDemandDepositBankAccountsRequestCurrency
+            The currency for the deposit bank account.
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        GenerateOnDemandDepositBankAccountsResponse
+            Deposit bank account creation initiated successfully
+
+        Examples
+        --------
+        import asyncio
+
+        from mesta import AsyncMesta
+
+        client = AsyncMesta(
+            api_secret="YOUR_API_SECRET",
+            api_key="YOUR_API_KEY",
+        )
+
+
+        async def main() -> None:
+            await client.senders.deposit_bank_accounts.generate_on_demand(
+                id="id",
+                currency="EUR",
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.generate_on_demand(id, currency=currency, request_options=request_options)
+        return _response.data

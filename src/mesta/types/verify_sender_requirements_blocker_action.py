@@ -1,0 +1,29 @@
+
+import typing
+
+import pydantic
+import typing_extensions
+from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
+from ..core.serialization import FieldMetadata
+from .verify_sender_requirements_blocker_action_method import VerifySenderRequirementsBlockerActionMethod
+
+
+class VerifySenderRequirementsBlockerAction(UniversalBaseModel):
+    """
+    The next API action for resolving this blocker. Follow the returned method, path, and accepted body fields.
+    """
+
+    method: VerifySenderRequirementsBlockerActionMethod
+    path: str
+    body_fields: typing_extensions.Annotated[
+        typing.Optional[typing.List[str]], FieldMetadata(alias="bodyFields"), pydantic.Field(alias="bodyFields")
+    ] = None
+
+    if IS_PYDANTIC_V2:
+        model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2
+    else:
+
+        class Config:
+            frozen = True
+            smart_union = True
+            extra = pydantic.Extra.allow

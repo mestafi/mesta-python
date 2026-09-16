@@ -1,0 +1,32 @@
+
+import typing
+
+import pydantic
+import typing_extensions
+from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
+from ..core.serialization import FieldMetadata
+
+
+class VirtualAccountSetupResponseUnacceptedFieldsItem(UniversalBaseModel):
+    field: str = pydantic.Field()
+    """
+    Submitted field using its public request-body container, for example senderDetails.registrationDate or uboDetails.nationality.
+    """
+
+    subject_id: typing_extensions.Annotated[
+        typing.Optional[str],
+        FieldMetadata(alias="subjectId"),
+        pydantic.Field(alias="subjectId", description="UBO or associate ID. Present only for person-level fields."),
+    ] = None
+    """
+    UBO or associate ID. Present only for person-level fields.
+    """
+
+    if IS_PYDANTIC_V2:
+        model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2
+    else:
+
+        class Config:
+            frozen = True
+            smart_union = True
+            extra = pydantic.Extra.allow

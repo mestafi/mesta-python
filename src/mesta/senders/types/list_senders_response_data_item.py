@@ -1,0 +1,220 @@
+
+import datetime as dt
+import typing
+
+import pydantic
+import typing_extensions
+from ...core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
+from ...core.serialization import FieldMetadata
+from ...types.sender_onboarding_info import SenderOnboardingInfo
+from .list_senders_response_data_item_addresses_item import ListSendersResponseDataItemAddressesItem
+from .list_senders_response_data_item_business_type import ListSendersResponseDataItemBusinessType
+from .list_senders_response_data_item_documents_item import ListSendersResponseDataItemDocumentsItem
+from .list_senders_response_data_item_gender import ListSendersResponseDataItemGender
+from .list_senders_response_data_item_identity import ListSendersResponseDataItemIdentity
+from .list_senders_response_data_item_kyb import ListSendersResponseDataItemKyb
+from .list_senders_response_data_item_kyc import ListSendersResponseDataItemKyc
+from .list_senders_response_data_item_status import ListSendersResponseDataItemStatus
+from .list_senders_response_data_item_tos import ListSendersResponseDataItemTos
+from .list_senders_response_data_item_type import ListSendersResponseDataItemType
+
+
+class ListSendersResponseDataItem(UniversalBaseModel):
+    id: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    Unique identifier for the sender
+    """
+
+    version: typing.Optional[int] = pydantic.Field(default=None)
+    """
+    Version number of the sender record
+    """
+
+    created_at: typing_extensions.Annotated[
+        typing.Optional[dt.datetime],
+        FieldMetadata(alias="createdAt"),
+        pydantic.Field(alias="createdAt", description="Timestamp when the sender was created (ISO 8601 format)"),
+    ] = None
+    """
+    Timestamp when the sender was created (ISO 8601 format)
+    """
+
+    updated_at: typing_extensions.Annotated[
+        typing.Optional[dt.datetime],
+        FieldMetadata(alias="updatedAt"),
+        pydantic.Field(alias="updatedAt", description="Timestamp when the sender was last updated (ISO 8601 format)"),
+    ] = None
+    """
+    Timestamp when the sender was last updated (ISO 8601 format)
+    """
+
+    full_name: typing_extensions.Annotated[
+        typing.Optional[str],
+        FieldMetadata(alias="fullName"),
+        pydantic.Field(alias="fullName", description="Full name of the business or individual"),
+    ] = None
+    """
+    Full name of the business or individual
+    """
+
+    first_name: typing_extensions.Annotated[
+        typing.Optional[str],
+        FieldMetadata(alias="firstName"),
+        pydantic.Field(alias="firstName", description="First name (for individual senders)"),
+    ] = None
+    """
+    First name (for individual senders)
+    """
+
+    last_name: typing_extensions.Annotated[
+        typing.Optional[str],
+        FieldMetadata(alias="lastName"),
+        pydantic.Field(alias="lastName", description="Last name (for individual senders)"),
+    ] = None
+    """
+    Last name (for individual senders)
+    """
+
+    birth_date: typing_extensions.Annotated[
+        typing.Optional[dt.date],
+        FieldMetadata(alias="birthDate"),
+        pydantic.Field(
+            alias="birthDate", description="Date of birth in ISO 8601 format (YYYY-MM-DD, for individual senders)"
+        ),
+    ] = None
+    """
+    Date of birth in ISO 8601 format (YYYY-MM-DD, for individual senders)
+    """
+
+    email: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    Email address of the sender
+    """
+
+    phone: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    Phone number in E.164 format
+    """
+
+    addresses: typing.Optional[typing.List[ListSendersResponseDataItemAddressesItem]] = pydantic.Field(default=None)
+    """
+    List of addresses associated with the sender
+    """
+
+    merchant_id: typing_extensions.Annotated[
+        typing.Optional[str],
+        FieldMetadata(alias="merchantId"),
+        pydantic.Field(alias="merchantId", description="Identifier of the associated merchant"),
+    ] = None
+    """
+    Identifier of the associated merchant
+    """
+
+    kyb: typing.Optional[ListSendersResponseDataItemKyb] = pydantic.Field(default=None)
+    """
+    Know Your Business verification information
+    """
+
+    kyc: typing.Optional[ListSendersResponseDataItemKyc] = pydantic.Field(default=None)
+    """
+    Know Your Customer verification information
+    """
+
+    status: typing.Optional[ListSendersResponseDataItemStatus] = pydantic.Field(default=None)
+    """
+    Indicates whether the sender is currently active or inactive.
+    """
+
+    website_url: typing_extensions.Annotated[
+        typing.Optional[str],
+        FieldMetadata(alias="websiteUrl"),
+        pydantic.Field(alias="websiteUrl", description="Business website URL"),
+    ] = None
+    """
+    Business website URL
+    """
+
+    identification_number: typing_extensions.Annotated[
+        typing.Optional[str],
+        FieldMetadata(alias="identificationNumber"),
+        pydantic.Field(alias="identificationNumber", description="Business identification number"),
+    ] = None
+    """
+    Business identification number
+    """
+
+    onboarding_info: typing_extensions.Annotated[
+        typing.Optional[SenderOnboardingInfo],
+        FieldMetadata(alias="onboardingInfo"),
+        pydantic.Field(alias="onboardingInfo"),
+    ] = None
+    documents: typing.Optional[typing.List[ListSendersResponseDataItemDocumentsItem]] = pydantic.Field(default=None)
+    """
+    List of KYB/KYC documents
+    """
+
+    metadata: typing.Optional[typing.Dict[str, typing.Any]] = pydantic.Field(default=None)
+    """
+    Additional metadata about the sender
+    """
+
+    type: typing.Optional[ListSendersResponseDataItemType] = pydantic.Field(default=None)
+    """
+    Type of sender
+    """
+
+    identity: typing.Optional[ListSendersResponseDataItemIdentity] = pydantic.Field(default=None)
+    """
+    Identity verification information (for individual senders)
+    """
+
+    registration_date: typing_extensions.Annotated[
+        typing.Optional[dt.datetime],
+        FieldMetadata(alias="registrationDate"),
+        pydantic.Field(alias="registrationDate", description="Business registration date in ISO 8601 format"),
+    ] = None
+    """
+    Business registration date in ISO 8601 format
+    """
+
+    business_type: typing_extensions.Annotated[
+        typing.Optional[ListSendersResponseDataItemBusinessType],
+        FieldMetadata(alias="businessType"),
+        pydantic.Field(alias="businessType", description="Type of business entity"),
+    ] = None
+    """
+    Type of business entity
+    """
+
+    middle_name: typing_extensions.Annotated[
+        typing.Optional[str],
+        FieldMetadata(alias="middleName"),
+        pydantic.Field(alias="middleName", description="Middle name of an individual sender"),
+    ] = None
+    """
+    Middle name of an individual sender
+    """
+
+    gender: typing.Optional[ListSendersResponseDataItemGender] = pydantic.Field(default=None)
+    """
+    Gender of an individual sender
+    """
+
+    occupation: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    Occupation of an individual sender
+    """
+
+    tos: typing.Optional[ListSendersResponseDataItemTos] = pydantic.Field(default=None)
+    """
+    Terms of Service status for the sender
+    """
+
+    if IS_PYDANTIC_V2:
+        model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2
+    else:
+
+        class Config:
+            frozen = True
+            smart_union = True
+            extra = pydantic.Extra.allow

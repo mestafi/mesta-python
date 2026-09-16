@@ -1,0 +1,30 @@
+
+import typing
+
+import pydantic
+import typing_extensions
+from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
+from ..core.serialization import FieldMetadata
+from .selfie_verification_session_status import SelfieVerificationSessionStatus
+
+
+class SelfieVerificationSession(UniversalBaseModel):
+    kyc_link: typing_extensions.Annotated[
+        typing.Optional[str], FieldMetadata(alias="kycLink"), pydantic.Field(alias="kycLink")
+    ] = None
+    status: typing.Optional[SelfieVerificationSessionStatus] = None
+    expiry_timestamp: typing_extensions.Annotated[
+        typing.Optional[int], FieldMetadata(alias="expiryTimestamp"), pydantic.Field(alias="expiryTimestamp")
+    ] = None
+    created_timestamp: typing_extensions.Annotated[
+        typing.Optional[int], FieldMetadata(alias="createdTimestamp"), pydantic.Field(alias="createdTimestamp")
+    ] = None
+
+    if IS_PYDANTIC_V2:
+        model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2
+    else:
+
+        class Config:
+            frozen = True
+            smart_union = True
+            extra = pydantic.Extra.allow

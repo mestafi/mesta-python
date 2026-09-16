@@ -1,0 +1,92 @@
+
+import datetime as dt
+import typing
+
+import pydantic
+import typing_extensions
+from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
+from ..core.serialization import FieldMetadata
+from .individual_sender_identity_document_type import IndividualSenderIdentityDocumentType
+
+
+class IndividualSenderIdentity(UniversalBaseModel):
+    document_type: typing_extensions.Annotated[
+        IndividualSenderIdentityDocumentType,
+        FieldMetadata(alias="documentType"),
+        pydantic.Field(
+            alias="documentType",
+            description="Type of identity document. Accepts both document types and identity number types.",
+        ),
+    ]
+    """
+    Type of identity document. Accepts both document types and identity number types.
+    """
+
+    country_code: typing_extensions.Annotated[
+        str,
+        FieldMetadata(alias="countryCode"),
+        pydantic.Field(alias="countryCode", description="ISO 3166-1 alpha-2 country code of the identity document."),
+    ]
+    """
+    ISO 3166-1 alpha-2 country code of the identity document.
+    """
+
+    document_front: typing_extensions.Annotated[
+        typing.Optional[str],
+        FieldMetadata(alias="documentFront"),
+        pydantic.Field(
+            alias="documentFront",
+            description="Base64 encoded front image of identity document. Conditionally required - check validation-rules endpoint for the specific country.",
+        ),
+    ] = None
+    """
+    Base64 encoded front image of identity document. Conditionally required - check validation-rules endpoint for the specific country.
+    """
+
+    document_back: typing_extensions.Annotated[
+        typing.Optional[str],
+        FieldMetadata(alias="documentBack"),
+        pydantic.Field(
+            alias="documentBack",
+            description="Base64 encoded back image of identity document. Conditionally required - check validation-rules endpoint for the specific country.",
+        ),
+    ] = None
+    """
+    Base64 encoded back image of identity document. Conditionally required - check validation-rules endpoint for the specific country.
+    """
+
+    document_number: typing_extensions.Annotated[
+        str,
+        FieldMetadata(alias="documentNumber"),
+        pydantic.Field(alias="documentNumber", description="Document number of the identity document."),
+    ]
+    """
+    Document number of the identity document.
+    """
+
+    issue_date: typing_extensions.Annotated[
+        typing.Optional[dt.date],
+        FieldMetadata(alias="issueDate"),
+        pydantic.Field(alias="issueDate", description="Issue date of the identity document (YYYY-MM-DD)."),
+    ] = None
+    """
+    Issue date of the identity document (YYYY-MM-DD).
+    """
+
+    expiry_date: typing_extensions.Annotated[
+        typing.Optional[dt.date],
+        FieldMetadata(alias="expiryDate"),
+        pydantic.Field(alias="expiryDate", description="Expiry date of the identity document (YYYY-MM-DD)."),
+    ] = None
+    """
+    Expiry date of the identity document (YYYY-MM-DD).
+    """
+
+    if IS_PYDANTIC_V2:
+        model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2
+    else:
+
+        class Config:
+            frozen = True
+            smart_union = True
+            extra = pydantic.Extra.allow

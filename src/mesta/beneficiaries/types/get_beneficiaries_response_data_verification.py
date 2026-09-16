@@ -1,0 +1,25 @@
+
+import datetime as dt
+import typing
+
+import pydantic
+import typing_extensions
+from ...core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
+from ...core.serialization import FieldMetadata
+from .get_beneficiaries_response_data_verification_status import GetBeneficiariesResponseDataVerificationStatus
+
+
+class GetBeneficiariesResponseDataVerification(UniversalBaseModel):
+    status: typing.Optional[GetBeneficiariesResponseDataVerificationStatus] = None
+    status_updated_at: typing_extensions.Annotated[
+        typing.Optional[dt.datetime], FieldMetadata(alias="statusUpdatedAt"), pydantic.Field(alias="statusUpdatedAt")
+    ] = None
+
+    if IS_PYDANTIC_V2:
+        model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2
+    else:
+
+        class Config:
+            frozen = True
+            smart_union = True
+            extra = pydantic.Extra.allow

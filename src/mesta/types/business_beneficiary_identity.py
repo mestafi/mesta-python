@@ -1,0 +1,64 @@
+
+import datetime as dt
+import typing
+
+import pydantic
+import typing_extensions
+from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
+from ..core.serialization import FieldMetadata
+from .business_beneficiary_identity_document_type import BusinessBeneficiaryIdentityDocumentType
+
+
+class BusinessBeneficiaryIdentity(UniversalBaseModel):
+    document_type: typing_extensions.Annotated[
+        BusinessBeneficiaryIdentityDocumentType,
+        FieldMetadata(alias="documentType"),
+        pydantic.Field(
+            alias="documentType",
+            description="Type of beneficiary identity document. (Only required for certain countries, check validation rules endpoint for the specific country)",
+        ),
+    ]
+    """
+    Type of beneficiary identity document. (Only required for certain countries, check validation rules endpoint for the specific country)
+    """
+
+    document_number: typing_extensions.Annotated[
+        typing.Optional[str],
+        FieldMetadata(alias="documentNumber"),
+        pydantic.Field(alias="documentNumber", description="Document number of the identity document."),
+    ] = None
+    """
+    Document number of the identity document.
+    """
+
+    issue_date: typing_extensions.Annotated[
+        typing.Optional[dt.date],
+        FieldMetadata(alias="issueDate"),
+        pydantic.Field(alias="issueDate", description="Issue date of the identity document (YYYY-MM-DD)."),
+    ] = None
+    """
+    Issue date of the identity document (YYYY-MM-DD).
+    """
+
+    expiry_date: typing_extensions.Annotated[
+        typing.Optional[dt.date],
+        FieldMetadata(alias="expiryDate"),
+        pydantic.Field(alias="expiryDate", description="Expiry date of the identity document (YYYY-MM-DD)."),
+    ] = None
+    """
+    Expiry date of the identity document (YYYY-MM-DD).
+    """
+
+    issuer: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    Issuing authority of the identity document.
+    """
+
+    if IS_PYDANTIC_V2:
+        model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2
+    else:
+
+        class Config:
+            frozen = True
+            smart_union = True
+            extra = pydantic.Extra.allow

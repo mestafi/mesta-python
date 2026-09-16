@@ -1,0 +1,6 @@
+
+import typing
+
+PaymentMethodStatus = typing.Union[
+    typing.Literal["compliance_review_required", "pending_user_consent", "declined", "approved", "inactive"], typing.Any
+]

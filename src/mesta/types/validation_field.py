@@ -1,0 +1,49 @@
+
+from __future__ import annotations
+
+import typing
+
+import pydantic
+import typing_extensions
+from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel, update_forward_refs
+from ..core.serialization import FieldMetadata
+
+
+class ValidationField(UniversalBaseModel):
+    field: str = pydantic.Field()
+    """
+    Field name
+    """
+
+    description: str = pydantic.Field()
+    """
+    Human-readable description
+    """
+
+    nested_fields: typing_extensions.Annotated[
+        typing.Optional[typing.List["ValidationField"]],
+        FieldMetadata(alias="nestedFields"),
+        pydantic.Field(
+            alias="nestedFields", description="Sub-fields for nested objects (address, identity, paymentInfo)"
+        ),
+    ] = None
+    """
+    Sub-fields for nested objects (address, identity, paymentInfo)
+    """
+
+    fields: typing.Optional[typing.List["ValidationField"]] = pydantic.Field(default=None)
+    """
+    Alternative sub-field key (used for address in some contexts)
+    """
+
+    if IS_PYDANTIC_V2:
+        model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2
+    else:
+
+        class Config:
+            frozen = True
+            smart_union = True
+            extra = pydantic.Extra.allow
+
+
+update_forward_refs(ValidationField)

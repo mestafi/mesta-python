@@ -1,0 +1,35 @@
+
+import typing
+
+SenderV2CommonOnboardingSourceOfFunds = typing.Union[
+    typing.Literal[
+        "advance_from_director",
+        "advance_from_shareholder",
+        "business_income",
+        "claims",
+        "compensation",
+        "financial_support_from_children",
+        "financial_support_from_parents",
+        "financial_support_from_spouse",
+        "freelance_income",
+        "gambling",
+        "insurance",
+        "interest_income",
+        "dividend_income",
+        "issue_of_bond",
+        "issue_of_debenture",
+        "issue_of_share",
+        "loans",
+        "property_investment",
+        "rental_income",
+        "leasing_income",
+        "retirement_funds",
+        "salary",
+        "saving",
+        "sales_of_assets",
+        "share_investment",
+        "tax_refund",
+        "venture_capital",
+    ],
+    typing.Any,
+]

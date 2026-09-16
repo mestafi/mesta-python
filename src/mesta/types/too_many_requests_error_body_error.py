@@ -1,0 +1,27 @@
+
+import typing
+
+import pydantic
+import typing_extensions
+from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
+from ..core.serialization import FieldMetadata
+from .too_many_requests_error_body_error_details import TooManyRequestsErrorBodyErrorDetails
+
+
+class TooManyRequestsErrorBodyError(UniversalBaseModel):
+    code: typing_extensions.Annotated[str, FieldMetadata(alias="CODE"), pydantic.Field(alias="CODE")]
+    message: typing_extensions.Annotated[str, FieldMetadata(alias="MESSAGE"), pydantic.Field(alias="MESSAGE")]
+    details: typing_extensions.Annotated[
+        typing.Optional[TooManyRequestsErrorBodyErrorDetails],
+        FieldMetadata(alias="DETAILS"),
+        pydantic.Field(alias="DETAILS"),
+    ] = None
+
+    if IS_PYDANTIC_V2:
+        model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2
+    else:
+
+        class Config:
+            frozen = True
+            smart_union = True
+            extra = pydantic.Extra.allow

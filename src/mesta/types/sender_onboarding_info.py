@@ -1,0 +1,105 @@
+
+import typing
+
+import pydantic
+import typing_extensions
+from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
+from ..core.serialization import FieldMetadata
+from .sender_onboarding_info_nature_of_payments_item import SenderOnboardingInfoNatureOfPaymentsItem
+from .sender_onboarding_info_number_of_employees import SenderOnboardingInfoNumberOfEmployees
+from .sender_onboarding_info_source_of_funds import SenderOnboardingInfoSourceOfFunds
+
+
+class SenderOnboardingInfo(UniversalBaseModel):
+    """
+    Compliance onboarding information captured for the sender.
+    """
+
+    is_financial_institution: typing_extensions.Annotated[
+        typing.Optional[bool],
+        FieldMetadata(alias="isFinancialInstitution"),
+        pydantic.Field(
+            alias="isFinancialInstitution", description="Whether the sender operates as a financial institution."
+        ),
+    ] = None
+    """
+    Whether the sender operates as a financial institution.
+    """
+
+    website_absence_reason: typing_extensions.Annotated[
+        typing.Optional[str],
+        FieldMetadata(alias="websiteAbsenceReason"),
+        pydantic.Field(alias="websiteAbsenceReason", description="Reason the sender does not have a website."),
+    ] = None
+    """
+    Reason the sender does not have a website.
+    """
+
+    expected_monthly_volume_estimate: typing_extensions.Annotated[
+        typing.Optional[float],
+        FieldMetadata(alias="expectedMonthlyVolumeEstimate"),
+        pydantic.Field(
+            alias="expectedMonthlyVolumeEstimate",
+            description="Expected monthly transaction volume estimate for the sender.",
+        ),
+    ] = None
+    """
+    Expected monthly transaction volume estimate for the sender.
+    """
+
+    average_transaction_size: typing_extensions.Annotated[
+        typing.Optional[float],
+        FieldMetadata(alias="averageTransactionSize"),
+        pydantic.Field(alias="averageTransactionSize", description="Expected average transaction size for the sender."),
+    ] = None
+    """
+    Expected average transaction size for the sender.
+    """
+
+    primary_counterparty_jurisdictions: typing_extensions.Annotated[
+        typing.Optional[typing.List[str]],
+        FieldMetadata(alias="primaryCounterpartyJurisdictions"),
+        pydantic.Field(
+            alias="primaryCounterpartyJurisdictions",
+            description="Primary jurisdictions the sender expects to transact with. Each value must be an ISO 3166-1 alpha-2 country code.",
+        ),
+    ] = None
+    """
+    Primary jurisdictions the sender expects to transact with. Each value must be an ISO 3166-1 alpha-2 country code.
+    """
+
+    nature_of_payments: typing_extensions.Annotated[
+        typing.Optional[typing.List[SenderOnboardingInfoNatureOfPaymentsItem]],
+        FieldMetadata(alias="natureOfPayments"),
+        pydantic.Field(alias="natureOfPayments", description="Primary purposes for the sender's payments."),
+    ] = None
+    """
+    Primary purposes for the sender's payments.
+    """
+
+    number_of_employees: typing_extensions.Annotated[
+        typing.Optional[SenderOnboardingInfoNumberOfEmployees],
+        FieldMetadata(alias="numberOfEmployees"),
+        pydantic.Field(alias="numberOfEmployees", description="Employee count range for the business sender."),
+    ] = None
+    """
+    Employee count range for the business sender.
+    """
+
+    source_of_funds: typing_extensions.Annotated[
+        typing.Optional[SenderOnboardingInfoSourceOfFunds],
+        FieldMetadata(alias="sourceOfFunds"),
+        pydantic.Field(alias="sourceOfFunds", description="Primary source of funds for the sender."),
+    ] = None
+    """
+    Primary source of funds for the sender.
+    """
+
+    if IS_PYDANTIC_V2:
+        model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2
+    else:
+
+        class Config:
+            frozen = True
+            smart_union = True
+            extra = pydantic.Extra.allow

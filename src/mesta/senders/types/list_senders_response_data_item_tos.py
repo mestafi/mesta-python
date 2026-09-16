@@ -1,0 +1,58 @@
+
+import datetime as dt
+import typing
+
+import pydantic
+import typing_extensions
+from ...core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
+from ...core.serialization import FieldMetadata
+from .list_senders_response_data_item_tos_link import ListSendersResponseDataItemTosLink
+from .list_senders_response_data_item_tos_status import ListSendersResponseDataItemTosStatus
+
+
+class ListSendersResponseDataItemTos(UniversalBaseModel):
+    """
+    Terms of Service status for the sender
+    """
+
+    status: typing.Optional[ListSendersResponseDataItemTosStatus] = pydantic.Field(default=None)
+    """
+    Current TOS acceptance status
+    """
+
+    accepted_at: typing_extensions.Annotated[
+        typing.Optional[dt.datetime],
+        FieldMetadata(alias="acceptedAt"),
+        pydantic.Field(alias="acceptedAt", description="When the TOS was accepted"),
+    ] = None
+    """
+    When the TOS was accepted
+    """
+
+    version: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    Version of the TOS
+    """
+
+    agreement_id: typing_extensions.Annotated[
+        typing.Optional[str],
+        FieldMetadata(alias="agreementId"),
+        pydantic.Field(alias="agreementId", description="ID of the TOS agreement"),
+    ] = None
+    """
+    ID of the TOS agreement
+    """
+
+    link: typing.Optional[ListSendersResponseDataItemTosLink] = pydantic.Field(default=None)
+    """
+    TOS acceptance link details
+    """
+
+    if IS_PYDANTIC_V2:
+        model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2
+    else:
+
+        class Config:
+            frozen = True
+            smart_union = True
+            extra = pydantic.Extra.allow

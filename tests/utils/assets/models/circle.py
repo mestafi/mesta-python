@@ -1,0 +1,9 @@
+
+
+import typing_extensions
+
+from mesta.core.serialization import FieldMetadata
+
+
+class CircleParams(typing_extensions.TypedDict):
+    radius_measurement: typing_extensions.Annotated[float, FieldMetadata(alias="radiusMeasurement")]
