@@ -1,11 +1,13 @@
 # Mesta Python Library
 
+[![fern shield](https://img.shields.io/badge/%F0%9F%8C%BF-Built%20with%20Fern-brightgreen)](https://buildwithfern.com?utm_source=github&utm_medium=github&utm_campaign=readme&utm_source=https%3A%2F%2Fgithub.com%2Fmestafi%2Fmesta-python)
 [![pypi](https://img.shields.io/pypi/v/mesta)](https://pypi.python.org/pypi/mesta)
 
-The Mesta Python library provides convenient access to the Mesta APIs from Python.
+The official Mesta client library. It is generated from the Mesta OpenAPI specification and updated with every API release. Each method calls one API endpoint. For end-to-end flows such as onboarding a sender or making a payout, follow the guides at https://docs.mesta.xyz.
 
 ## Table of Contents
 
+- [Documentation](#documentation)
 - [Installation](#installation)
 - [Reference](#reference)
 - [Usage](#usage)
@@ -17,7 +19,10 @@ The Mesta Python library provides convenient access to the Mesta APIs from Pytho
   - [Retries](#retries)
   - [Timeouts](#timeouts)
   - [Custom Client](#custom-client)
-- [Contributing](#contributing)
+
+## Documentation
+
+API reference documentation is available [here](https://docs.mesta.xyz).
 
 ## Installation
 
@@ -178,12 +183,3 @@ client = Mesta(
 )
 ```
 
-## Contributing
-
-While we value open-source contributions to this SDK, this library is generated programmatically.
-Additions made directly to this library would have to be moved over to our generation code,
-otherwise they would be overwritten upon the next generated release. Feel free to open a PR as
-a proof of concept, but know that we will not be able to merge it as-is. We suggest opening
-an issue first to discuss with us!
-
-On the other hand, contributions to the README are always very welcome!
