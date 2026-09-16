@@ -9,14 +9,14 @@ from ..core.jsonable_encoder import encode_path_param
 from ..core.parse_error import ParsingError
 from ..core.pydantic_utilities import parse_obj_as
 from ..core.request_options import RequestOptions
-from ..core.serialization import convert_and_respect_annotation_metadata
 from ..errors.bad_request_error import BadRequestError
 from ..errors.forbidden_error import ForbiddenError
 from ..errors.internal_server_error import InternalServerError
 from ..errors.not_found_error import NotFoundError
 from ..errors.unauthorized_error import UnauthorizedError
 from ..types.error_response import ErrorResponse
-from .types.create_quotes_request import CreateQuotesRequest
+from .types.create_quotes_request_source_currency import CreateQuotesRequestSourceCurrency
+from .types.create_quotes_request_transfer_type import CreateQuotesRequestTransferType
 from .types.create_quotes_response import CreateQuotesResponse
 from .types.get_quotes_response import GetQuotesResponse
 from .types.list_quotes_request_sort_by import ListQuotesRequestSortBy
@@ -228,14 +228,42 @@ class RawQuotesClient:
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
     def create(
-        self, *, request: CreateQuotesRequest, request_options: typing.Optional[RequestOptions] = None
+        self,
+        *,
+        target_currency: str,
+        source_currency: CreateQuotesRequestSourceCurrency,
+        target_amount: typing.Optional[float] = OMIT,
+        source_amount: typing.Optional[float] = OMIT,
+        developer_fee: typing.Optional[str] = OMIT,
+        transfer_type: typing.Optional[CreateQuotesRequestTransferType] = OMIT,
+        firc_required: typing.Optional[bool] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[CreateQuotesResponse]:
         """
         Obtain a quote for converting USD or USDC to another specified currency. For web3 merchants, sourceCurrency is required and must be a stable coin. For web2 merchants, sourceCurrency is optional and defaults to USD if omitted.
 
         Parameters
         ----------
-        request : CreateQuotesRequest
+        target_currency : str
+            ISO currency code for the order target currency.
+
+        source_currency : CreateQuotesRequestSourceCurrency
+            The source currency code (e.g., USD, USDC_ETH).
+
+        target_amount : typing.Optional[float]
+            The amount of target currency to convert.
+
+        source_amount : typing.Optional[float]
+            The amount of source currency to convert.
+
+        developer_fee : typing.Optional[str]
+            Developer fee amount in source currency
+
+        transfer_type : typing.Optional[CreateQuotesRequestTransferType]
+            Transfer type (only required for USD payins or payouts). Use `internal` to request a quote for an internal sender-to-sender transfer — sourceCurrency and targetCurrency must both be USD, and developerFee is not allowed. Internal transfers are only enabled for select merchants and use cases; see the Create Internal Transfer endpoint.
+
+        firc_required : typing.Optional[bool]
+            Request a Foreign Inward Remittance Certificate (FIRC) for this transfer. Only applicable when targetCurrency is INR; ignored for other currencies. May incur an additional fee in future.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -248,9 +276,18 @@ class RawQuotesClient:
         _response = self._client_wrapper.httpx_client.request(
             "v1/quotes",
             method="POST",
-            json=convert_and_respect_annotation_metadata(
-                object_=request, annotation=CreateQuotesRequest, direction="write"
-            ),
+            json={
+                "targetAmount": target_amount,
+                "sourceAmount": source_amount,
+                "targetCurrency": target_currency,
+                "sourceCurrency": source_currency,
+                "developerFee": developer_fee,
+                "transferType": transfer_type,
+                "fircRequired": firc_required,
+            },
+            headers={
+                "content-type": "application/json",
+            },
             request_options=request_options,
             omit=OMIT,
         )
@@ -529,14 +566,42 @@ class AsyncRawQuotesClient:
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
     async def create(
-        self, *, request: CreateQuotesRequest, request_options: typing.Optional[RequestOptions] = None
+        self,
+        *,
+        target_currency: str,
+        source_currency: CreateQuotesRequestSourceCurrency,
+        target_amount: typing.Optional[float] = OMIT,
+        source_amount: typing.Optional[float] = OMIT,
+        developer_fee: typing.Optional[str] = OMIT,
+        transfer_type: typing.Optional[CreateQuotesRequestTransferType] = OMIT,
+        firc_required: typing.Optional[bool] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[CreateQuotesResponse]:
         """
         Obtain a quote for converting USD or USDC to another specified currency. For web3 merchants, sourceCurrency is required and must be a stable coin. For web2 merchants, sourceCurrency is optional and defaults to USD if omitted.
 
         Parameters
         ----------
-        request : CreateQuotesRequest
+        target_currency : str
+            ISO currency code for the order target currency.
+
+        source_currency : CreateQuotesRequestSourceCurrency
+            The source currency code (e.g., USD, USDC_ETH).
+
+        target_amount : typing.Optional[float]
+            The amount of target currency to convert.
+
+        source_amount : typing.Optional[float]
+            The amount of source currency to convert.
+
+        developer_fee : typing.Optional[str]
+            Developer fee amount in source currency
+
+        transfer_type : typing.Optional[CreateQuotesRequestTransferType]
+            Transfer type (only required for USD payins or payouts). Use `internal` to request a quote for an internal sender-to-sender transfer — sourceCurrency and targetCurrency must both be USD, and developerFee is not allowed. Internal transfers are only enabled for select merchants and use cases; see the Create Internal Transfer endpoint.
+
+        firc_required : typing.Optional[bool]
+            Request a Foreign Inward Remittance Certificate (FIRC) for this transfer. Only applicable when targetCurrency is INR; ignored for other currencies. May incur an additional fee in future.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -549,9 +614,18 @@ class AsyncRawQuotesClient:
         _response = await self._client_wrapper.httpx_client.request(
             "v1/quotes",
             method="POST",
-            json=convert_and_respect_annotation_metadata(
-                object_=request, annotation=CreateQuotesRequest, direction="write"
-            ),
+            json={
+                "targetAmount": target_amount,
+                "sourceAmount": source_amount,
+                "targetCurrency": target_currency,
+                "sourceCurrency": source_currency,
+                "developerFee": developer_fee,
+                "transferType": transfer_type,
+                "fircRequired": firc_required,
+            },
+            headers={
+                "content-type": "application/json",
+            },
             request_options=request_options,
             omit=OMIT,
         )

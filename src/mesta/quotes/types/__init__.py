@@ -5,7 +5,6 @@ import typing
 from importlib import import_module
 
 if typing.TYPE_CHECKING:
-    from .create_quotes_request import CreateQuotesRequest
     from .create_quotes_request_source_currency import CreateQuotesRequestSourceCurrency
     from .create_quotes_request_transfer_type import CreateQuotesRequestTransferType
     from .create_quotes_response import CreateQuotesResponse
@@ -23,7 +22,6 @@ if typing.TYPE_CHECKING:
     from .list_quotes_response_data_item_status import ListQuotesResponseDataItemStatus
     from .list_quotes_response_data_item_transfer_type import ListQuotesResponseDataItemTransferType
 _dynamic_imports: typing.Dict[str, str] = {
-    "CreateQuotesRequest": ".create_quotes_request",
     "CreateQuotesRequestSourceCurrency": ".create_quotes_request_source_currency",
     "CreateQuotesRequestTransferType": ".create_quotes_request_transfer_type",
     "CreateQuotesResponse": ".create_quotes_response",
@@ -65,7 +63,6 @@ def __dir__():
 
 
 __all__ = [
-    "CreateQuotesRequest",
     "CreateQuotesRequestSourceCurrency",
     "CreateQuotesRequestTransferType",
     "CreateQuotesResponse",

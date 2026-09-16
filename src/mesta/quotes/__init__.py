@@ -6,7 +6,6 @@ from importlib import import_module
 
 if typing.TYPE_CHECKING:
     from .types import (
-        CreateQuotesRequest,
         CreateQuotesRequestSourceCurrency,
         CreateQuotesRequestTransferType,
         CreateQuotesResponse,
@@ -25,7 +24,6 @@ if typing.TYPE_CHECKING:
         ListQuotesResponseDataItemTransferType,
     )
 _dynamic_imports: typing.Dict[str, str] = {
-    "CreateQuotesRequest": ".types",
     "CreateQuotesRequestSourceCurrency": ".types",
     "CreateQuotesRequestTransferType": ".types",
     "CreateQuotesResponse": ".types",
@@ -67,7 +65,6 @@ def __dir__():
 
 
 __all__ = [
-    "CreateQuotesRequest",
     "CreateQuotesRequestSourceCurrency",
     "CreateQuotesRequestTransferType",
     "CreateQuotesResponse",

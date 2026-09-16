@@ -302,7 +302,6 @@ if typing.TYPE_CHECKING:
         UpdatePaymentMethodsResponse,
     )
     from .quotes import (
-        CreateQuotesRequest,
         CreateQuotesRequestSourceCurrency,
         CreateQuotesRequestTransferType,
         CreateQuotesResponse,
@@ -520,7 +519,6 @@ _dynamic_imports: typing.Dict[str, str] = {
     "CreateOrdersResponseData": ".orders",
     "CreatePaymentMethodRequestData": ".payment_methods",
     "CreatePaymentMethodsResponse": ".payment_methods",
-    "CreateQuotesRequest": ".quotes",
     "CreateQuotesRequestSourceCurrency": ".quotes",
     "CreateQuotesRequestTransferType": ".quotes",
     "CreateQuotesResponse": ".quotes",
@@ -974,7 +972,6 @@ __all__ = [
     "CreateOrdersResponseData",
     "CreatePaymentMethodRequestData",
     "CreatePaymentMethodsResponse",
-    "CreateQuotesRequest",
     "CreateQuotesRequestSourceCurrency",
     "CreateQuotesRequestTransferType",
     "CreateQuotesResponse",

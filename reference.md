@@ -2214,7 +2214,8 @@ client = Mesta(
 )
 
 client.quotes.create(
-    request={"key": "value"},
+    target_currency="targetCurrency",
+    source_currency="USD",
 )
 
 ```
@@ -2231,7 +2232,55 @@ client.quotes.create(
 <dl>
 <dd>
 
-**request:** `CreateQuotesRequest` 
+**target_currency:** `str` — ISO currency code for the order target currency.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**source_currency:** `CreateQuotesRequestSourceCurrency` — The source currency code (e.g., USD, USDC_ETH).
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**target_amount:** `typing.Optional[float]` — The amount of target currency to convert.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**source_amount:** `typing.Optional[float]` — The amount of source currency to convert.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**developer_fee:** `typing.Optional[str]` — Developer fee amount in source currency
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**transfer_type:** `typing.Optional[CreateQuotesRequestTransferType]` — Transfer type (only required for USD payins or payouts). Use `internal` to request a quote for an internal sender-to-sender transfer — sourceCurrency and targetCurrency must both be USD, and developerFee is not allowed. Internal transfers are only enabled for select merchants and use cases; see the Create Internal Transfer endpoint.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**firc_required:** `typing.Optional[bool]` — Request a Foreign Inward Remittance Certificate (FIRC) for this transfer. Only applicable when targetCurrency is INR; ignored for other currencies. May incur an additional fee in future.
     
 </dd>
 </dl>

@@ -18,6 +18,7 @@ The official Mesta client library. It is generated from the Mesta OpenAPI specif
   - [Retries](#retries)
   - [Timeouts](#timeouts)
   - [Custom Client](#custom-client)
+- [Retries and Writes](#retries-and-writes)
 
 ## Documentation
 
@@ -189,3 +190,4 @@ The client retries a request up to two times on 408, 429 and 5xx responses, with
 ```python
 client.orders.create(..., request_options={"max_retries": 0})
 ```
+
