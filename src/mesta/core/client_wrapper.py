@@ -35,9 +35,12 @@ class BaseClientWrapper:
         import platform
 
         headers: typing.Dict[str, str] = {
+            "User-Agent": "mesta/0.1.0",
             "X-Fern-Language": "Python",
             "X-Fern-Runtime": f"python/{platform.python_version()}",
             "X-Fern-Platform": f"{platform.system().lower()}/{platform.release()}",
+            "X-Fern-SDK-Name": "mesta",
+            "X-Fern-SDK-Version": "0.1.0",
             **(self.get_custom_headers() or {}),
         }
         headers["x-api-secret"] = self._api_secret

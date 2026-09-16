@@ -6,7 +6,9 @@
     "client_class_name": "Mesta",
     "package_name": "mesta"
   },
-  "originGitCommit": "4f4355e844e70ca3fea2d8a70cf1fe1492cfdf33",
-  "originGitCommitIsDirty": true,
-  "invokedBy": "manual"
+  "originGitCommit": "6430a1d6bbed5e6b0e6047cd843217476556eafd",
+  "originGitCommitIsDirty": false,
+  "invokedBy": "manual",
+  "requestedVersion": "0.1.0",
+  "sdkVersion": "0.1.0"
 }

@@ -437,6 +437,7 @@ if typing.TYPE_CHECKING:
         ListStatesValidationRulesResponseData,
         ListStatesValidationRulesResponseDataStatesItem,
     )
+    from .version import __version__
     from .wallet_addresses import (
         GetWalletAddressesResponse,
         GetWalletAddressesResponseData,
@@ -880,6 +881,7 @@ _dynamic_imports: typing.Dict[str, str] = {
     "VirtualAccountSetupResponseCurrency": ".types",
     "VirtualAccountSetupResponseUnacceptedFieldsItem": ".types",
     "VirtualAccountSetupStatus": ".types",
+    "__version__": ".version",
     "api_keys": ".api_keys",
     "auth": ".auth",
     "beneficiaries": ".beneficiaries",
@@ -1333,6 +1335,7 @@ __all__ = [
     "VirtualAccountSetupResponseCurrency",
     "VirtualAccountSetupResponseUnacceptedFieldsItem",
     "VirtualAccountSetupStatus",
+    "__version__",
     "api_keys",
     "auth",
     "beneficiaries",
