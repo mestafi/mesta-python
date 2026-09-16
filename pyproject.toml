@@ -5,9 +5,9 @@ dynamic = ["version"]
 [tool.poetry]
 name = "mesta"
 version = "0.1.0"
-description = ""
+description = "Official Mesta Python SDK"
 readme = "README.md"
-authors = []
+authors = ["Mesta <support@mesta.xyz>"]
 keywords = []
 license = "MIT"
 classifiers = [
@@ -35,6 +35,7 @@ packages = [
 
 [tool.poetry.urls]
 Repository = 'https://github.com/mestafi/mesta-python'
+Documentation = 'https://docs.mesta.xyz'
 
 [tool.poetry.dependencies]
 python = "^3.10"
