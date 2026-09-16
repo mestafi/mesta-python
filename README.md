@@ -1,6 +1,5 @@
 # Mesta Python Library
 
-[![fern shield](https://img.shields.io/badge/%F0%9F%8C%BF-Built%20with%20Fern-brightgreen)](https://buildwithfern.com?utm_source=github&utm_medium=github&utm_campaign=readme&utm_source=https%3A%2F%2Fgithub.com%2Fmestafi%2Fmesta-python)
 [![pypi](https://img.shields.io/pypi/v/mesta)](https://pypi.python.org/pypi/mesta)
 
 The Mesta Python library provides convenient access to the Mesta APIs from Python.
