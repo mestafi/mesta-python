@@ -34,12 +34,12 @@ class BaseClientWrapper:
         import platform
 
         headers: typing.Dict[str, str] = {
-            "User-Agent": "mesta/0.1.0",
+            "User-Agent": "mesta/0.1.1",
             "X-Mesta-Language": "Python",
             "X-Mesta-Runtime": f"python/{platform.python_version()}",
             "X-Mesta-Platform": f"{platform.system().lower()}/{platform.release()}",
             "X-Mesta-SDK-Name": "mesta",
-            "X-Mesta-SDK-Version": "0.1.0",
+            "X-Mesta-SDK-Version": "0.1.1",
             **(self.get_custom_headers() or {}),
         }
         headers["x-api-secret"] = self._api_secret
