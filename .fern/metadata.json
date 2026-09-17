@@ -1,0 +1,14 @@
+{
+  "cliVersion": "5.123.0",
+  "generatorName": "fernapi/fern-python-sdk",
+  "generatorVersion": "5.30.2",
+  "generatorConfig": {
+    "client_class_name": "Mesta",
+    "package_name": "mesta"
+  },
+  "originGitCommit": "388425b76a60687126a53414f1838560b4661b91",
+  "originGitCommitIsDirty": false,
+  "invokedBy": "manual",
+  "requestedVersion": "0.1.1",
+  "sdkVersion": "0.1.1"
+}
