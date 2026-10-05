@@ -9,10 +9,10 @@ from ..core.serialization import FieldMetadata
 
 class PixInfo(UniversalBaseModel):
     pix_key_id: typing_extensions.Annotated[
-        str, FieldMetadata(alias="pixKeyId"), pydantic.Field(alias="pixKeyId", description="PIX Key ID")
+        str, FieldMetadata(alias="pixKeyId"), pydantic.Field(alias="pixKeyId", description="PIX key identifier")
     ]
     """
-    PIX Key ID
+    PIX key identifier
     """
 
     tax_id: typing_extensions.Annotated[

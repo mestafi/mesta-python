@@ -358,7 +358,7 @@ client.senders.list()
 <dl>
 <dd>
 
-**status:** `typing.Optional[ListSendersRequestStatus]` — Filter senders by their verification status
+**status:** `typing.Optional[ListSendersRequestStatus]` — Filter senders by account status; kyc.status or kyb.status reports verification separately
     
 </dd>
 </dl>
@@ -4832,6 +4832,14 @@ client.api_keys.update(
 <dl>
 <dd>
 
+**rotate:** `typing.Optional[bool]` — From a portal session with api-key-rotate step-up: mint a new row and return its secret once. The predecessor retires after 24 hours with expires_with_sandbox=false; verification never revives it.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **name:** `typing.Optional[str]` — Updated name for the API key
     
 </dd>
@@ -4950,6 +4958,1267 @@ client.transfers.create(
 <dd>
 
 **accepted_quote_id:** `str` — Identifier of the internal quote (created with transferType "internal") to execute. A quote can fund at most one transfer and must be used before it expires
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+## Sandbox
+<details><summary><code>client.sandbox.<a href="src/mesta/sandbox/client.py">get_challenge</a>() -> GetChallengeSandboxResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Returns a proof-of-work challenge for POST /v1/sandbox/sessions. No authentication. Rate-limited per network address (60 per 5 minutes). Solve it by counting `number` from 0 until sha256(salt + number) equals `challenge`; the reference solvers are at https://docs.mesta.xyz/docs/sandbox-create. The challenge is valid for 300 seconds and can be redeemed once. Not runnable from this page: the solution must be computed.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from mesta import Mesta
+from mesta.environment import MestaEnvironment
+
+client = Mesta(
+    api_key="<value>",
+    api_secret="<x-api-secret>",
+    environment=MestaEnvironment.PRODUCTION,
+)
+
+client.sandbox.get_challenge()
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.sandbox.<a href="src/mesta/sandbox/client.py">create</a>(...) -> CreateSandboxResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Creates a sandbox from a solved challenge: a merchant, one standard key pair and the terms acceptance are written and returned at once with 201; the sample senders, beneficiaries, deposits and orders are added afterwards as a job whose progress GET /v1/sandbox/sessions/{id} reports. The API secret and the claim URL are returned once and never stored; store the response the moment it arrives. No authentication and no Idempotency-Key: the redeemed challenge is the replay handle, and re-presenting it within 24 hours answers 409 CHALLENGE_USED with the sandboxId it produced. Checks run in this order: the provisioning switch (503), the body and country (400 VALIDATION_FAILED, 409 NOT_AVAILABLE_IN_SANDBOX or 422 TERMS_NOT_ACCEPTED), the stateless solution screen (400 or 410), the creation caps (429), then single-use solution redemption (400, 410 or 409). An unclaimed sandbox expires seven days after creation unless someone opens claimUrl and verifies an email address. Not runnable from this page: the solution must be computed.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from mesta import Mesta, SandboxChallengeSolution
+from mesta.environment import MestaEnvironment
+import datetime
+
+client = Mesta(
+    api_key="<value>",
+    api_secret="<x-api-secret>",
+    environment=MestaEnvironment.PRODUCTION,
+)
+
+client.sandbox.create(
+    challenge=SandboxChallengeSolution(
+        challenge="c107eca74592b0fdfd64956fc1ae13a283519c10e796a9a0e84606efe3f55966",
+        salt="00112233445566778899aabbccddeeff.1790672400000",
+        maxnumber=2097152,
+        expires_at=datetime.datetime.fromisoformat("2026-09-29T09:00:00+00:00"),
+        signature="9d2e_example",
+        number=12345,
+    ),
+    accept_terms=True,
+    name="Northwind Cross-Border Inc.",
+    country="US",
+    deposit_source="sender",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**challenge:** `SandboxChallengeSolution` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**accept_terms:** `bool` — Must be true: your acceptance of the Sandbox terms (https://ohana.sandbox.mesta.xyz/terms?version=sandbox-2026-10); the Sandbox privacy notice (https://docs.mesta.xyz/docs/sandbox-privacy) explains how Mesta uses your details. An agent may not set it without the person's instruction. Missing or false answers 422 with the terms URL and version in the body.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**name:** `typing.Optional[str]` — One to 64 Unicode letters or decimal digits, spaces, or . & ' -; no trailing newline. The server validates Unicode code points. Defaults to Sandbox {shortId}.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**country:** `typing.Optional[str]` — ISO 3166-1 alpha-2 code from the sandbox's merchant country list. Default US.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**deposit_source:** `typing.Optional[CreateSandboxSessionRequestDepositSource]` — `sender` is the only value accepted at launch; `merchant` answers 409 NOT_AVAILABLE_IN_SANDBOX, superseding the earlier 422 (merchant-funded sandboxes arrive in a later release).
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.sandbox.<a href="src/mesta/sandbox/client.py">sign_up</a>(...) -> SignUpSandboxResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+The browser shape, posted by the sandbox portal's sign-up form with a Cloudflare Turnstile token; CORS admits that origin only, so scripts use POST /v1/sandbox/sessions. Creates the sandbox already claimed by the given email with status `claimed`, `emailVerified: false`, no claimUrl, a portal `session`, and 72 hours to enter the emailed code. One live sandbox per verified email address.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from mesta import Mesta
+from mesta.environment import MestaEnvironment
+
+client = Mesta(
+    api_key="<value>",
+    api_secret="<x-api-secret>",
+    environment=MestaEnvironment.PRODUCTION,
+)
+
+client.sandbox.sign_up(
+    turnstile_token="turnstileToken",
+    email="email",
+    full_name="Example Developer",
+    password="password",
+    country="US",
+    accept_terms=True,
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**turnstile_token:** `str` — The Cloudflare Turnstile token from the form.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**email:** `str` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**full_name:** `str` — One to 64 Unicode letters or decimal digits, spaces, or . & ' -; no trailing newline. The server validates Unicode code points.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**password:** `str` — 12 to 128 characters; common passwords are refused.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**country:** `str` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**accept_terms:** `bool` — Must be true.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**from:** `typing.Optional[SandboxSignupRequestFrom]` — Optional sign-up entry point.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.sandbox.<a href="src/mesta/sandbox/client.py">get</a>(...) -> GetSandboxResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+The sandbox's status, deadline, `emailVerified`, `executionPaused`, `pauseMessage`, all seven `counts`, `wallets.senders` usage and per-sender states, the progress of the sample data (`seed.status`, `seed.step`, `seed.steps`, `seed.error`), the `fixtures` block once the sample data is complete, and its keys by id with `kind`, `expiresAt` and `lastUsedAt`; never an API key secret. The `fixtures` include the retrievable webhook signing key. Requires `merchant:sandbox:read` (included in the initial standard integration key; narrower keys must request it) or a session of the sandbox's merchant. Another sandbox's id is 404. A failed sandbox's keys can read this route for 24 hours and nothing else.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from mesta import Mesta
+from mesta.environment import MestaEnvironment
+
+client = Mesta(
+    api_key="<value>",
+    api_secret="<x-api-secret>",
+    environment=MestaEnvironment.PRODUCTION,
+)
+
+client.sandbox.get(
+    id="id",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**id:** `str` — The sandbox id, `sbx_…`.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.sandbox.<a href="src/mesta/sandbox/client.py">delete</a>(...)</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Marks the sandbox deleted: keys revoked, users signed out, running orders stopped, every row purged within 24 hours. The owner's email is free to create again at once. Requires `merchant:sandbox:write`; a key or a session while the sandbox is unclaimed, a session once it is claimed.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from mesta import Mesta
+from mesta.environment import MestaEnvironment
+
+client = Mesta(
+    api_key="<value>",
+    api_secret="<x-api-secret>",
+    environment=MestaEnvironment.PRODUCTION,
+)
+
+client.sandbox.delete(
+    id="id",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**id:** `str` — The sandbox id.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.sandbox.<a href="src/mesta/sandbox/client.py">verify_email</a>(...) -> VerifyEmailSandboxResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Enters the six-digit code emailed at sign-up or claim. Success clears `expiresAt` on the sandbox and only on keys flagged expires_with_sandbox (never a retiring predecessor): the sandbox now persists until deleted. Requires a portal session. 20 attempts per hour per network address; five wrong attempts void the code. Wrong attempts return 400 with attemptsRemaining down to zero; a further attempt returns 410 VERIFICATION_CODE_EXPIRED. Resend is an explicit owner action, never automatic.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from mesta import Mesta
+from mesta.environment import MestaEnvironment
+
+client = Mesta(
+    api_key="<value>",
+    api_secret="<x-api-secret>",
+    environment=MestaEnvironment.PRODUCTION,
+)
+
+client.sandbox.verify_email(
+    id="id",
+    code="123456",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**id:** `str` — The sandbox id.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**code:** `str` — The six-digit code from the email. Valid ten minutes; void after five wrong attempts.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.sandbox.<a href="src/mesta/sandbox/client.py">resend_code</a>(...) -> ResendCodeSandboxResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Sends the replacement code, never the unexpired code again, no sooner than 60 seconds after the last mail; three codes per address per hour and ten per day. A resend never refreshes the attempt allowance of the old code: it voids that code and gives the replacement five fresh attempts. Requires a portal session.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from mesta import Mesta
+from mesta.environment import MestaEnvironment
+
+client = Mesta(
+    api_key="<value>",
+    api_secret="<x-api-secret>",
+    environment=MestaEnvironment.PRODUCTION,
+)
+
+client.sandbox.resend_code(
+    id="id",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**id:** `str` — The sandbox id.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.sandbox.<a href="src/mesta/sandbox/client.py">reset</a>(...) -> ResetSandboxResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Restores balances and removes your orders, quotes and deposits; the sample senders and beneficiaries stay. Stops running orders, deletes the orders, quotes and deposits and the senders, beneficiaries and payment methods you created, deletes the ledger history, restores altered or deleted sample objects under their original ids and adds the sample deposits and orders again. Reset leaves webhook endpoints, their URLs, their events and the signing key exactly as you set them, and clears the delivery-log entries of the orders, quotes and deposits it removes. Keys, wallets and deposit instructions are untouched. Status reads remain available; every other request answers 409 SANDBOX_RESETTING until it finishes, in seconds. Requires `merchant:sandbox:write`, key or session; no step-up. 50 per sandbox per rolling day.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from mesta import Mesta
+from mesta.environment import MestaEnvironment
+
+client = Mesta(
+    api_key="<value>",
+    api_secret="<x-api-secret>",
+    environment=MestaEnvironment.PRODUCTION,
+)
+
+client.sandbox.reset(
+    id="id",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**id:** `str` — The sandbox id.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.sandbox.<a href="src/mesta/sandbox/client.py">request_production</a>(...) -> RequestProductionSandboxResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Records the request on the sandbox after a successful mail and sends one message to Mesta's sales team with the sandbox id, merchant name and owner email. Once a day, from a verified owner's session. Production access requires KYB and Mesta's acceptance; the sandbox is not an approval. The sales mail is sent first; only success records requestedAt. A dispatch pause or dependency fault leaves the request repeatable, without consuming its daily allowance.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from mesta import Mesta
+from mesta.environment import MestaEnvironment
+
+client = Mesta(
+    api_key="<value>",
+    api_secret="<x-api-secret>",
+    environment=MestaEnvironment.PRODUCTION,
+)
+
+client.sandbox.request_production(
+    id="id",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**id:** `str` — The sandbox id.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.sandbox.<a href="src/mesta/sandbox/client.py">create_wallets</a>() -> CreateWalletsSandboxResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Creates your merchant's wallet with four test-network addresses (Ethereum Sepolia and Polygon Amoy share one, Solana devnet, Tron Nile) when it was skipped while the sample data was added; the home page's wallets card shows "wallets pending" in that case. Attempted once; counted against the sandbox environment's daily wallet ceiling. Requires `merchant:sandbox:write`, key or session.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from mesta import Mesta
+from mesta.environment import MestaEnvironment
+
+client = Mesta(
+    api_key="<value>",
+    api_secret="<x-api-secret>",
+    environment=MestaEnvironment.PRODUCTION,
+)
+
+client.sandbox.create_wallets()
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.sandbox.<a href="src/mesta/sandbox/client.py">create_sender_wallets</a>(...) -> CreateSenderWalletsSandboxResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Creates the sender's wallet with four test-network addresses, once per sender; five senders per sandbox can hold wallets and the sixth answers 409 SANDBOX_CAP_EXCEEDED. The sender must be yours (404 otherwise). Requires `merchant:sender:write`, key or session. The portal's "Generate test wallets" makes this call.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from mesta import Mesta
+from mesta.environment import MestaEnvironment
+
+client = Mesta(
+    api_key="<value>",
+    api_secret="<x-api-secret>",
+    environment=MestaEnvironment.PRODUCTION,
+)
+
+client.sandbox.create_sender_wallets(
+    id="id",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**id:** `str` — The sender id.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+## Simulate
+<details><summary><code>client.simulate.<a href="src/mesta/simulate/client.py">deposit</a>(...) -> SimulateDepositResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Writes a settled or rejected deposit for a sender or your merchant, fiat or stablecoin, with its ledger entries and its `fiat_deposit:*` or `stablecoin_deposit:*` event. A settled deposit raises the balance when the call returns. The owner must be yours (404 otherwise). Budget: 50 calls and 500,000 currency units per sandbox per rolling day (409 SANDBOX_CAP_EXCEEDED above). Requires `merchant:sender:write` for a sender and `merchant:sandbox:write` for your own merchant (ownerType merchant); a portal session of the merchant satisfies either. Sandbox only. Guide: https://docs.mesta.xyz/docs/funding-test-senders.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from mesta import Mesta
+from mesta.environment import MestaEnvironment
+
+client = Mesta(
+    api_key="<value>",
+    api_secret="<x-api-secret>",
+    environment=MestaEnvironment.PRODUCTION,
+)
+
+client.simulate.deposit(
+    owner_type="sender",
+    owner_id="00000000-0000-4000-a000-000000000001",
+    currency="USD",
+    amount="500.00",
+    outcome="settled",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**owner_type:** `SimulateDepositRequestOwnerType` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**owner_id:** `str` — The sender's id, or your merchant id.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**currency:** `str` — Any fiat or stablecoin currency the sandbox serves, for example USD or USDC_POL.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**amount:** `str` — A decimal string; up to 18 decimals for stablecoins, 2 for fiat.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**outcome:** `SimulateDepositRequestOutcome` — `settled` credits the balance and publishes the settled event; `rejected` writes a rejected deposit with no balance change.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.simulate.<a href="src/mesta/simulate/client.py">transition_order</a>(...) -> SimulateOrderTransitionResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Stops the order's running workflow, moves the order to the given status and publishes the matching `order:*` event (none for need_review, payment_submitted, refund_in_progress and refunded). `reasonCode` is required for cancelled and rejected and must come from the catalogue; the remark is never free text. The order must be yours (404 otherwise). Shares a budget of 200 calls per sandbox per rolling day with POST /v1/simulate/webhooks/fire. Requires `merchant:order:write`. Sandbox only.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from mesta import Mesta
+from mesta.environment import MestaEnvironment
+
+client = Mesta(
+    api_key="<value>",
+    api_secret="<x-api-secret>",
+    environment=MestaEnvironment.PRODUCTION,
+)
+
+client.simulate.transition_order(
+    id="id",
+    status="rejected",
+    reason_code="compliance_declined",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**id:** `str` — The order id.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**status:** `SimulateOrderTransitionRequestStatus` — The target status. No event exists for need_review, payment_submitted, refund_in_progress and refunded.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**reason_code:** `typing.Optional[SimulateOrderTransitionRequestReasonCode]` — Required for `cancelled` (requested_by_sender, duplicate_order, quote_expired) and `rejected` (compliance_declined, beneficiary_unverified, invalid_payment_details). Any other value answers 400.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.simulate.<a href="src/mesta/simulate/client.py">accept_sender_terms</a>(...) -> SimulateTosAcceptResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Accepts the sender's pending terms of service and publishes `sender:tos_accepted`, in place of the link a real sender would open. The sender must be yours (404 otherwise). Requires `merchant:sender:write`. Sandbox only.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from mesta import Mesta
+from mesta.environment import MestaEnvironment
+
+client = Mesta(
+    api_key="<value>",
+    api_secret="<x-api-secret>",
+    environment=MestaEnvironment.PRODUCTION,
+)
+
+client.simulate.accept_sender_terms(
+    id="id",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**id:** `str` — The sender id.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.simulate.<a href="src/mesta/simulate/client.py">fire_webhook</a>(...) -> SimulateWebhookFireResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Publishes a real external event again for one of your objects, so the whole pipeline runs: queueing, signing, delivery and the delivery log. Counts against the sandbox's daily delivery budget and shares a budget of 200 calls per sandbox per rolling day with POST /v1/simulate/orders/{id}/transition. Requires `merchant:webhook-events:replay`. Sandbox only. Outbound webhook deliveries (not this HTTP response) carry `Mesta-Signature: t=<Unix seconds>,v1=<signature>` on both environments, where the signature is a lowercase hex HMAC-SHA256 over `${t}.` followed by the raw body bytes. Reject a t more than 300 seconds from the receiver clock and compare signatures in constant time. Each retry and resend has a new t and signature. `X-Webhook-Signature`, a lowercase hex HMAC-SHA256 of the raw body alone, is kept for existing production integrations; its sunset will be announced. `X-Mesta-Plane: sandbox` is sent only on sandbox deliveries and is absent on production. Sandbox deliveries make three attempts (two retries); production keeps five attempts.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from mesta import Mesta
+from mesta.environment import MestaEnvironment
+
+client = Mesta(
+    api_key="<value>",
+    api_secret="<x-api-secret>",
+    environment=MestaEnvironment.PRODUCTION,
+)
+
+client.simulate.fire_webhook(
+    event="order:success",
+    aggregate_id="00000000-0000-4000-a000-000000000006",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**event:** `str` — A live event name, for example order:success.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**aggregate_id:** `str` — The id of one of your objects of the event's entity type.
     
 </dd>
 </dl>
@@ -6293,6 +7562,199 @@ client.orders.documents.get_presigned_url(
 <dd>
 
 **document_id:** `str` — ID of the document
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+## Sandbox Claims
+<details><summary><code>client.sandbox.claims.<a href="src/mesta/sandbox/claims/client.py">get_status</a>(...) -> GetStatusClaimsResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+A non-consuming read of a claim token: `fresh`, `seeding` (with the current `seed.step`), `expired`, `used` or `killed`, with the counts of the sample data and, for `fresh`, the keys created before the claim and the endpoint hosts. The token travels in the body because request paths are logged. No authentication; 20 per hour per network address, a `seeding` answer uncounted. A fresh answer is also uncounted. Expired, unknown and malformed tokens return data containing only status: expired, with no sandbox metadata.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from mesta import Mesta
+from mesta.environment import MestaEnvironment
+
+client = Mesta(
+    api_key="<value>",
+    api_secret="<x-api-secret>",
+    environment=MestaEnvironment.PRODUCTION,
+)
+
+client.sandbox.claims.get_status(
+    token="token",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**token:** `str` — The token from the fragment of `claimUrl`. Sent in the body, never in the path.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.sandbox.claims.<a href="src/mesta/sandbox/claims/client.py">create</a>(...) -> CreateClaimsResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Makes the caller the owner of an unclaimed sandbox: writes the email, name and password onto the sandbox's user, re-stamps the terms acceptance, revokes the keys created before the claim and the webhook endpoints created before it, rotates the webhook signing key and recreates the Mesta test endpoint, and mints one fresh standard pair returned once, unless `keepPreClaimKeys` is true. Returns the sandbox and a portal session. The sandbox then has 72 hours to verify the email. Single use, atomic on the token and the email. No authentication; 20 per hour per network address; a 409 SANDBOX_SEEDING answer is uncounted and leaves the token valid. keepPreClaimKeys keeps the keys, endpoints and signing key together; keys in the success body is then an empty array. The 20-per-rolling-hour claim counter counts token-check refusals only; probes answering `seeding` and claims answering SANDBOX_SEEDING are uncounted.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from mesta import Mesta
+from mesta.environment import MestaEnvironment
+
+client = Mesta(
+    api_key="<value>",
+    api_secret="<x-api-secret>",
+    environment=MestaEnvironment.PRODUCTION,
+)
+
+client.sandbox.claims.create(
+    token="token",
+    email="email",
+    full_name="Example Developer",
+    password="password",
+    accept_terms=True,
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**token:** `str` — The token from the fragment of `claimUrl`.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**email:** `str` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**full_name:** `str` — One to 64 Unicode letters or decimal digits, spaces, or . & ' -; no trailing newline. The server validates Unicode code points.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**password:** `str` — 12 to 128 characters; common passwords are refused.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**accept_terms:** `bool` — Must be true; 422 with the terms URL and version otherwise.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**keep_pre_claim_keys:** `typing.Optional[bool]` — Keep the pre-claim keys, their webhook endpoints and signing key together. Otherwise revoke the keys, delete the endpoints, rotate the signing key, recreate the Mesta test endpoint and return one fresh pair once.
     
 </dd>
 </dl>

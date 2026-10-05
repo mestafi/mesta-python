@@ -76,6 +76,18 @@ class GetSendersResponseDataDepositBankAccountsItem(UniversalBaseModel):
     Routing details for the bank account
     """
 
+    is_test_data: typing_extensions.Annotated[
+        typing.Optional[bool],
+        FieldMetadata(alias="isTestData"),
+        pydantic.Field(
+            alias="isTestData",
+            description="Sandbox only, and always `true`: these deposit instructions are sample data. The holder, bank and account details receive nothing, so never send a real transfer to them; add funds with a simulated deposit (`POST /v1/simulate/deposits`) instead. Absent in production.",
+        ),
+    ] = None
+    """
+    Sandbox only, and always `true`: these deposit instructions are sample data. The holder, bank and account details receive nothing, so never send a real transfer to them; add funds with a simulated deposit (`POST /v1/simulate/deposits`) instead. Absent in production.
+    """
+
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2
     else:

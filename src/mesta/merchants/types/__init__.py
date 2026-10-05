@@ -12,6 +12,7 @@ if typing.TYPE_CHECKING:
     from .get_merchants_response import GetMerchantsResponse
     from .get_merchants_response_data import GetMerchantsResponseData
     from .get_merchants_response_data_address import GetMerchantsResponseDataAddress
+    from .get_merchants_response_data_deposit_bank_accounts_item import GetMerchantsResponseDataDepositBankAccountsItem
     from .get_merchants_response_data_kyb import GetMerchantsResponseDataKyb
     from .get_merchants_response_data_kyb_status import GetMerchantsResponseDataKybStatus
     from .get_merchants_response_data_status import GetMerchantsResponseDataStatus
@@ -24,6 +25,7 @@ _dynamic_imports: typing.Dict[str, str] = {
     "GetMerchantsResponse": ".get_merchants_response",
     "GetMerchantsResponseData": ".get_merchants_response_data",
     "GetMerchantsResponseDataAddress": ".get_merchants_response_data_address",
+    "GetMerchantsResponseDataDepositBankAccountsItem": ".get_merchants_response_data_deposit_bank_accounts_item",
     "GetMerchantsResponseDataKyb": ".get_merchants_response_data_kyb",
     "GetMerchantsResponseDataKybStatus": ".get_merchants_response_data_kyb_status",
     "GetMerchantsResponseDataStatus": ".get_merchants_response_data_status",
@@ -60,6 +62,7 @@ __all__ = [
     "GetMerchantsResponse",
     "GetMerchantsResponseData",
     "GetMerchantsResponseDataAddress",
+    "GetMerchantsResponseDataDepositBankAccountsItem",
     "GetMerchantsResponseDataKyb",
     "GetMerchantsResponseDataKybStatus",
     "GetMerchantsResponseDataStatus",

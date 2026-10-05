@@ -1,0 +1,7 @@
+
+import typing
+
+from .sandbox_challenge_used_error import SandboxChallengeUsedError
+from .sandbox_deposit_source_error import SandboxDepositSourceError
+
+SandboxChallengeUsedErrorResponse = typing.Union[SandboxChallengeUsedError, SandboxDepositSourceError]

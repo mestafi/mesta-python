@@ -7,6 +7,7 @@ import typing_extensions
 from ...core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 from ...core.serialization import FieldMetadata
 from .get_merchants_response_data_address import GetMerchantsResponseDataAddress
+from .get_merchants_response_data_deposit_bank_accounts_item import GetMerchantsResponseDataDepositBankAccountsItem
 from .get_merchants_response_data_kyb import GetMerchantsResponseDataKyb
 from .get_merchants_response_data_status import GetMerchantsResponseDataStatus
 from .get_merchants_response_data_ubo import GetMerchantsResponseDataUbo
@@ -149,7 +150,7 @@ class GetMerchantsResponseData(UniversalBaseModel):
     """
 
     deposit_bank_accounts: typing_extensions.Annotated[
-        typing.Optional[typing.List[typing.Dict[str, typing.Any]]],
+        typing.Optional[typing.List[GetMerchantsResponseDataDepositBankAccountsItem]],
         FieldMetadata(alias="depositBankAccounts"),
         pydantic.Field(alias="depositBankAccounts", description="Fiat deposit bank accounts assigned to this merchant"),
     ] = None

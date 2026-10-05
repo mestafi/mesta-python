@@ -198,6 +198,7 @@ class ApiKeysClient:
         self,
         id: str,
         *,
+        rotate: typing.Optional[bool] = OMIT,
         name: typing.Optional[str] = OMIT,
         permissions: typing.Optional[typing.Sequence[str]] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
@@ -209,6 +210,9 @@ class ApiKeysClient:
         ----------
         id : str
             ID of the API key
+
+        rotate : typing.Optional[bool]
+            From a portal session with api-key-rotate step-up: mint a new row and return its secret once. The predecessor retires after 24 hours with expires_with_sandbox=false; verification never revives it.
 
         name : typing.Optional[str]
             Updated name for the API key
@@ -236,7 +240,9 @@ class ApiKeysClient:
             id="id",
         )
         """
-        _response = self._raw_client.update(id, name=name, permissions=permissions, request_options=request_options)
+        _response = self._raw_client.update(
+            id, rotate=rotate, name=name, permissions=permissions, request_options=request_options
+        )
         return _response.data
 
 
@@ -455,6 +461,7 @@ class AsyncApiKeysClient:
         self,
         id: str,
         *,
+        rotate: typing.Optional[bool] = OMIT,
         name: typing.Optional[str] = OMIT,
         permissions: typing.Optional[typing.Sequence[str]] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
@@ -466,6 +473,9 @@ class AsyncApiKeysClient:
         ----------
         id : str
             ID of the API key
+
+        rotate : typing.Optional[bool]
+            From a portal session with api-key-rotate step-up: mint a new row and return its secret once. The predecessor retires after 24 hours with expires_with_sandbox=false; verification never revives it.
 
         name : typing.Optional[str]
             Updated name for the API key
@@ -502,6 +512,6 @@ class AsyncApiKeysClient:
         asyncio.run(main())
         """
         _response = await self._raw_client.update(
-            id, name=name, permissions=permissions, request_options=request_options
+            id, rotate=rotate, name=name, permissions=permissions, request_options=request_options
         )
         return _response.data

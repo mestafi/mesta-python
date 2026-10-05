@@ -62,7 +62,7 @@ class RawSendersClient:
             Filter senders by specific ID
 
         status : typing.Optional[ListSendersRequestStatus]
-            Filter senders by their verification status
+            Filter senders by account status; kyc.status or kyb.status reports verification separately
 
         page_size : typing.Optional[int]
             Records per page
@@ -1040,7 +1040,7 @@ class AsyncRawSendersClient:
             Filter senders by specific ID
 
         status : typing.Optional[ListSendersRequestStatus]
-            Filter senders by their verification status
+            Filter senders by account status; kyc.status or kyb.status reports verification separately
 
         page_size : typing.Optional[int]
             Records per page

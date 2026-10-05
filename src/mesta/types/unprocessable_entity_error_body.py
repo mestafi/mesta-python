@@ -1,0 +1,7 @@
+
+import typing
+
+from .sandbox_deposit_source_error import SandboxDepositSourceError
+from .sandbox_terms_not_accepted_error import SandboxTermsNotAcceptedError
+
+UnprocessableEntityErrorBody = typing.Union[SandboxTermsNotAcceptedError, SandboxDepositSourceError]
