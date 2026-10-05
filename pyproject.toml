@@ -4,7 +4,7 @@ dynamic = ["version"]
 
 [tool.poetry]
 name = "mesta"
-version = "0.1.1"
+version = "0.2.0"
 description = "Official Mesta Python SDK"
 readme = "README.md"
 authors = ["Mesta <support@mesta.xyz>"]
