@@ -5,6 +5,7 @@ UpdateWebhooksResponseDataEventsItem = typing.Union[
     typing.Literal[
         "order:*",
         "order:created",
+        "order:awaiting_beneficiary_verification",
         "order:awaiting_funds",
         "order:awaiting_funds_timeout",
         "order:funds_received",
@@ -13,6 +14,7 @@ UpdateWebhooksResponseDataEventsItem = typing.Union[
         "order:success",
         "order:failed",
         "order:cancelled",
+        "order:rejected",
         "order:returned",
         "order:proof_of_payment_received",
         "order:invoice_review_required",
@@ -38,6 +40,7 @@ UpdateWebhooksResponseDataEventsItem = typing.Union[
         "beneficiary:verification_approved",
         "beneficiary:verification_declined",
         "fiat_deposit:settled",
+        "fiat_deposit:rejected",
         "stablecoin_deposit:settled",
         "stablecoin_deposit:rejected",
     ],

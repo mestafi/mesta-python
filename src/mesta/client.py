@@ -17,7 +17,9 @@ if typing.TYPE_CHECKING:
     from .orders.client import AsyncOrdersClient, OrdersClient
     from .payment_methods.client import AsyncPaymentMethodsClient, PaymentMethodsClient
     from .quotes.client import AsyncQuotesClient, QuotesClient
+    from .sandbox.client import AsyncSandboxClient, SandboxClient
     from .senders.client import AsyncSendersClient, SendersClient
+    from .simulate.client import AsyncSimulateClient, SimulateClient
     from .transfers.client import AsyncTransfersClient, TransfersClient
     from .validation_rules.client import AsyncValidationRulesClient, ValidationRulesClient
     from .wallet_addresses.client import AsyncWalletAddressesClient, WalletAddressesClient
@@ -125,6 +127,8 @@ class Mesta:
         self._auth: typing.Optional[AuthClient] = None
         self._api_keys: typing.Optional[ApiKeysClient] = None
         self._transfers: typing.Optional[TransfersClient] = None
+        self._sandbox: typing.Optional[SandboxClient] = None
+        self._simulate: typing.Optional[SimulateClient] = None
 
     @property
     def merchants(self):
@@ -229,6 +233,22 @@ class Mesta:
 
             self._transfers = TransfersClient(client_wrapper=self._client_wrapper)
         return self._transfers
+
+    @property
+    def sandbox(self):
+        if self._sandbox is None:
+            from .sandbox.client import SandboxClient  # noqa: E402
+
+            self._sandbox = SandboxClient(client_wrapper=self._client_wrapper)
+        return self._sandbox
+
+    @property
+    def simulate(self):
+        if self._simulate is None:
+            from .simulate.client import SimulateClient  # noqa: E402
+
+            self._simulate = SimulateClient(client_wrapper=self._client_wrapper)
+        return self._simulate
 
 
 def _make_default_async_client(
@@ -348,6 +368,8 @@ class AsyncMesta:
         self._auth: typing.Optional[AsyncAuthClient] = None
         self._api_keys: typing.Optional[AsyncApiKeysClient] = None
         self._transfers: typing.Optional[AsyncTransfersClient] = None
+        self._sandbox: typing.Optional[AsyncSandboxClient] = None
+        self._simulate: typing.Optional[AsyncSimulateClient] = None
 
     @property
     def merchants(self):
@@ -452,6 +474,22 @@ class AsyncMesta:
 
             self._transfers = AsyncTransfersClient(client_wrapper=self._client_wrapper)
         return self._transfers
+
+    @property
+    def sandbox(self):
+        if self._sandbox is None:
+            from .sandbox.client import AsyncSandboxClient  # noqa: E402
+
+            self._sandbox = AsyncSandboxClient(client_wrapper=self._client_wrapper)
+        return self._sandbox
+
+    @property
+    def simulate(self):
+        if self._simulate is None:
+            from .simulate.client import AsyncSimulateClient  # noqa: E402
+
+            self._simulate = AsyncSimulateClient(client_wrapper=self._client_wrapper)
+        return self._simulate
 
 
 def _get_base_url(*, base_url: typing.Optional[str] = None, environment: MestaEnvironment) -> str:

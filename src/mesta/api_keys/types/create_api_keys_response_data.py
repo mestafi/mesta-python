@@ -6,9 +6,32 @@ import pydantic
 import typing_extensions
 from ...core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 from ...core.serialization import FieldMetadata
+from .create_api_keys_response_data_kind import CreateApiKeysResponseDataKind
 
 
 class CreateApiKeysResponseData(UniversalBaseModel):
+    kind: typing.Optional[CreateApiKeysResponseDataKind] = None
+    expires_at: typing_extensions.Annotated[
+        typing.Optional[dt.datetime],
+        FieldMetadata(alias="expiresAt"),
+        pydantic.Field(
+            alias="expiresAt",
+            description="Nullable expiry. Verification clears it only for keys flagged expires_with_sandbox; a retiring predecessor keeps its 24-hour deadline and is never revived.",
+        ),
+    ] = None
+    """
+    Nullable expiry. Verification clears it only for keys flagged expires_with_sandbox; a retiring predecessor keeps its 24-hour deadline and is never revived.
+    """
+
+    last_used_at: typing_extensions.Annotated[
+        typing.Optional[dt.datetime],
+        FieldMetadata(alias="lastUsedAt"),
+        pydantic.Field(alias="lastUsedAt", description="Null before first use; updated at most once a minute."),
+    ] = None
+    """
+    Null before first use; updated at most once a minute.
+    """
+
     id: typing.Optional[str] = pydantic.Field(default=None)
     """
     Unique identifier for the API key

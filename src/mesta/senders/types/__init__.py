@@ -88,6 +88,7 @@ if typing.TYPE_CHECKING:
     from .list_senders_request_sort_by import ListSendersRequestSortBy
     from .list_senders_request_sort_order import ListSendersRequestSortOrder
     from .list_senders_request_status import ListSendersRequestStatus
+    from .list_senders_request_verification_status import ListSendersRequestVerificationStatus
     from .list_senders_response import ListSendersResponse
     from .list_senders_response_data_item import ListSendersResponseDataItem
     from .list_senders_response_data_item_addresses_item import ListSendersResponseDataItemAddressesItem
@@ -192,6 +193,7 @@ _dynamic_imports: typing.Dict[str, str] = {
     "ListSendersRequestSortBy": ".list_senders_request_sort_by",
     "ListSendersRequestSortOrder": ".list_senders_request_sort_order",
     "ListSendersRequestStatus": ".list_senders_request_status",
+    "ListSendersRequestVerificationStatus": ".list_senders_request_verification_status",
     "ListSendersResponse": ".list_senders_response",
     "ListSendersResponseDataItem": ".list_senders_response_data_item",
     "ListSendersResponseDataItemAddressesItem": ".list_senders_response_data_item_addresses_item",
@@ -320,6 +322,7 @@ __all__ = [
     "ListSendersRequestSortBy",
     "ListSendersRequestSortOrder",
     "ListSendersRequestStatus",
+    "ListSendersRequestVerificationStatus",
     "ListSendersResponse",
     "ListSendersResponseDataItem",
     "ListSendersResponseDataItemAddressesItem",

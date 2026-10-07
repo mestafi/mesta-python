@@ -8,6 +8,8 @@ if typing.TYPE_CHECKING:
     from .authorize_auth_request_permission_check_type import AuthorizeAuthRequestPermissionCheckType
     from .authorize_auth_response import AuthorizeAuthResponse
     from .authorize_auth_response_data import AuthorizeAuthResponseData
+    from .authorize_auth_response_data_kind import AuthorizeAuthResponseDataKind
+    from .authorize_auth_response_data_plane import AuthorizeAuthResponseDataPlane
     from .merchant_login_auth_response import MerchantLoginAuthResponse
     from .merchant_login_auth_response_data import MerchantLoginAuthResponseData
     from .merchant_login_auth_response_data_user import MerchantLoginAuthResponseDataUser
@@ -16,6 +18,8 @@ _dynamic_imports: typing.Dict[str, str] = {
     "AuthorizeAuthRequestPermissionCheckType": ".authorize_auth_request_permission_check_type",
     "AuthorizeAuthResponse": ".authorize_auth_response",
     "AuthorizeAuthResponseData": ".authorize_auth_response_data",
+    "AuthorizeAuthResponseDataKind": ".authorize_auth_response_data_kind",
+    "AuthorizeAuthResponseDataPlane": ".authorize_auth_response_data_plane",
     "MerchantLoginAuthResponse": ".merchant_login_auth_response",
     "MerchantLoginAuthResponseData": ".merchant_login_auth_response_data",
     "MerchantLoginAuthResponseDataUser": ".merchant_login_auth_response_data_user",
@@ -48,6 +52,8 @@ __all__ = [
     "AuthorizeAuthRequestPermissionCheckType",
     "AuthorizeAuthResponse",
     "AuthorizeAuthResponseData",
+    "AuthorizeAuthResponseDataKind",
+    "AuthorizeAuthResponseDataPlane",
     "MerchantLoginAuthResponse",
     "MerchantLoginAuthResponseData",
     "MerchantLoginAuthResponseDataUser",

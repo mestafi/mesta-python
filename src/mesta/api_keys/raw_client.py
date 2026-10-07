@@ -426,6 +426,7 @@ class RawApiKeysClient:
         self,
         id: str,
         *,
+        rotate: typing.Optional[bool] = OMIT,
         name: typing.Optional[str] = OMIT,
         permissions: typing.Optional[typing.Sequence[str]] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
@@ -437,6 +438,9 @@ class RawApiKeysClient:
         ----------
         id : str
             ID of the API key
+
+        rotate : typing.Optional[bool]
+            From a portal session with api-key-rotate step-up: mint a new row and return its secret once. The predecessor retires after 24 hours with expires_with_sandbox=false; verification never revives it.
 
         name : typing.Optional[str]
             Updated name for the API key
@@ -456,6 +460,7 @@ class RawApiKeysClient:
             f"v1/api-keys/{encode_path_param(id)}",
             method="PATCH",
             json={
+                "rotate": rotate,
                 "name": name,
                 "permissions": permissions,
             },
@@ -941,6 +946,7 @@ class AsyncRawApiKeysClient:
         self,
         id: str,
         *,
+        rotate: typing.Optional[bool] = OMIT,
         name: typing.Optional[str] = OMIT,
         permissions: typing.Optional[typing.Sequence[str]] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
@@ -952,6 +958,9 @@ class AsyncRawApiKeysClient:
         ----------
         id : str
             ID of the API key
+
+        rotate : typing.Optional[bool]
+            From a portal session with api-key-rotate step-up: mint a new row and return its secret once. The predecessor retires after 24 hours with expires_with_sandbox=false; verification never revives it.
 
         name : typing.Optional[str]
             Updated name for the API key
@@ -971,6 +980,7 @@ class AsyncRawApiKeysClient:
             f"v1/api-keys/{encode_path_param(id)}",
             method="PATCH",
             json={
+                "rotate": rotate,
                 "name": name,
                 "permissions": permissions,
             },
