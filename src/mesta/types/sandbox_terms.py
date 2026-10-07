@@ -11,6 +11,18 @@ from ..core.serialization import FieldMetadata
 class SandboxTerms(UniversalBaseModel):
     url: str
     version: str
+    privacy_notice_url: typing_extensions.Annotated[
+        str,
+        FieldMetadata(alias="privacyNoticeUrl"),
+        pydantic.Field(
+            alias="privacyNoticeUrl",
+            description="The Sandbox privacy notice's one published location. It is linked as information and not accepted.",
+        ),
+    ]
+    """
+    The Sandbox privacy notice's one published location. It is linked as information and not accepted.
+    """
+
     accepted_at: typing_extensions.Annotated[
         dt.datetime, FieldMetadata(alias="acceptedAt"), pydantic.Field(alias="acceptedAt")
     ]

@@ -7,19 +7,21 @@ from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 from ..core.serialization import FieldMetadata
 
 
-class SandboxTermsNotAcceptedErrorTerms(UniversalBaseModel):
-    url: str
-    version: str
-    privacy_notice_url: typing_extensions.Annotated[
+class SandboxMachineCreatedClaim(UniversalBaseModel):
+    """
+    Present instead of `claimUrl` when the request carried `claimEmail`: the claim link went to that address.
+    """
+
+    sent_to: typing_extensions.Annotated[
         str,
-        FieldMetadata(alias="privacyNoticeUrl"),
+        FieldMetadata(alias="sentTo"),
         pydantic.Field(
-            alias="privacyNoticeUrl",
-            description="The Sandbox privacy notice's one published location. It is linked as information and not accepted.",
+            alias="sentTo",
+            description="The masked address the claim link was emailed to, for example `d***@example.com`.",
         ),
     ]
     """
-    The Sandbox privacy notice's one published location. It is linked as information and not accepted.
+    The masked address the claim link was emailed to, for example `d***@example.com`.
     """
 
     if IS_PYDANTIC_V2:

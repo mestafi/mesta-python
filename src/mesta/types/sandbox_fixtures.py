@@ -8,6 +8,7 @@ from ..core.serialization import FieldMetadata
 from .sandbox_fixtures_balances_item import SandboxFixturesBalancesItem
 from .sandbox_fixtures_beneficiaries_item import SandboxFixturesBeneficiariesItem
 from .sandbox_fixtures_deposit_source import SandboxFixturesDepositSource
+from .sandbox_fixtures_magic_values_item import SandboxFixturesMagicValuesItem
 from .sandbox_fixtures_orders_item import SandboxFixturesOrdersItem
 from .sandbox_fixtures_senders_item import SandboxFixturesSendersItem
 from .sandbox_fixtures_webhook import SandboxFixturesWebhook
@@ -29,20 +30,20 @@ class SandboxFixtures(UniversalBaseModel):
     webhook: SandboxFixturesWebhook
     wallets: typing.List[SandboxWallet] = pydantic.Field()
     """
-    The address array when provisioned; empty while no wallet exists. The state is the session read's `wallets` block and the `wallets` entry of `seed.steps`.
+    The address array when provisioned; empty while no wallet exists, as it is until test-network wallets are offered. The state is the session read's `wallets` block and the `wallets` entry of `seed.steps`.
     """
 
     balances: typing.List[SandboxFixturesBalancesItem]
     magic_values: typing_extensions.Annotated[
-        typing.Dict[str, typing.Any],
+        typing.List[SandboxFixturesMagicValuesItem],
         FieldMetadata(alias="magicValues"),
         pydantic.Field(
             alias="magicValues",
-            description="The values that force outcomes, as documented at https://docs.mesta.xyz/docs/sandbox-simulation.",
+            description="The values that force outcomes, in the order of https://docs.mesta.xyz/docs/sandbox-simulation#magic-values. Public fields only.",
         ),
     ]
     """
-    The values that force outcomes, as documented at https://docs.mesta.xyz/docs/sandbox-simulation.
+    The values that force outcomes, in the order of https://docs.mesta.xyz/docs/sandbox-simulation#magic-values. Public fields only.
     """
 
     if IS_PYDANTIC_V2:

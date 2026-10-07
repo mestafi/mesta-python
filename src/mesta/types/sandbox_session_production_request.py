@@ -6,16 +6,25 @@ import pydantic
 import typing_extensions
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 from ..core.serialization import FieldMetadata
-from .sandbox_production_requested_status import SandboxProductionRequestedStatus
+from .sandbox_session_production_request_status import SandboxSessionProductionRequestStatus
 
 
-class SandboxProductionRequested(UniversalBaseModel):
+class SandboxSessionProductionRequest(UniversalBaseModel):
+    """
+    The Go live request's tracker, null until the first request: `requested`, then `in_review` while Mesta reviews it, then `invited` with a production invite.
+    """
+
+    status: SandboxSessionProductionRequestStatus
     requested_at: typing_extensions.Annotated[
         dt.datetime, FieldMetadata(alias="requestedAt"), pydantic.Field(alias="requestedAt")
     ]
-    status: SandboxProductionRequestedStatus = pydantic.Field()
+    updated_at: typing_extensions.Annotated[
+        dt.datetime,
+        FieldMetadata(alias="updatedAt"),
+        pydantic.Field(alias="updatedAt", description="The last status change."),
+    ]
     """
-    The tracker's first state; the session read's `productionRequest` follows the request from here.
+    The last status change.
     """
 
     if IS_PYDANTIC_V2:

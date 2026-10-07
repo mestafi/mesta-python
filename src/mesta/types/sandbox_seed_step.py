@@ -9,7 +9,10 @@ from .sandbox_seed_step_status import SandboxSeedStepStatus
 
 class SandboxSeedStep(UniversalBaseModel):
     name: SandboxSeedStepName
-    status: SandboxSeedStepStatus
+    status: SandboxSeedStepStatus = pydantic.Field()
+    """
+    skipped: the step does not apply in this sandbox, as the wallets step while test-network wallets are not offered. A skipped step is never retried and is not a failure.
+    """
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

@@ -9,6 +9,7 @@ from ..core.serialization import FieldMetadata
 from .sandbox_created_docs import SandboxCreatedDocs
 from .sandbox_created_plane import SandboxCreatedPlane
 from .sandbox_key import SandboxKey
+from .sandbox_machine_created_claim import SandboxMachineCreatedClaim
 from .sandbox_machine_created_seed import SandboxMachineCreatedSeed
 from .sandbox_machine_created_status import SandboxMachineCreatedStatus
 from .sandbox_terms import SandboxTerms
@@ -17,15 +18,20 @@ from .sandbox_terms import SandboxTerms
 class SandboxMachineCreated(UniversalBaseModel):
     status: SandboxMachineCreatedStatus
     claim_url: typing_extensions.Annotated[
-        str,
+        typing.Optional[str],
         FieldMetadata(alias="claimUrl"),
         pydantic.Field(
             alias="claimUrl",
-            description="Create response only, while unclaimed. A single-use bearer capability in the URL fragment: whoever opens it owns the sandbox.",
+            description="Create response only, while unclaimed, and only when the request carried no `claimEmail`. A single-use bearer capability in the URL fragment: whoever opens it owns the sandbox.",
         ),
-    ]
+    ] = None
     """
-    Create response only, while unclaimed. A single-use bearer capability in the URL fragment: whoever opens it owns the sandbox.
+    Create response only, while unclaimed, and only when the request carried no `claimEmail`. A single-use bearer capability in the URL fragment: whoever opens it owns the sandbox.
+    """
+
+    claim: typing.Optional[SandboxMachineCreatedClaim] = pydantic.Field(default=None)
+    """
+    Present instead of `claimUrl` when the request carried `claimEmail`: the claim link went to that address.
     """
 
     seed: SandboxMachineCreatedSeed

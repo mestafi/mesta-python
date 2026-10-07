@@ -11,6 +11,7 @@ from .sandbox_fixtures import SandboxFixtures
 from .sandbox_key_metadata import SandboxKeyMetadata
 from .sandbox_seed import SandboxSeed
 from .sandbox_session_plane import SandboxSessionPlane
+from .sandbox_session_production_request import SandboxSessionProductionRequest
 from .sandbox_session_reset import SandboxSessionReset
 from .sandbox_session_status import SandboxSessionStatus
 from .sandbox_session_wallets import SandboxSessionWallets
@@ -78,11 +79,23 @@ class SandboxSession(UniversalBaseModel):
 
     wallets: SandboxSessionWallets = pydantic.Field()
     """
-    The merchant wallet's state: `ready` when the four test-network addresses exist, `pending` while the wallet was skipped for vendor capacity when the sample data was added, or a request is waiting, `failed` otherwise. The `wallets` entry of `seed.steps` carries the same state; `fixtures.wallets` is empty until the addresses exist.
+    The merchant wallet's state. Test-network wallets are coming soon: until they are offered, `status` is `unavailable`, `reason` is `not_offered_on_plane` and `fixtures.wallets` is empty. Once they are offered, `status` is `ready` when the wallet's addresses exist, `pending` while a request is waiting and `failed` otherwise.
     """
 
     keys: typing.List[SandboxKeyMetadata]
     seed: SandboxSeed
+    production_request: typing_extensions.Annotated[
+        typing.Optional[SandboxSessionProductionRequest],
+        FieldMetadata(alias="productionRequest"),
+        pydantic.Field(
+            alias="productionRequest",
+            description="The Go live request's tracker, null until the first request: `requested`, then `in_review` while Mesta reviews it, then `invited` with a production invite.",
+        ),
+    ] = None
+    """
+    The Go live request's tracker, null until the first request: `requested`, then `in_review` while Mesta reviews it, then `invited` with a production invite.
+    """
+
     reset: typing.Optional[SandboxSessionReset] = pydantic.Field(default=None)
     """
     Present only after a failed reset. The sandbox returns to its previous status with `seed.status` complete and `seed.error` set. Retry reset or delete the sandbox.

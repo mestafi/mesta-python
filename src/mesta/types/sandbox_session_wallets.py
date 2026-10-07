@@ -6,16 +6,22 @@ import pydantic
 import typing_extensions
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 from ..core.serialization import FieldMetadata
+from .sandbox_session_wallets_reason import SandboxSessionWalletsReason
 from .sandbox_session_wallets_senders import SandboxSessionWalletsSenders
 from .sandbox_session_wallets_status import SandboxSessionWalletsStatus
 
 
 class SandboxSessionWallets(UniversalBaseModel):
     """
-    The merchant wallet's state: `ready` when the four test-network addresses exist, `pending` while the wallet was skipped for vendor capacity when the sample data was added, or a request is waiting, `failed` otherwise. The `wallets` entry of `seed.steps` carries the same state; `fixtures.wallets` is empty until the addresses exist.
+    The merchant wallet's state. Test-network wallets are coming soon: until they are offered, `status` is `unavailable`, `reason` is `not_offered_on_plane` and `fixtures.wallets` is empty. Once they are offered, `status` is `ready` when the wallet's addresses exist, `pending` while a request is waiting and `failed` otherwise.
     """
 
     status: SandboxSessionWalletsStatus
+    reason: typing.Optional[SandboxSessionWalletsReason] = pydantic.Field(default=None)
+    """
+    Present with `unavailable`: test-network wallets are not offered in the sandbox yet.
+    """
+
     senders: SandboxSessionWalletsSenders = pydantic.Field()
     """
     Sender wallet usage and per-sender state, separate from the merchant wallet status. used counts senders for which a wallet provider client has been created.

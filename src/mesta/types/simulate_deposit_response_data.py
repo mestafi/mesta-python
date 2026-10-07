@@ -12,7 +12,7 @@ from .simulate_deposit_response_data_owner_type import SimulateDepositResponseDa
 class SimulateDepositResponseData(UniversalBaseModel):
     id: str = pydantic.Field()
     """
-    The deposit's id; readable at GET /v1/merchant/fiat-deposits/{id} or /v1/merchant/stablecoin-deposits/{id}.
+    The deposit's id; readable at `GET /v1/merchant/fiat-deposits/{id}` or `/v1/merchant/stablecoin-deposits/{id}`.
     """
 
     owner_type: typing_extensions.Annotated[

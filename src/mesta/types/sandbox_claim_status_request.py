@@ -3,14 +3,12 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
-from .sandbox_seed_pointer_status import SandboxSeedPointerStatus
 
 
-class SandboxSeedPointer(UniversalBaseModel):
-    status: SandboxSeedPointerStatus
-    url: str = pydantic.Field()
+class SandboxClaimStatusRequest(UniversalBaseModel):
+    token: str = pydantic.Field()
     """
-    Poll `GET /v1/sandbox/sessions/{id}`.
+    The token from the fragment of `claimUrl`. Sent in the body, never in the path.
     """
 
     if IS_PYDANTIC_V2:
