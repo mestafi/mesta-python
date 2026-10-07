@@ -25,6 +25,7 @@ from .types.get_senders_response import GetSendersResponse
 from .types.list_senders_request_sort_by import ListSendersRequestSortBy
 from .types.list_senders_request_sort_order import ListSendersRequestSortOrder
 from .types.list_senders_request_status import ListSendersRequestStatus
+from .types.list_senders_request_verification_status import ListSendersRequestVerificationStatus
 from .types.list_senders_response import ListSendersResponse
 from .types.simulate_deposit_senders_response import SimulateDepositSendersResponse
 from .types.simulate_verification_result_senders_request_result import SimulateVerificationResultSendersRequestResult
@@ -47,6 +48,7 @@ class RawSendersClient:
         *,
         id: typing.Optional[str] = None,
         status: typing.Optional[ListSendersRequestStatus] = None,
+        verification_status: typing.Optional[ListSendersRequestVerificationStatus] = None,
         page_size: typing.Optional[int] = None,
         page: typing.Optional[int] = None,
         sort_by: typing.Optional[ListSendersRequestSortBy] = None,
@@ -63,6 +65,9 @@ class RawSendersClient:
 
         status : typing.Optional[ListSendersRequestStatus]
             Filter senders by account status; kyc.status or kyb.status reports verification separately
+
+        verification_status : typing.Optional[ListSendersRequestVerificationStatus]
+            Filter senders by verification status: kyc.status for individuals, kyb.status for businesses
 
         page_size : typing.Optional[int]
             Records per page
@@ -90,6 +95,7 @@ class RawSendersClient:
             params={
                 "id": id,
                 "status": status,
+                "verificationStatus": verification_status,
                 "pageSize": page_size,
                 "page": page,
                 "sortBy": sort_by,
@@ -1025,6 +1031,7 @@ class AsyncRawSendersClient:
         *,
         id: typing.Optional[str] = None,
         status: typing.Optional[ListSendersRequestStatus] = None,
+        verification_status: typing.Optional[ListSendersRequestVerificationStatus] = None,
         page_size: typing.Optional[int] = None,
         page: typing.Optional[int] = None,
         sort_by: typing.Optional[ListSendersRequestSortBy] = None,
@@ -1041,6 +1048,9 @@ class AsyncRawSendersClient:
 
         status : typing.Optional[ListSendersRequestStatus]
             Filter senders by account status; kyc.status or kyb.status reports verification separately
+
+        verification_status : typing.Optional[ListSendersRequestVerificationStatus]
+            Filter senders by verification status: kyc.status for individuals, kyb.status for businesses
 
         page_size : typing.Optional[int]
             Records per page
@@ -1068,6 +1078,7 @@ class AsyncRawSendersClient:
             params={
                 "id": id,
                 "status": status,
+                "verificationStatus": verification_status,
                 "pageSize": page_size,
                 "page": page,
                 "sortBy": sort_by,

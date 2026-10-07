@@ -366,6 +366,14 @@ client.senders.list()
 <dl>
 <dd>
 
+**verification_status:** `typing.Optional[ListSendersRequestVerificationStatus]` — Filter senders by verification status: kyc.status for individuals, kyb.status for businesses
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **page_size:** `typing.Optional[int]` — Records per page
     
 </dd>
